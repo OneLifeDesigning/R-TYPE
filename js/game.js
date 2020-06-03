@@ -7,6 +7,9 @@ class Game {
 
     this._bg = new Bg(ctx)
     this._player = new Player(ctx)
+    this._outboard = this._ctx.canvas.height - 90
+    this._enemies = []
+    this._gunner = new EnemyGunner(ctx, -200)
   }
 
   start() {
@@ -17,14 +20,29 @@ class Game {
     }, 1000 / 70);
   }
 
-  getListeners() {
-    document.addEventListener('keydown', () => {
-      if (event.keyCode === KEY_LEFT) {
-        // TODO
-      } else if (event.keyCode === KEY_RIGHT) {
-        // TODO
+  _randomPosition(h) {
+    return Math.floor(Math.random() * h)
+  }
+  _addEnemies() {
+    if (this._frames++ >= 200) {
+      this._enemies.push(new EnemyButterFly(this._ctx, this._randomPosition(this._outboard) + 50))
+      this._frames = 0
+      this._updateEnemies()
+    }
+  }
+
+  _moveEnemies() {
+    for (let i = 0; i < this._enemies.length; i++) {
+      this._enemies[i].draw()
+      this._enemies[i].move()
+    }
+  }
+  _updateEnemies() {
+    for (let i = 0; i < this._enemies.length; i++) {
+      if (this._enemies[i].x <= 0) {
+        this._enemies.splice(1, i)
       }
-    })
+    }
   }
   stop() {
     this._intervalId = clearInterval()
@@ -36,10 +54,14 @@ class Game {
   _draw() {
     this._bg.draw()
     this._player.draw()
+    this._gunner.draw()
   }
 
   _move() {
     this._bg.move()
     this._player.move()
+    this._gunner.move(this._player.x, this._player.y, )
+    this._addEnemies()
+    this._moveEnemies()
   }
 }

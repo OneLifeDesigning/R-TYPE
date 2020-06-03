@@ -6,13 +6,11 @@ class Player {
     this.x = ctx.canvas.width / 4
     this.y = ctx.canvas.height / 2
 
-    this.w = 80
-    this.h = 40
+    this.w = ctx.canvas.width / 15
+    this.h = (this.w / 16) * 9
 
     this.vx = 0
     this.vy = 0
-    this.ay = 0
-    this.ax = 0
 
     this.img = new Image()
     this.img.src = IMG_PLAYER
@@ -39,17 +37,24 @@ class Player {
     )
 
   }
-
-  isOut() {
-    return this.y + this.h >= this.ctx.canvas.height
-  }
+  // TODO: Check if out
+  // isOut() {
+  //   return this.y + this.h >= this.ctx.canvas.height
+  // }
 
   move() {
-    this.vy += this.ay;
-    this.vx += this.ax;
 
     this.y += this.vy;
     this.x += this.vx;
+
+    if (this.vy >= 0 && this.vy !== 0) {
+      this._animate('down')
+    } else if (this.vy <= 0 && this.vy !== 0) {
+      this._animate('up')
+    } else if (this.vy === 0) {
+      this._animate('default')
+    }
+
   }
   _animate(typeAnimation) {
     if (typeAnimation === 'up' && this.img.frameIndex < 4) {
@@ -58,30 +63,34 @@ class Player {
     if (typeAnimation === 'down' && this.img.frameIndex > 0) {
       --this.img.frameIndex
     }
+    if (typeAnimation === 'default' && this.img.frameIndex >= 0 && this.img.frameIndex < 3) {
+      ++this.img.frameIndex
+    }
+    if (typeAnimation === 'default' && this.img.frameIndex <= 4 && this.img.frameIndex > 2) {
+      --this.img.frameIndex
+    }
   }
 
   _setListeners() {
     document.addEventListener('keydown', e => {
       if (e.keyCode === KEY_UP) {
-        this.ay = -0.2
-        this._animate('down')
+        this.vy = -1.6
       } else if (e.keyCode === KEY_DOWN) {
-        this.ay = +0.2
-        this._animate('up')
+        this.vy = +1.6
       } else if (e.keyCode === KEY_RIGHT) {
-        this.ax = 0.2
+        this.vx = 1.6
       } else if (e.keyCode === KEY_LEFT) {
-        this.ax = -0.2
+        this.vx = -1.6
       }
     })
 
     document.addEventListener('keyup', e => {
       if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {
         this.vy = 0
-        this.ay = 0
-      } else if (e.keyCode === KEY_RIGHT || e.keyCode === KEY_LEFT) {
+      } else if (e.keyCode === KEY_RIGHT && this.vx > 0) {
         this.vx = 0
-        this.ax = 0
+      } else if (e.keyCode === KEY_LEFT && this.vx < 0) {
+        this.vx = 0
       }
     })
   }

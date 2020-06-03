@@ -3,5 +3,5 @@ const KEY_UP = 38
 const KEY_RIGHT = 39
 const KEY_DOWN = 40
 
-const IMG_BG = './img/bg1.png'
-const IMG_PLAYER = './img/player.png'
+const IMG_BG = './img/backgrounds/bg1.png'
+const IMG_PLAYER = './img/sprites/player.png'
