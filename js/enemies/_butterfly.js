@@ -6,16 +6,16 @@ class EnemyButterFly {
     this.y = y
 
     this.w = ctx.canvas.width / 15
-    this.h = (this.w / 4) * 3
+    this.h = (this.w / 16) * 9
 
     this.vx = -3
     this.vy = 0
     this.tick = 0
 
     this.img = new Image()
-    this.img.src = '../img/sprites/enemy-butterfly-2.png'
+    this.img.src = '../img/sprites/enemy-butterfly.png'
     // NOTE: frame are number sprites
-    this.img.frames = 8
+    this.img.frames = 6
     // NOTE: position actual "array"
     this.img.frameIndex = 1
   }
@@ -44,7 +44,7 @@ class EnemyButterFly {
     }
   }
   _animate() {
-    if (this.img.frameIndex++ >= 7) {
+    if (this.img.frameIndex++ >= 5) {
       this.img.frameIndex = 0
     }
   }

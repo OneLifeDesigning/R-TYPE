@@ -11,6 +11,7 @@ class EnemyGunner {
     this.vx = -0.8
     this.vy = 2
     this.tick = 0
+    this.tickMove = 0
 
     this.img = new Image()
     this.img.src = '../img/sprites/enemy-gunner.png'
@@ -47,21 +48,25 @@ class EnemyGunner {
       } else {
         this.y -= this.vy
       }
-    } else if (playerPosY >= this.y - 40 || playerPosY <= this.y + 40) {
-      this._shoot()
+    } else if (playerPosY >= this.y - 80 || playerPosY <= this.y + 80) {
+      if (this.tickMove++ === 25) {
+        this._shoot()
+        this.tickMove = 0
+      }
     } else if (playerPosY == this.y) {
       this.vy = 0
     }
-    if (playerPosX < this.x - ctx.canvas.width / 4 && this.x <= ctx.canvas.width) {
+    if (playerPosX + 2 < this.x - ctx.canvas.width / 4 && this.x <= ctx.canvas.width) {
       this.x += this.vx
     } else if (playerPosX >= this.x - ctx.canvas.width / 4) {
-      this.x -= this.vx * 4
+      this.x -= this.vx * 5
     }
   }
   _animate() {
-    if (this.tick++ === 15) {
-      this.tick = 0
-    }
+    // TODO: when shoot and is floor animate
+    // if (this.tick++ === 15) {
+    //   this.tick = 0
+    // }
   }
   _shoot() {
     console.log('Hello im gunner and killYUONoooow')
