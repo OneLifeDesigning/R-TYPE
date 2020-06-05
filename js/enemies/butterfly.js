@@ -1,16 +1,18 @@
-class EnemyButterFly {
+class EnemyButterfly {
   constructor(ctx, y) {
     this.ctx = ctx
 
     this.x = ctx.canvas.width
-    this.y = y
+    this.y = 60 + y
 
     this.w = ctx.canvas.width / 15
     this.h = (this.w / 4) * 3
 
     this.vx = -3
-    this.vy = 0
+    this.vy = -2
+
     this.tick = 0
+    this.tickMove = 0
 
     this.img = new Image()
     this.img.src = '../img/sprites/enemy-butterfly-2.png'
@@ -38,6 +40,11 @@ class EnemyButterFly {
     this.y += this.vy;
     this.x += this.vx;
 
+    if (this.tickMove++ === 60 || this.y <= 60) {
+
+      this.vy *= -1;
+      this.tickMove = 0
+    }
     if (this.tick++ === 15 && this.vx !== 0) {
       this._animate()
       this.tick = 0

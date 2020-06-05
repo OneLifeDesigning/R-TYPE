@@ -1,0 +1,39 @@
+/* @font-face {
+  font-family: 'Pixeboy';
+  src: url('../fonts/Pixeboy.woff2') format('woff2'),
+    url('../fonts/Pixeboy.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+} */
+
+@font-face {
+  font-family: 'ArcadeClassic';
+  src: local('ArcadeClassic'), local('ArcadeClassic'), url('../fonts/ArcadeClassic.woff') format('woff'), url('../fonts/ArcadeClassic.woff2') format('woff2');
+
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Pixeboy', 'ArcadeClassic';
+  text-align: center;
+  background-color: #000;
+  color: aqua;
+  font-size: 16px;
+  box-sizing: content-box;
+}
+
+canvas {
+  margin: 0 auto;
+}
+
+#interface {
+  max-width: 65rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #000;
+  height: 2.5rem;
+  padding: 0.3125rem;
+}

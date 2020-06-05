@@ -6,19 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="./img/favicon.ico" />
   <title>R-TYPE Irem - 1ld - Version 0.001Aplpha</title>
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<body style="text-align: center; background-color: #000;">
+<body>
 
-  <canvas id="canvas" style="margin: 0 auto;"></canvas>
+  <canvas id="canvas"></canvas>
+  <div id="interface">
+    <div>Lives</div>
+    <div>Bean</div>
+    <div>Score</div>
+    <div>MaxScore</div>
+  </div>
 
 
   <script src="./js/constants.js"></script>
-  <script src="./js/background.js"></script>
-  <script src="./js/terrrain.js"></script>
-  <script src="./js/player.js"></script>
+  <script src="./js/terrains/background.js"></script>
+  <script src="./js/terrains/terrrain.js"></script>
   <script src="./js/enemies/gunner.js"></script>
   <script src="./js/enemies/butterfly.js"></script>
+  <script src="./js/weapons/player/beam.js"></script>
+  <script src="./js/weapons/player/shot.js"></script>
+  <script src="./js/player.js"></script>
+  <script src="./js/interface.js"></script>
   <script src="./js/game.js"></script>
   <script src="./js/index.js"></script>
 </body>
