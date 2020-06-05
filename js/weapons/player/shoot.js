@@ -1,5 +1,5 @@
 class Shoot {
-  constructor(ctx, x, y, img) {
+  constructor(ctx, x, y) {
     this._ctx = ctx
     this.x = x
     this.y = y

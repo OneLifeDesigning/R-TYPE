@@ -10,8 +10,7 @@ class Weapons {
       new Shoot(
         this._ctx,
         this.shooter.x + this.shooter.w * 0.8,
-        this.shooter.y + this.shooter.h * 0.3,
-        IMG_WEAPON_SHOOT
+        this.shooter.y + this.shooter.h * 0.3
       )
     )
   }

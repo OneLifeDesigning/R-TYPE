@@ -13,8 +13,7 @@ LEVEL_1_IMG_BG_1.src = './img/backgrounds/bg1.png'
 
 const IMG_PLAYER = new Image()
 IMG_PLAYER.src = './img/sprites/player.png'
-const IMG_WEAPON_SHOOT = new Image()
-IMG_WEAPON_SHOOT.src = './img/sprites/weapon-shoot.png'
+
 
 const IMG_ENEMY_BUTTERFLY = new Image()
 IMG_ENEMY_BUTTERFLY.src = './img/sprites/enemy-butterfly-2.png'
