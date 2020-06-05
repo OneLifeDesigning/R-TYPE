@@ -1,6 +1,6 @@
 class EnemyGunner {
   constructor(ctx, y) {
-    this.ctx = ctx
+    this._ctx = ctx
 
     this.x = ctx.canvas.width
     this.y = y
@@ -22,7 +22,7 @@ class EnemyGunner {
   }
 
   draw() {
-    this.ctx.drawImage(
+    this._ctx.drawImage(
       this.img,
       this.img.frameIndex * this.img.width / this.img.frames,
       0,

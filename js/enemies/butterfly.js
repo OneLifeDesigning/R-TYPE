@@ -1,6 +1,6 @@
 class EnemyButterfly {
-  constructor(ctx, y) {
-    this.ctx = ctx
+  constructor(ctx, y, img) {
+    this._ctx = ctx
 
     this.x = ctx.canvas.width
     this.y = 60 + y
@@ -14,8 +14,8 @@ class EnemyButterfly {
     this.tick = 0
     this.tickMove = 0
 
-    this.img = new Image()
-    this.img.src = '../img/sprites/enemy-butterfly-2.png'
+    this.img = img
+
     // NOTE: frame are number sprites
     this.img.frames = 8
     // NOTE: position actual "array"
@@ -23,7 +23,7 @@ class EnemyButterfly {
   }
 
   draw() {
-    this.ctx.drawImage(
+    this._ctx.drawImage(
       this.img,
       this.img.frameIndex * this.img.width / this.img.frames,
       0,

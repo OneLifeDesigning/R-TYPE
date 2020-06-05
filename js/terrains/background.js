@@ -1,5 +1,5 @@
 class Bg {
-  constructor(ctx, src) {
+  constructor(ctx, img) {
     this._ctx = ctx
 
     this.x = 0
@@ -12,8 +12,7 @@ class Bg {
     this.w = this._ctx.canvas.width
     this.h = this._ctx.canvas.height
 
-    this._img = new Image()
-    this._img.src = src
+    this._img = img
   }
 
   draw() {

@@ -1,8 +1,7 @@
 class Terrain {
-  constructor(ctx, src, positionX, positionY) {
+  constructor(ctx, img, positionX, positionY) {
     this._ctx = ctx
-    this._img = new Image()
-    this._img.src = src
+    this._img = img
 
     this.w = this._ctx.canvas.width / 6
     this.h = this.w / this._img.width * this._img.height
@@ -13,6 +12,8 @@ class Terrain {
 
     this.vx = -2
   }
+
+
   draw(ctx) {
     if (this._img.src) {
       if (this.y !== 0) {
@@ -26,8 +27,11 @@ class Terrain {
     }
   }
 
-
   move() {
     this.x += this.vx
+  }
+
+  isVisible() {
+    return this.x + this.w >= 0
   }
 }
