@@ -17,7 +17,7 @@ class Shoot {
     // NOTE: position actual "array"
     this.img.frameIndex = 0
 
-    this.vx = 2
+    this.vx = 10
 
   }
 

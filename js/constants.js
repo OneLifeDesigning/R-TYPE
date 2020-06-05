@@ -16,7 +16,7 @@ IMG_PLAYER.src = './img/sprites/player.png'
 
 
 const IMG_ENEMY_BUTTERFLY = new Image()
-IMG_ENEMY_BUTTERFLY.src = './img/sprites/enemy-butterfly-2.png'
+IMG_ENEMY_BUTTERFLY.src = './img/sprites/enemy-butterfly.png'
 
 
 const IMG_TERRAIN_MOD_HIG = new Image()

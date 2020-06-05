@@ -24,7 +24,6 @@ class Player {
 
     this.lives = 3
 
-
     this._setListeners()
 
   }
@@ -41,7 +40,7 @@ class Player {
       this.w,
       this.h
     )
-    this.weapon.clearShoots()
+    this.weapon.removeShoots()
     this.weapon.draw()
   }
 
@@ -62,12 +61,23 @@ class Player {
     if (this.y <= 0) {
       this.y = 0
     }
+    if (this.x <= 0) {
+      this.vx = 0
+      this.x = 0
+    }
+    if (this.x >= this._ctx.canvas.width - this.w) {
+      this.vx = 0
+      this.x = this._ctx.canvas.width - this.w
+    }
     this.weapon.move()
   }
+
   die() {
     console.log('Una vida menos');
+    this.x -= this.w
     this.lives -= 1
   }
+
   _animate(typeAnimation) {
     if (typeAnimation === 'up' && this._img.frameIndex < 4) {
       ++this._img.frameIndex
@@ -82,6 +92,7 @@ class Player {
       --this._img.frameIndex
     }
   }
+
   _setListeners() {
     document.addEventListener('keydown', e => {
       if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {

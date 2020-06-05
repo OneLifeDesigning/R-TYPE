@@ -27,7 +27,7 @@ class Weapons {
   //   )
   // }
 
-  clearShoots() {
+  removeShoots() {
     this.shoots = this.shoots.filter(b => b.isVisible())
   }
 
