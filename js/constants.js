@@ -15,6 +15,9 @@ const IMG_PLAYER = new Image()
 IMG_PLAYER.src = './img/sprites/player.png'
 
 
+const IMG_SHOOT_BEAM_LOAD = new Image()
+IMG_SHOOT_BEAM_LOAD.src = './img/sprites/weapon-beam-load.png'
+
 const IMG_ENEMY_BUTTERFLY = new Image()
 IMG_ENEMY_BUTTERFLY.src = './img/sprites/enemy-butterfly.png'
 

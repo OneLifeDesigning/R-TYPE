@@ -1,21 +1,21 @@
-class BeamLoad extends Shoot {
-  constructor(ctx, x, y) {
-    super(ctx, x, y)
+class BeamLoad {
+  constructor(ctx, x, y, img) {
+    this._ctx = ctx
+    this.x = x
+    this.y = y
 
-    this.w = this._ctx.canvas.width / 16
+    this.w = this._ctx.canvas.width / 24
     this.h = (this.w / 4) * 3
 
-    this.img = new Image()
-    this.img.src = './img/sprites/weapon-beam-load.png'
+    this.img = img
 
     this.tick = 0
 
     // NOTE: frame are number sprites
     this.img.frames = 8
     // NOTE: position actual "array"
-    this.img.frameIndex = 0
+    this.img.frameIndex = 10
   }
-
   draw() {
     this._ctx.drawImage(
       this.img,
@@ -29,21 +29,29 @@ class BeamLoad extends Shoot {
       this.h
     )
   }
+
   move(x, y) {
     this.x = x
     this.y = y
-    if (this.tick++ >= 15) {
-      this._animate()
-      this.tick = 0
-    }
+    this.timer = setInterval(() => {
+      if (this.tick++ >= 10 && this.img.frameIndex !== 10) {
+        this._animate()
+        this.tick = 0
+      }
+    }, 500)
+  }
+
+  play() {
+    this.img.frameIndex = 0
+  }
+  stop() {
+    clearInterval(this.timer)
+    this.img.frameIndex = 10
   }
   _animate() {
-    if (this.img.frameIndex++ >= 7 && this.img.frameIndex <= 10) {
-      this.img.frameIndex = 0
+    if (this.img.frameIndex++ >= 7) {
+      this.img.frameIndex = 3
     }
-  }
-  clear() {
-    this.img.frameIndex = 10
   }
 
 }

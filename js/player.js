@@ -101,9 +101,9 @@ class Player {
       if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {
         this.weapon.shoot()
         this.timer = setInterval(() => {
-          this.weapon.beamLoad(1)
-          if (this.damage++ >= 100) {
-            this.damage = 100
+          this.weapon.beamLoadShow()
+          if (this.damage < 100) {
+            this.damage += 10
           }
         }, 200);
       }
@@ -121,7 +121,10 @@ class Player {
     document.addEventListener('keyup', e => {
       if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {
         clearInterval(this.timer);
-        this.weapon.beamLoad(0, this.damage)
+        this.weapon.beamLoadStop()
+        if (this.damage >= 10) {
+          this.weapon.beam(this.damage)
+        }
         this.damage = 0
       }
       if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {

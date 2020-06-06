@@ -1,51 +1,61 @@
-class Beamshoot {
+class Beamshoot extends Shoot {
   constructor(ctx, x, y, damage) {
-    this._ctx = ctx
-    this.x = x
-    this.y = y
-    this.w = this._ctx.canvas.width / 43
-    this.h = (this.w / 4) * 3
+    super(ctx, x, y)
 
     this.img = new Image()
     this.img.src = './img/sprites/weapon-beam.png'
 
-    this.tick = 0
+    this.w = this._ctx.canvas.width / 9
+    this.h = (this.w / 24) * 8
 
     this.damage = damage
+
     // NOTE: frame are number sprites
-    this.img.frames = 3
+    this.img.framesX = 2
+    this.img.framesY = 5
+    this.ranges = [20, 40, 60, 80, 100]
     // NOTE: position actual "array"
-    this.img.frameIndex = 0
+    this.img.frameIndexX = 0
+    this.img.frameIndexY = this.findClosest(this.ranges, this.damage)
+
 
     this.vx = 10
 
+  }
+  findClosest(arr, num) {
+    let closest = arr[0];
+    for (let item of arr) {
+      if (Math.abs(item - num) < Math.abs(closest - num)) {
+        closest = item;
+      }
+    }
+    return arr.indexOf(closest);
   }
 
   draw() {
     this._ctx.drawImage(
       this.img,
-      this.img.frameIndex * this.img.width / this.img.frames,
-      0,
-      this.img.width / this.img.frames,
-      this.img.height,
+      this.img.frameIndexX * this.img.width / this.img.framesX,
+      this.img.frameIndexY * this.img.height / this.img.framesY,
+      this.img.width / this.img.framesX,
+      this.img.height / this.img.framesY,
       this.x,
       this.y,
       this.w,
       this.h
     )
+
   }
 
   _animate() {
-    console.log(this.damage);
-
-    if (this.img.frameIndex <= 1) {
-      this.img.frameIndex++
+    if (this.img.frameIndexX++ === 1) {
+      this.img.frameIndexX = 0
     }
   }
 
   move() {
     this.x += this.vx
-    if (this.tick++ === 1) {
+    if (this.tick++ >= 12) {
       this._animate()
       this.tick = 0
     }
