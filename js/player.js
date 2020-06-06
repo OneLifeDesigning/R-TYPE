@@ -24,6 +24,8 @@ class Player {
 
     this.lives = 3
 
+    this.damage = 0
+
     this._setListeners()
 
   }
@@ -40,7 +42,7 @@ class Player {
       this.w,
       this.h
     )
-    this.weapon.removeShoots()
+    // this.weapon.removeShoots()
     this.weapon.draw()
   }
 
@@ -73,6 +75,7 @@ class Player {
   }
 
   die() {
+    // TODO
     console.log('Una vida menos');
     this.x -= this.w
     this.lives -= 1
@@ -97,13 +100,12 @@ class Player {
     document.addEventListener('keydown', e => {
       if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {
         this.weapon.shoot()
-        // this.weapon.beamX()
-        // this.timer = setInterval(function () {
-        //   if (this.damage++ >= 1000) {
-        //     this.damage = 100
-        //   }
-        // }, 200);
-        // console.log(this.damage);
+        this.timer = setInterval(() => {
+          this.weapon.beamLoad(1)
+          if (this.damage++ >= 100) {
+            this.damage = 100
+          }
+        }, 200);
       }
       if (e.keyCode === KEY_UP) {
         this.vy = -2
@@ -118,7 +120,9 @@ class Player {
 
     document.addEventListener('keyup', e => {
       if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {
-        // clearInterval(this.timer);
+        clearInterval(this.timer);
+        this.weapon.beamLoad(0, this.damage)
+        this.damage = 0
       }
       if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {
         this.vy = 0

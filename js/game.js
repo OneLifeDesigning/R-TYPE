@@ -7,6 +7,7 @@ class Game {
     this._bg = new Bg(this._ctx, LEVEL_1_IMG_BG_1)
     this._player = new Player(this._ctx, IMG_PLAYER)
 
+
     this._terrainBottom = []
     this._terrainTop = []
     this._enemiesAll = []
@@ -80,18 +81,18 @@ class Game {
 
   // ENEMIES 
   _addEnemies() {
-    if (this._timeLine++ >= 100 && this._enemiesAll.length <= 6) {
-      this._enemiesAll.push(
-        new EnemyButterfly(
-          this._ctx,
-          this._randomNumber(
-            this.maxHeight - (this.maxHeight / 4)
-          ),
-          IMG_ENEMY_BUTTERFLY
-        )
-      )
-      this._timeLine = 0
-    }
+    // if (this._timeLine++ >= 100 && this._enemiesAll.length <= 6) {
+    //   this._enemiesAll.push(
+    //     new EnemyButterfly(
+    //       this._ctx,
+    //       this._randomNumber(
+    //         this.maxHeight - (this.maxHeight / 4)
+    //       ),
+    //       IMG_ENEMY_BUTTERFLY
+    //     )
+    //   )
+    //   this._timeLine = 0
+    // }
   }
 
   _drawAndMoveEnemies() {
