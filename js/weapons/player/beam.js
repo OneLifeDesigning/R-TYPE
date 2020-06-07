@@ -18,7 +18,6 @@ class Beamshoot extends Shoot {
     this.img.frameIndexX = 0
     this.img.frameIndexY = this.findClosest(this.ranges, this.damage)
 
-
     this.vx = 10
 
   }

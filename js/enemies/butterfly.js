@@ -20,6 +20,8 @@ class EnemyButterfly {
     this.imgDie = new Image()
     this.imgDie.src = './img/sprites/enemy-butterfly-explosion.png'
 
+    this.healt = 10
+
     // NOTE: frame are number sprites
     this.img.frames = 8
     this.imgDie.frames = 7
@@ -69,7 +71,7 @@ class EnemyButterfly {
         this.tick = 0
       }
     } else {
-      if (this.tickDie++ >= 5) {
+      if (this.tickDie++ >= 4) {
         this._animateDie()
         this.tickDie = 1
       }
@@ -87,7 +89,6 @@ class EnemyButterfly {
   die() {
     this.vx = 0
     this.vy = 0
-
     this.tickDie = 1
   }
   _animate() {

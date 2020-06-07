@@ -11,6 +11,7 @@ class Shoot {
     this.img.src = './img/sprites/weapon-shoot.png'
 
     this.tick = 0
+    this.damage = 10
 
     // NOTE: frame are number sprites
     this.img.frames = 3

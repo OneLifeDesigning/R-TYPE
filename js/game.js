@@ -6,6 +6,7 @@ class Game {
     this._timeLine = 0
     this._bg = new Bg(this._ctx, LEVEL_1_IMG_BG_1)
     this._player = new Player(this._ctx, IMG_PLAYER)
+    this._weapon = new Weapons(this._ctx, this._player)
 
 
     this._terrainBottom = []
@@ -15,6 +16,8 @@ class Game {
     this._interface = new Interface()
 
     this.maxHeight = this._ctx.canvas.height - 60
+
+    this._setListeners()
   }
 
   start() {
@@ -24,6 +27,35 @@ class Game {
       this._draw()
       this._move()
     }, 1000 / 70)
+  }
+  stop() {
+    this._intervalId = clearInterval()
+  }
+
+  _clear() {
+    this._ctx.clearRect(0, 0, this._ctx.canvas.width, this._ctx.canvas.height)
+  }
+
+  _draw() {
+    this._clear()
+    this._weapon.removeShoots()
+    this._removeEnemy()
+    this._bg.draw()
+    this._player.draw()
+    this._weapon.draw()
+    this._drawTerrain()
+    this._addEnemies()
+    this._drawAndMoveEnemies()
+    this._interface.draw()
+  }
+
+  _move() {
+    this._checkShoots()
+    this._checkRuteEnemies()
+    this._updateTerrain()
+    this._bg.move()
+    this._player.move()
+    this._weapon.move()
   }
 
   _randomNumber(number) {
@@ -38,7 +70,7 @@ class Game {
           this._ctx,
           LEVEL_1_IMG_TERRAIN_TOP[i],
           i,
-          0
+          1
         )
       )
     }
@@ -48,7 +80,7 @@ class Game {
           this._ctx,
           LEVEL_1_IMG_TERRAIN_BOTTOM[i],
           i,
-          this._ctx.canvas.height
+          0
         )
       )
     }
@@ -79,20 +111,21 @@ class Game {
     )
   }
 
+
   // ENEMIES 
   _addEnemies() {
-    // if (this._timeLine++ >= 100 && this._enemiesAll.length <= 6) {
-    //   this._enemiesAll.push(
-    //     new EnemyButterfly(
-    //       this._ctx,
-    //       this._randomNumber(
-    //         this.maxHeight - (this.maxHeight / 4)
-    //       ),
-    //       IMG_ENEMY_BUTTERFLY
-    //     )
-    //   )
-    //   this._timeLine = 0
-    // }
+    if (this._timeLine++ >= 100 && this._enemiesAll.length <= 6) {
+      this._enemiesAll.push(
+        new EnemyButterfly(
+          this._ctx,
+          this._randomNumber(
+            this.maxHeight - (this.maxHeight / 4)
+          ),
+          IMG_ENEMY_BUTTERFLY
+        )
+      )
+      this._timeLine = 0
+    }
   }
 
   _drawAndMoveEnemies() {
@@ -103,34 +136,25 @@ class Game {
         this._player.die()
         enemy.die()
       }
-    });
-    this._removeEnemy()
+    })
+  }
+  _checkRuteEnemies() {
+    this._terrainTop.forEach(tT => {
+      this._terrainBottom.forEach(tB => {
+        this._enemiesAll = this._enemiesAll.filter(enemy => {
+          if (!this._checkCollisions(tT, enemy, 0) && !this._checkCollisions(tB, enemy, 0)) {
+            return enemy
+          }
+        })
+      })
+    })
   }
   _removeEnemy() {
-    this._enemiesAll = this._enemiesAll.filter(toErrase => toErrase.isVisible())
-  }
-  stop() {
-    this._intervalId = clearInterval()
-  }
-
-  _clear() {
-    this._ctx.clearRect(0, 0, this._ctx.canvas.width, this._ctx.canvas.height)
-  }
-
-  _draw() {
-    this._bg.draw()
-    this._player.draw()
-    this._drawTerrain()
-    this._addEnemies()
-    this._drawAndMoveEnemies()
-    this._interface.draw()
-  }
-
-  _move() {
-    this._bg.move()
-    this._player.move()
-    this._checkShoots()
-    this._updateTerrain()
+    this._enemiesAll = this._enemiesAll.filter(toErrase => {
+      if (toErrase.isVisible()) {
+        return toErrase
+      }
+    })
   }
 
   _checkCollisions(objectOne, objectTwo, fineTuning) {
@@ -141,11 +165,17 @@ class Game {
     }
   }
   _checkShoots() {
-    this._player.weapon.shoots.map(thisShoot => {
+    this._weapon.shoots.map(thisShoot => {
       this._enemiesAll.forEach(enemyShooted => {
         if (this._checkCollisions(thisShoot, enemyShooted, 10)) {
-          enemyShooted.die()
-          thisShoot.x = this._ctx.canvas.width + thisShoot.w
+          if (thisShoot.damage === enemyShooted.healt) {
+            enemyShooted.die()
+            thisShoot.x = this._ctx.canvas.width + thisShoot.w
+          } else if (thisShoot.damage < enemyShooted.healt) {
+            enemyShooted.healt -= thisShoot.damage
+          } else {
+            enemyShooted.die()
+          }
         }
       })
       this._terrainTop.forEach(tT => {
@@ -154,10 +184,51 @@ class Game {
         }
       })
       this._terrainBottom.forEach(tB => {
-        if (this._checkCollisions(thisShoot, tB, 500)) {
+        if (this._checkCollisions(thisShoot, tB, 0)) {
           thisShoot.x = this._ctx.canvas.width + thisShoot.w
         }
       })
+    })
+  }
+  _setListeners() {
+    document.addEventListener('keydown', e => {
+      if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {
+        this._weapon.shoot()
+        this.timer = setInterval(() => {
+          this._weapon.beamLoadShow()
+          if (this.damage < 100) {
+            this.damage += 10
+          }
+        }, 200);
+      }
+      if (e.keyCode === KEY_UP) {
+        this._player.vy = -2
+      } else if (e.keyCode === KEY_DOWN) {
+        this._player.vy = +2
+      } else if (e.keyCode === KEY_RIGHT) {
+        this._player.vx = 2
+      } else if (e.keyCode === KEY_LEFT) {
+        this._player.vx = -2
+      }
+    })
+
+    document.addEventListener('keyup', e => {
+      if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {
+
+        clearInterval(this.timer)
+        this._weapon.beamLoadStop()
+        if (this.damage >= 10) {
+          this._weapon.beam(this.damage)
+        }
+        this.damage = 0
+      }
+      if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {
+        this._player.vy = 0
+      } else if (e.keyCode === KEY_RIGHT && this._player.vx > 0) {
+        this._player.vx = 0
+      } else if (e.keyCode === KEY_LEFT && this._player.vx < 0) {
+        this._player.vx = 0
+      }
     })
   }
 }

@@ -1,5 +1,5 @@
 class Terrain {
-  constructor(ctx, img, positionX, positionY) {
+  constructor(ctx, img, positionX, isTop) {
     this._ctx = ctx
     this._img = img
 
@@ -8,16 +8,16 @@ class Terrain {
 
     this.x = this._ctx.canvas.width + (this.w * positionX)
 
-    this.y = positionY
-
+    this.y = this._ctx.canvas.height - this.h
+    this.isTop = isTop
     this.vx = -2
   }
 
 
   draw(ctx) {
     if (this._img.src) {
-      if (this.y !== 0) {
-        ctx.drawImage(this._img, this.x, this.y - this.h, this.w, this.h);
+      if (this.isTop === 0) {
+        ctx.drawImage(this._img, this.x, this.y, this.w, this.h);
       } else {
         ctx.save()
         ctx.scale(1, -1);

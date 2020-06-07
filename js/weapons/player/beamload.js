@@ -11,6 +11,7 @@ class BeamLoad {
 
     this.tick = 0
 
+    this.timer = 0
     // NOTE: frame are number sprites
     this.img.frames = 8
     // NOTE: position actual "array"
@@ -38,15 +39,18 @@ class BeamLoad {
         this._animate()
         this.tick = 0
       }
-    }, 500)
+    }, 200)
   }
 
   play() {
     this.img.frameIndex = 0
   }
   stop() {
-    clearInterval(this.timer)
     this.img.frameIndex = 10
+    setTimeout(() => {
+      clearInterval(this.timer);
+      this.timer = 0;
+    }, 1000);
   }
   _animate() {
     if (this.img.frameIndex++ >= 7) {

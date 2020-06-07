@@ -20,13 +20,11 @@ class Player {
     // NOTE: position actual "array"
     this._img.frameIndex = 2
 
-    this.weapon = new Weapons(this._ctx, this)
-
     this.lives = 3
 
     this.damage = 0
 
-    this._setListeners()
+    this.timer = null
 
   }
 
@@ -42,8 +40,6 @@ class Player {
       this.w,
       this.h
     )
-    // this.weapon.removeShoots()
-    this.weapon.draw()
   }
 
   move() {
@@ -71,7 +67,7 @@ class Player {
       this.vx = 0
       this.x = this._ctx.canvas.width - this.w
     }
-    this.weapon.move()
+
   }
 
   die() {
@@ -94,46 +90,5 @@ class Player {
     if (typeAnimation === 'default' && this._img.frameIndex <= 4 && this._img.frameIndex > 2) {
       --this._img.frameIndex
     }
-  }
-
-  _setListeners() {
-    document.addEventListener('keydown', e => {
-      if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {
-        this.weapon.shoot()
-        this.timer = setInterval(() => {
-          this.weapon.beamLoadShow()
-          if (this.damage < 100) {
-            this.damage += 10
-          }
-        }, 200);
-      }
-      if (e.keyCode === KEY_UP) {
-        this.vy = -2
-      } else if (e.keyCode === KEY_DOWN) {
-        this.vy = +2
-      } else if (e.keyCode === KEY_RIGHT) {
-        this.vx = 2
-      } else if (e.keyCode === KEY_LEFT) {
-        this.vx = -2
-      }
-    })
-
-    document.addEventListener('keyup', e => {
-      if (e.keyCode === KEY_CTRL || e.keyCode === KEY_CMD) {
-        clearInterval(this.timer);
-        this.weapon.beamLoadStop()
-        if (this.damage >= 10) {
-          this.weapon.beam(this.damage)
-        }
-        this.damage = 0
-      }
-      if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {
-        this.vy = 0
-      } else if (e.keyCode === KEY_RIGHT && this.vx > 0) {
-        this.vx = 0
-      } else if (e.keyCode === KEY_LEFT && this.vx < 0) {
-        this.vx = 0
-      }
-    })
   }
 }

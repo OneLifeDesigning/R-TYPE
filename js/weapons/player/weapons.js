@@ -32,7 +32,7 @@ class Weapons {
   }
 
   beam(damage) {
-    return this.beams.push(
+    return this.shoots.push(
       new Beamshoot(
         this._ctx,
         this.shooter.x + this.shooter.w * 0.3,
@@ -44,13 +44,11 @@ class Weapons {
 
   removeShoots() {
     this.shoots = this.shoots.filter(s => s.isVisible())
-    this.beams = this.beams.filter(b => b.isVisible())
   }
 
   draw() {
     this.beamLoad.draw()
     this.shoots.forEach(s => s.draw())
-    this.beams.forEach(b => b.draw())
   }
 
   move() {
@@ -59,6 +57,5 @@ class Weapons {
       this.shooter.y + this.shooter.h * 0.2
     )
     this.shoots.forEach(s => s.move())
-    this.beams.forEach(b => b.move())
   }
 }
