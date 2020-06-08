@@ -10,24 +10,28 @@ class Terrain {
 
     this.y = this._ctx.canvas.height - this.h
     this.isTop = isTop
-    this.vx = -2
+    this.vx = GLOBAL_SPEED_X
+
   }
 
 
-  draw(ctx) {
+  draw() {
     if (this._img.src) {
       if (this.isTop === 0) {
-        ctx.drawImage(this._img, this.x, this.y, this.w, this.h);
+        this._ctx.drawImage(this._img, this.x, this.y, this.w, this.h);
       } else {
-        ctx.save()
-        ctx.scale(1, -1);
-        ctx.drawImage(this._img, this.x, 0, this.w, -this.h);
-        ctx.restore();
+        this._ctx.save()
+        this._ctx.scale(1, -1);
+        this._ctx.drawImage(this._img, this.x, 0, this.w, -this.h);
+        this._ctx.restore();
       }
     }
   }
 
   move() {
+    if (this.isTop === 1) {
+      this.y = 0
+    }
     this.x += this.vx
   }
 

@@ -8,9 +8,9 @@ class Weapons {
     this.timer = ''
     this.beamLoad = new BeamLoad(
       this._ctx,
+      IMG_SHOOT_BEAM_LOAD,
       this.shooter.x + this.shooter.w * 0.8,
       this.shooter.y + this.shooter.h * 0.2,
-      IMG_SHOOT_BEAM_LOAD
     )
   }
 
@@ -23,6 +23,7 @@ class Weapons {
       )
     )
   }
+
   beamLoadShow() {
     this.beamLoad.play()
   }
@@ -35,6 +36,7 @@ class Weapons {
     return this.shoots.push(
       new Beamshoot(
         this._ctx,
+        IMG_SHOOT_BEAM,
         this.shooter.x + this.shooter.w * 0.3,
         this.shooter.y + this.shooter.h * 0.05,
         damage

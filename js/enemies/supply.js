@@ -1,18 +1,19 @@
-class EnemyButterfly {
+class EnemySupply {
   constructor(ctx, y, img, imgDie) {
     this._ctx = ctx
 
     this.x = ctx.canvas.width
     this.y = 60 + y
 
-    this.w = ctx.canvas.width / 15
+    this.w = ctx.canvas.width / 12
     this.h = (this.w / 4) * 3
 
-    this.vx = -3
-    this.vy = -2
+    this.vx = -1
+    this.vy = 0.9
 
-    this.tick = 0
-    this.tickMove = 0
+    this.tickFly = 0
+    this.tickWalk = 0
+    // this.tickMove = 0
     this.tickDie = 0
 
     this.img = img
@@ -27,8 +28,8 @@ class EnemyButterfly {
     this.img.frames = 8
     this.imgDie.frames = 7
     // NOTE: position actual "array"
-    this.img.frameIndex = 1
-    this.imgDie.frameIndex = 1
+    this.img.frameIndex = 0
+    this.imgDie.frameIndex = 0
   }
 
   draw() {
@@ -67,14 +68,20 @@ class EnemyButterfly {
     this.x += this.vx;
 
     if (this.tickDie === 0) {
-      if (this.tickMove++ === 60 || this.y <= 60) {
-        this.vy *= -1;
-        this.tickMove = 0
+      if (this.tickWalk !== 0) {
+        if (this.tickWalk++ >= 40) {
+          this._animateWalk()
+          this.tickWalk = 1
+        }
+      } else {
+        if (this.tickFly++ >= 40) {
+          this._animate()
+          this.tickFly = 0
+        }
       }
-      if (this.tick++ === 15 && this.vx !== 0) {
-        this._animate()
-        this.tick = 0
-      }
+      // if (this.tickMove++ >= 60) {
+      //   this.tickMove = 0
+      // }
     } else {
       if (this.tickDie++ >= 8) {
         this._animateDie()
@@ -97,6 +104,15 @@ class EnemyButterfly {
     this.imgDie.frameIndex = 0
   }
 
+  walk() {
+    this.collisable = false
+    this.vx = GLOBAL_SPEED_X / 2
+    this.y += -10
+    this.vy = 0
+    this.img.frameIndex = 3
+    this.tickWalk = 1
+  }
+
   die() {
     this.vy = 0.4
     this.xy = 0.04
@@ -108,9 +124,16 @@ class EnemyButterfly {
       this.x = -this.w * 2
     }, 350)
   }
+
   _animate() {
-    if (this.img.frameIndex++ >= 7) {
+    if (this.img.frameIndex++ >= 2) {
       this.img.frameIndex = 0
+    }
+  }
+
+  _animateWalk() {
+    if (this.img.frameIndex++ >= 7) {
+      this.img.frameIndex = 4
     }
   }
 
@@ -119,5 +142,6 @@ class EnemyButterfly {
       this.imgDie.frameIndex = 0
     }
   }
+
 
 }

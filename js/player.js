@@ -73,7 +73,6 @@ class Player {
   die() {
     // TODO
     console.log('Una vida menos');
-    this.x -= this.w
     this.lives -= 1
   }
 

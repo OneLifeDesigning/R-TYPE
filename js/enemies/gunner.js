@@ -12,6 +12,9 @@ class EnemyGunner {
     this.vy = 2
     this.tick = 0
     this.tickMove = 0
+    this.walker = true
+
+    this.healt = 100
 
     this.img = new Image()
     this.img.src = '../img/sprites/enemy-gunner.png'
@@ -64,9 +67,9 @@ class EnemyGunner {
   }
   _animate() {
     // TODO: when shoot and is floor animate
-    // if (this.tick++ === 15) {
-    //   this.tick = 0
-    // }
+    if (this.tick++ === 15) {
+      this.tick = 0
+    }
   }
   _shoot() {
     console.log('Hello im gunner and killYUONoooow')

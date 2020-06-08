@@ -1,18 +1,19 @@
 class Beamshoot extends Shoot {
-  constructor(ctx, x, y, damage) {
+  constructor(ctx, img, x, y, damage) {
     super(ctx, x, y)
-
-    this.img = new Image()
-    this.img.src = './img/sprites/weapon-beam.png'
 
     this.w = this._ctx.canvas.width / 9
     this.h = (this.w / 24) * 8
 
     this.damage = damage
 
+    this.img = new Image()
+    this.img.src = './img/sprites/weapon-beam.png'
+
     // NOTE: frame are number sprites
     this.img.framesX = 2
     this.img.framesY = 5
+
     this.ranges = [20, 40, 60, 80, 100]
     // NOTE: position actual "array"
     this.img.frameIndexX = 0
