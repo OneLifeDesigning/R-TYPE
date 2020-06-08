@@ -167,14 +167,18 @@ class Game {
   _checkShoots() {
     this._weapon.shoots.map(thisShoot => {
       this._enemiesAll.forEach(enemyShooted => {
-        if (this._checkCollisions(thisShoot, enemyShooted, 10)) {
-          if (thisShoot.damage === enemyShooted.healt) {
-            enemyShooted.die()
-            thisShoot.x = this._ctx.canvas.width + thisShoot.w
-          } else if (thisShoot.damage < enemyShooted.healt) {
-            enemyShooted.healt -= thisShoot.damage
-          } else {
-            enemyShooted.die()
+        if (enemyShooted.isCollisable()) {
+          if (this._checkCollisions(thisShoot, enemyShooted, 10)) {
+            if (thisShoot.damage === enemyShooted.healt) {
+              enemyShooted.collisable = false
+              enemyShooted.die()
+              thisShoot.x = this._ctx.canvas.width + thisShoot.w
+            } else if (thisShoot.damage < enemyShooted.healt) {
+              enemyShooted.healt -= thisShoot.damage
+            } else {
+              enemyShooted.collisable = false
+              enemyShooted.die()
+            }
           }
         }
       })

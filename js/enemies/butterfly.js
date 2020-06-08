@@ -22,6 +22,8 @@ class EnemyButterfly {
 
     this.healt = 10
 
+    this.collisable = true
+
     // NOTE: frame are number sprites
     this.img.frames = 8
     this.imgDie.frames = 7
@@ -80,6 +82,9 @@ class EnemyButterfly {
 
   isVisible() {
     return this.x + this.w >= 0
+  }
+  isCollisable() {
+    return this.collisable
   }
 
   isDie() {
