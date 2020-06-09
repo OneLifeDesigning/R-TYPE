@@ -3,17 +3,17 @@ class EnemySupply {
     this._ctx = ctx
 
     this.x = ctx.canvas.width
-    this.y = 60 + y
+    this.y = y
 
-    this.w = ctx.canvas.width / 12
+    this.w = ctx.canvas.width / 10
     this.h = (this.w / 4) * 3
 
-    this.vx = -1
+    this.vx = GLOBAL_SPEED_X * 1.5
     this.vy = 0.9
 
-    this.tickFly = 0
+    this.tickFly = 1
     this.tickWalk = 0
-    // this.tickMove = 0
+    this.tickMove = 0
     this.tickDie = 0
 
     this.img = img
@@ -64,28 +64,30 @@ class EnemySupply {
   }
 
   move() {
-    this.y += this.vy;
-    this.x += this.vx;
+    this.y += this.vy
+    this.x += this.vx
 
-    if (this.tickDie === 0) {
-      if (this.tickWalk !== 0) {
-        if (this.tickWalk++ >= 40) {
-          this._animateWalk()
-          this.tickWalk = 1
-        }
-      } else {
-        if (this.tickFly++ >= 40) {
-          this._animate()
-          this.tickFly = 0
-        }
-      }
-      // if (this.tickMove++ >= 60) {
-      //   this.tickMove = 0
-      // }
-    } else {
-      if (this.tickDie++ >= 8) {
-        this._animateDie()
-        this.tickDie = 1
+    if (this.y >= this._ctx.canvas.height) {
+      this.y *= -1
+    }
+    if (this.tickDie !== 0 && this.tickDie++ >= 8) {
+      this._animateDie()
+      this.tickDie = 1
+    } else if (this.tickWalk !== 0 && this.tickWalk++ >= 20) {
+      this._animateWalk()
+      this.tickWalk = 1
+    } else if (this.tickFly !== 0 && this.tickFly++ >= 30) {
+      this._animateFlying()
+      this.tickFly = 1
+    }
+
+
+    if (this.x <= this._ctx.canvas.width / 2) {
+      this._animateToFly()
+      this.vx = GLOBAL_SPEED_X / 2
+      this.vy = -0.9
+      if (this.y <= this._ctx.canvas.height - 90 && this.tickFly++ >= 90) {
+        this._animateFlying()
       }
     }
   }
@@ -105,11 +107,11 @@ class EnemySupply {
   }
 
   walk() {
-    this.collisable = false
     this.vx = GLOBAL_SPEED_X / 2
     this.y += -10
     this.vy = 0
     this.img.frameIndex = 3
+    this.tickFly = 0
     this.tickWalk = 1
   }
 
@@ -125,9 +127,20 @@ class EnemySupply {
     }, 350)
   }
 
-  _animate() {
-    if (this.img.frameIndex++ >= 2) {
+  _animateFlying() {
+    if (this.img.frameIndex++ >= 1) {
       this.img.frameIndex = 0
+    }
+  }
+  _animateToWalk() {
+    if (this.img.frameIndex++ >= 3) {
+      this.img.frameIndex = 2
+    }
+  }
+
+  _animateToFly() {
+    if (this.img.frameIndex > 0) {
+      this.img.frameIndex--
     }
   }
 
@@ -142,6 +155,4 @@ class EnemySupply {
       this.imgDie.frameIndex = 0
     }
   }
-
-
 }

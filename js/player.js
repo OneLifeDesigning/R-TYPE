@@ -7,7 +7,7 @@ class Player {
 
     this._img = img
 
-    this.w = this._ctx.canvas.width / 15
+    this.w = this._ctx.canvas.width / 12
     this.h = (this.w / 16) * 9
 
     this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
