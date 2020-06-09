@@ -7,6 +7,7 @@ class Game {
     this._timeSupply = null
 
     this._bg = new Bg(this._ctx, LEVEL_1_IMG_BG_1)
+    this._bgPlanet = new BgPlanet(this._ctx, LEVEL_1_IMG_BG_2)
     this._player = new Player(this._ctx, IMG_PLAYER)
     this._weapon = new Weapons(this._ctx, this._player)
 
@@ -43,6 +44,7 @@ class Game {
     this._weapon.removeShoots()
     this._removeEnemy()
     this._bg.draw()
+    this._bgPlanet.draw()
     this._player.draw()
     this._weapon.draw()
     this._drawTerrain()
@@ -56,6 +58,7 @@ class Game {
     this._checkRuteEnemies()
     this._erraseTerrain()
     this._bg.move()
+    this._bgPlanet.move()
     this._player.move()
     this._weapon.move()
   }
@@ -112,6 +115,9 @@ class Game {
     this._terrainBottom = this._terrainBottom.filter(oB =>
       oB.isVisible()
     )
+    if (!this._bgPlanet.isVisible()) {
+      this._bgPlanet = null
+    }
   }
 
   // ENEMIES 

@@ -10,6 +10,9 @@ const GLOBAL_SPEED_X = -1.5
 const LEVEL_1_IMG_BG_1 = new Image()
 LEVEL_1_IMG_BG_1.src = './img/backgrounds/bg1.png'
 
+const LEVEL_1_IMG_BG_2 = new Image()
+LEVEL_1_IMG_BG_2.src = './img/backgrounds/bg-planet.png'
+
 const IMG_PLAYER = new Image()
 IMG_PLAYER.src = './img/sprites/player.png'
 
