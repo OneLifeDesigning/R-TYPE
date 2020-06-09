@@ -21,8 +21,10 @@ class EnemySupply {
 
     this.healt = 10
 
+    this.soteable = true
     this.collisable = true
     this.walker = true
+    this.supply = false
 
     // NOTE: frame are number sprites
     this.img.frames = 8
@@ -98,6 +100,18 @@ class EnemySupply {
 
   isCollisable() {
     return this.collisable
+  }
+
+  isSupply() {
+    return this.supply
+  }
+
+  isWallker() {
+    return this.walker
+  }
+
+  isShooteable() {
+    return this.soteable
   }
 
   stop() {

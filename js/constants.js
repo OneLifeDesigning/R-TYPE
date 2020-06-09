@@ -31,6 +31,9 @@ IMG_ENEMY_SUPPLY.src = './img/sprites/enemy-supply.png'
 const IMG_ENEMY_SUPPLY_EXPLOSION = new Image()
 IMG_ENEMY_SUPPLY_EXPLOSION.src = './img/sprites/enemy-supply-explosion.png'
 
+const IMG_ARMORY_PACKAGE_01 = new Image()
+IMG_ARMORY_PACKAGE_01.src = './img/sprites/weapon-armory-01.png'
+
 const IMG_TERRAIN_MOD_HIG = new Image()
 IMG_TERRAIN_MOD_HIG.src = './img/terrain/level-1/mod-hig.png'
 const IMG_TERRAIN_MOD_MID = new Image()

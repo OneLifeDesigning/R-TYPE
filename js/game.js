@@ -148,8 +148,12 @@ class Game {
       enemy.move()
       if (enemy.isCollisable()) {
         if (this._checkCollisions(this._player, enemy)) {
-          this._player.die()
-          enemy.die()
+          if (enemy.isSupply()) {
+            enemy.die()
+          } else {
+            this._player.die()
+            enemy.die()
+          }
         }
       }
     })
@@ -161,7 +165,7 @@ class Game {
         this._enemiesAll.forEach(enemy => {
           if (enemy.isCollisable()) {
             if (this._checkCollisions(tT, enemy, 0) || this._checkCollisions(tB, enemy, 0)) {
-              if (enemy.walker) {
+              if (enemy.isWallker()) {
                 enemy.walk()
               } else {
                 enemy.die()
@@ -193,16 +197,19 @@ class Game {
 
   _checkShoots() {
     this._weapon.shoots.map(thisShoot => {
-      this._enemiesAll.forEach(enemyShooted => {
-        if (enemyShooted.isCollisable()) {
-          if (this._checkCollisions(thisShoot, enemyShooted, 10)) {
-            if (thisShoot.damage === enemyShooted.healt) {
-              enemyShooted.die()
+      this._enemiesAll.forEach(enemy => {
+        if (enemy.isCollisable() && enemy.isShooteable()) {
+          if (this._checkCollisions(thisShoot, enemy, 10)) {
+            if (thisShoot.damage === enemy.healt) {
+              enemy.die()
+              if (enemy.isSupply()) {
+                this._enemiesAll.push(new Armory(this._ctx, IMG_ARMORY_PACKAGE_01, enemy.x, enemy.y))
+              }
               thisShoot.x = this._ctx.canvas.width + thisShoot.w
-            } else if (thisShoot.damage < enemyShooted.healt) {
-              enemyShooted.healt -= thisShoot.damage
+            } else if (thisShoot.damage < enemy.healt) {
+              enemy.healt -= thisShoot.damage
             } else {
-              enemyShooted.die()
+              enemy.die()
             }
           }
         }

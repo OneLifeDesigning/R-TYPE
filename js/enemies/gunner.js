@@ -12,7 +12,11 @@ class EnemyGunner {
     this.vy = 2
     this.tick = 0
     this.tickMove = 0
+
+    this.soteable = true
+    this.collisable = true
     this.walker = true
+    this.supply = false
 
     this.healt = 100
 
@@ -64,6 +68,25 @@ class EnemyGunner {
     } else if (playerPosX >= this.x - ctx.canvas.width / 4) {
       this.x -= this.vx * 5
     }
+  }
+  isVisible() {
+    return this.x + this.w >= 0
+  }
+
+  isCollisable() {
+    return this.collisable
+  }
+
+  isSupply() {
+    return this.supply
+  }
+
+  isWallker() {
+    return this.walker
+  }
+
+  isShooteable() {
+    return this.soteable
   }
   _animate() {
     // TODO: when shoot and is floor animate

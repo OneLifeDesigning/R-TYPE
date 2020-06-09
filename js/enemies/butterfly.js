@@ -20,8 +20,10 @@ class EnemyButterfly {
 
     this.healt = 10
 
+    this.soteable = true
     this.collisable = true
-    this.walker = true
+    this.walker = false
+    this.supply = false
 
     // NOTE: frame are number sprites
     this.img.frames = 8
@@ -58,6 +60,7 @@ class EnemyButterfly {
       )
     }
   }
+
   clear() {
     this._ctx.clearRect(this.x, this.y, this.w, this.h)
   }
@@ -89,6 +92,18 @@ class EnemyButterfly {
 
   isCollisable() {
     return this.collisable
+  }
+
+  isSupply() {
+    return this.supply
+  }
+
+  isWallker() {
+    return this.walker
+  }
+
+  isShooteable() {
+    return this.soteable
   }
 
   stop() {
