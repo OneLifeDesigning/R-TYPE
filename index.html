@@ -8,15 +8,25 @@
   <title>R-TYPE Irem - 1ld - Version 0.001Aplpha</title>
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
 </head>
 
 <body>
   <main class="machine">
     <section class="arcade">
       <section id="screen" class="container">
-        <article id="intro">
-          <h3>WELLCOME TO NEW R-TYPE</h3>
-          <button id="play" class="btn btn-danger btn-lg">PLAY</button>
+        <article id="intro" class="row">
+          <div class="col-12">
+            <h3 class="animate__animated animate__backInRight animate__delay-5s">WELLCOME TO R-TYPE</h3>
+            <h1 class="animate__animated animate__backInRight animate__delay-5s">BLAS OFF AND TRIKE, THE EVIL BYDO EMPIRE!</h1>
+          </div>
+          <div class="col-12">
+            <img src="./img/intro/logo-intro.png" alt="R-TYPE Logotipe ©" class="img-fluid animate__animated animate__zoomInRight">
+            <button id="play" class="btn btn-danger btn-lg  animate__animated animate__pulse animate__fadeIn animate__delay-5s">CLICK HERE TO START</button>
+          </div>
+          <div class="col-12">
+            <h3 class="animate__animated animate__backInRight animate__delay-5s">ITS A CUSTOM VERSION OF FAMOUS GAME DEVELOPMENT BY IREM FOR SEGA IN 1987</h3>
+          </div>
         </article>
         <video id="video" src="./video/intro.mp4" controls="false"></video>
         <canvas id="canvas"></canvas>

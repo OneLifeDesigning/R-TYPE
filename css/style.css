@@ -1,19 +1,19 @@
-/* @font-face {
+@font-face {
   font-family: 'Pixeboy';
   src: url('../fonts/Pixeboy.woff2') format('woff2'),
     url('../fonts/Pixeboy.woff') format('woff');
   font-weight: normal;
   font-style: normal;
-} */
+}
 
 @font-face {
   font-family: 'ArcadeClassic';
-  src: local('ArcadeClassic'), local('ArcadeClassic'), url('../fonts/ArcadeClassic.woff') format('woff'), url('../fonts/ArcadeClassic.woff2') format('woff2');
-  letter-spacing: 1px;
-  word-spacing: 3px;
+  src: url('../fonts/ArcadeClassic.woff') format('woff'),
+    url('../fonts/ArcadeClassic.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
+
 
 body,
 main {
@@ -50,6 +50,11 @@ canvas {
   background-color: #000000;
 }
 
+#intro {
+  overflow: hidden;
+  text-align: center;
+}
+
 #interface {
   display: flex;
   justify-content: space-around;
@@ -58,4 +63,18 @@ canvas {
   height: 2.5rem;
   padding: 0.3125rem;
   margin-top: -10px;
+}
+
+
+.animate__animated.animate__backInRight {
+  --animate-delay: 1s;
+}
+
+.animate__animated.animate__pulse {
+  --animate-repeat: 1000;
+}
+
+.animate__animated.animate__zoomInRight {
+  --animate-duration: 6s;
+
 }

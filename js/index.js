@@ -29,8 +29,8 @@ play.addEventListener("click", () => {
     game.start()
     setTimeout(() => {
       video.stop()
-    }, 200);
-  }, 20000);
+    }, 1400);
+  }, 21000);
 })
 
 window.onload = () => {
