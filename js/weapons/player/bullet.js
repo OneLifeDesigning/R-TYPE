@@ -3,22 +3,21 @@ class Bullet {
     this._ctx = ctx;
 
     this._player = player;
-    this.x = this._player.x + this._player.w * 0.95
-    this.y = this._player.y + this._player.h * 0.2
 
-    this.w = ctx.canvas.width / 22
+    this.w = ctx.canvas.width / 20
     this.h = (this.w / 4) * 3
 
-    this.vx = 0
-    this.vy = 0
+    this.x = 0 - this.w
+    this.y = this._player.y
 
     this.img = img
 
-    this.shoots = []
-
     this.tickAnimation = 0
-    this.tickFixed = 0
+    this.tickStart = 0
     this.damage = 10
+    this.healt = 100
+
+    this.fixed = false
 
     // NOTE: frame are number sprites
     this.img.frames = 6
@@ -28,72 +27,96 @@ class Bullet {
     this.collisable = true
   }
 
-  shoot() {
-    return this.shoots.push(
-      new Shoot(
-        this._ctx,
-        this.x + this.w * 0.8,
-        this.y + this.h * 0.3
-      )
+  draw() {
+    this._ctx.drawImage(
+      this.img,
+      this.img.frameIndex * this.img.width / this.img.frames,
+      0,
+      this.img.width / this.img.frames,
+      this.img.height,
+      this.x,
+      this.y,
+      this.w,
+      this.h
     )
   }
 
-  isCollisable() {
-    return this.collisable
-  }
-
-  draw() {
-    if (this.tickFixed === 0) {
-      this._ctx.drawImage(
-        this.img,
-        this.img.frameIndex * this.img.width / this.img.frames,
-        0,
-        this.img.width / this.img.frames,
-        this.img.height,
-        this.x,
-        this.y,
-        this.w,
-        this.h
-      )
-    } else {
-      this._ctx.drawImage(
-        this.imgDie,
-        this.imgDie.frameIndex * this.imgDie.width / this.imgDie.frames,
-        0,
-        this.imgDie.width / this.imgDie.frames,
-        this.imgDie.height,
-        this.x,
-        this.y,
-        this.w,
-        this.h
-      )
-    }
-    this.shoots.forEach(s => s.draw())
-  }
-
-  removeShoots() {
-    this.shoots = this.shoots.filter(s => s.isVisible())
-  }
-
   move(x, y) {
-    if (this.tickFixed === 0) {
-      this.x += this.vx
-      this.y += this.vy
+    if (!this.isFixed()) {
+      this._animateJump()
     } else {
-      this.x = x
-      this.y = y
+      this._animateReturn(x, y)
     }
 
     if (this.tickAnimation++ === 15) {
       this._animate()
       this.tickAnimation = 0
     }
-    this.shoots.forEach(s => s.move())
+  }
+
+
+  shoot() {
+    return new Shoot(
+      this._ctx,
+      this.x + this.w * 0.8,
+      this.y + this.h * 0.3
+    )
+  }
+
+  die() {
+    this.healt -= 1
+    if (this.healt <= 0) {
+      this.healt = 100
+    }
+  }
+
+  removeShoots() {
+    this.shoots = this.shoots.filter(s => s.isVisible())
+  }
+
+  isCollisable() {
+    return this.collisable
+  }
+
+  isFixed() {
+    return this.fixed
+  }
+
+  toFixed() {
+    this.fixed = true
+  }
+
+  toUnfixed() {
+    this.fixed = false
   }
 
   _animate() {
     if (this.img.frameIndex++ >= 5) {
       this.img.frameIndex = 0
+    }
+  }
+
+  _animateJump() {
+    if (this.x <= this._ctx.canvas.width - (this._ctx.canvas.width / 5)) {
+      this.x += (GLOBAL_SPEED_X * 5)
+    } else {
+      if (this.tickStart === 0) {
+        this.toFixed()
+        this.tickStart = 1
+      }
+    }
+  }
+
+  _animateReturn(playerX, playerY) {
+    if (playerY - 4 > this.y && playerY !== this.y) {
+      this.y += GLOBAL_SPEED_X * 3
+    } else if (playerY + 4 < this.y && playerY !== this.y) {
+      this.y -= GLOBAL_SPEED_X * 3
+    }
+    if (playerX - 4 > this.x && playerX !== this.x) {
+      this.x += GLOBAL_SPEED_X * 3
+    } else if (playerX + 4 < this.x && playerX !== this.x) {
+      this.x -= GLOBAL_SPEED_X * 3
     }
   }
 }

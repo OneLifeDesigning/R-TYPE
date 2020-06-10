@@ -24,6 +24,10 @@ class Shoot {
 
   }
 
+  die() {
+    this.x = this._ctx.canvas.width + this.w
+  }
+
   draw() {
     this._ctx.drawImage(
       this.img,

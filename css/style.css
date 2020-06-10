@@ -21,9 +21,15 @@ main {
   text-align: center;
   background-color: #04c2f9;
   color: aqua;
-  font-size: 16px;
   box-sizing: content-box;
   height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 2px;
+  text-shadow: 2px 1px 0px #FFFF;
 }
 
 canvas {
@@ -36,22 +42,28 @@ canvas {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('../img/backgrounds/bg-arcade.jpg');
-  background-position: 50% 50%;
+  background-image: url('../img/backgrounds/bg-arcade.png');
   background-repeat: no-repeat;
+  background-position: center;
 }
 
+.btn {
+  box-shadow: 2px 1px 0px #FFF;
+}
 
 #intro,
 #video,
 #game,
+#dificulty,
 #interface {
-  margin: 0 auto;
+  margin: 0px auto;
   background-color: #000000;
+  overflow: hidden;
 }
 
+
+
 #intro {
-  overflow: hidden;
   text-align: center;
 }
 
@@ -71,10 +83,67 @@ canvas {
 }
 
 .animate__animated.animate__pulse {
-  --animate-repeat: 1000;
+  --animate-repeat: 5;
+  --animate-delay: 0s;
+  --animate-duration: .5s;
 }
 
 .animate__animated.animate__zoomInRight {
   --animate-duration: 6s;
+}
 
+@media (min-width: 576px) {
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+}
+
+
+@media (min-width: 768px) {
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+}
+
+
+@media (min-width: 992px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .machine {
+    background-size: auto 120%;
+  }
+
+  #screen {
+    margin-top: -180px;
+  }
 }

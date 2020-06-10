@@ -1,13 +1,14 @@
 class Player {
-  constructor(ctx, img) {
+  constructor(ctx, img, imgMotor) {
     this._ctx = ctx
     this.tick = 0
 
     this.x = this._ctx.canvas.width / 4
 
     this._img = img
+    this._imgM = imgMotor
 
-    this.w = this._ctx.canvas.width / 12
+    this.w = this._ctx.canvas.width / 14
     this.h = (this.w / 16) * 9
 
     this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
@@ -15,10 +16,13 @@ class Player {
     this.vx = 0
     this.vy = 0
 
+
     // NOTE: frame are number sprites
     this._img.frames = 5
+    this._imgM.frames = 8
     // NOTE: position actual "array"
     this._img.frameIndex = 2
+    this._imgM.frameIndex = 0
 
     this.lives = 3
 
@@ -29,6 +33,17 @@ class Player {
   }
 
   draw() {
+    this._ctx.drawImage(
+      this._imgM,
+      this._imgM.frameIndex * this._imgM.width / this._imgM.frames,
+      0,
+      this._imgM.width / this._imgM.frames,
+      this._imgM.height,
+      this.x - this.w + 14,
+      this.y,
+      this.w,
+      this.h
+    )
     this._ctx.drawImage(
       this._img,
       this._img.frameIndex * this._img.width / this._img.frames,
@@ -48,10 +63,17 @@ class Player {
 
     if (this.vy >= 0 && this.vy !== 0) {
       this._animate('down')
-    } else if (this.vy <= 0 && this.vy !== 0) {
+      this._animateMotor('down')
+    } else if (this.vy < 0 && this.vy !== 0) {
       this._animate('up')
-    } else if (this.vy === 0) {
+      this._animateMotor('up')
+    } else if (this.vx < 0 && this.vx !== 0) {
+      this._animateMotor('left')
+    } else if (this.vx > 0 && this.vx !== 0) {
+      this._animateMotor('right')
+    } else if (this.vy === 0 && this.vx === 0) {
       this._animate('default')
+      this._animateMotor('default')
     }
     if (this.y + this.h >= this._ctx.canvas.height) {
       this.y = this._ctx.canvas.height - this.h
@@ -72,8 +94,9 @@ class Player {
 
   die() {
     // TODO
-    console.log('Una vida menos');
-    this.lives -= 1
+    if (this.lives-- === 0) {
+      console.log('Game Over');
+    }
   }
 
   _animate(typeAnimation) {
@@ -88,6 +111,27 @@ class Player {
     }
     if (typeAnimation === 'default' && this._img.frameIndex <= 4 && this._img.frameIndex > 2) {
       --this._img.frameIndex
+    }
+  }
+  _animateMotor(typeAnimation) {
+    if (typeAnimation === 'up' && this._imgM.frameIndex++ > 4) {
+      if (this._imgM.frameIndex >= 5) {
+        this._imgM.frameIndex = 4
+      }
+    }
+    if (typeAnimation === 'down' && this._imgM.frameIndex++ >= 6) {
+      if (this._imgM.frameIndex >= 7) {
+        this._imgM.frameIndex = 6
+      }
+    }
+    if (this.tick++ >= 10 && typeAnimation === 'right') {
+      if (this._imgM.frameIndex-- <= 0) {
+        this._imgM.frameIndex = 3
+      }
+      this.tick = 0
+    }
+    if (typeAnimation === 'default') {
+      this._imgM.frameIndex = 4
     }
   }
 }

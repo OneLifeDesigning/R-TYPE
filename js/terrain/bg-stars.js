@@ -5,7 +5,7 @@ class Bg {
     this.x = 0
     this.y = 0
 
-    this.vx = GLOBAL_SPEED_X / 2
+    this.vx = GLOBAL_SPEED_X / -2
 
 
     this.w = this._ctx.canvas.width

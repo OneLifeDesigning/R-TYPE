@@ -8,7 +8,7 @@ class EnemySupply {
     this.w = ctx.canvas.width / 10
     this.h = (this.w / 4) * 3
 
-    this.vx = GLOBAL_SPEED_X * 1.5
+    this.vx = GLOBAL_SPEED_X * -1.5
     this.vy = 0.9
 
     this.tickFly = 1
@@ -87,7 +87,7 @@ class EnemySupply {
 
     if (this.x <= this._ctx.canvas.width / 2) {
       this._animateToFly()
-      this.vx = GLOBAL_SPEED_X / 2
+      this.vx = GLOBAL_SPEED_X / -2
       this.vy = -0.9
       if (this.y <= this._ctx.canvas.height - 90 && this.tickFly++ >= 90) {
         this._animateFlying()
@@ -126,7 +126,7 @@ class EnemySupply {
   }
 
   walk() {
-    this.vx = GLOBAL_SPEED_X / 2
+    this.vx = GLOBAL_SPEED_X / -2
     this.y += -10
     this.vy = 0
     this.img.frameIndex = 3

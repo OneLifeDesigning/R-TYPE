@@ -5,27 +5,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="./img/favicon.ico" />
-  <title>R-TYPE Irem - 1ld - Version 0.001Aplpha</title>
-  <link rel="stylesheet" href="./css/style.css">
+  <title>R-TYPE By 1ld - © Irem - Version 0.002 Alpha</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
   <main class="machine">
     <section class="arcade">
       <section id="screen" class="container">
-        <article id="intro" class="row">
+        <article id="intro" class="row align-items-center">
           <div class="col-12">
-            <h3 class="animate__animated animate__backInRight animate__delay-5s">WELLCOME TO R-TYPE</h3>
             <h1 class="animate__animated animate__backInRight animate__delay-5s">BLAS OFF AND TRIKE, THE EVIL BYDO EMPIRE!</h1>
           </div>
           <div class="col-12">
             <img src="./img/intro/logo-intro.png" alt="R-TYPE Logotipe ©" class="img-fluid animate__animated animate__zoomInRight">
-            <button id="play" class="btn btn-danger btn-lg  animate__animated animate__pulse animate__fadeIn animate__delay-5s">CLICK HERE TO START</button>
+            <a href="#0" id="play" class="btn btn-outline-danger btn-lg  animate__animated animate__fadeIn animate__delay-5s">CLICK HERE TO START</a>
           </div>
           <div class="col-12">
-            <h3 class="animate__animated animate__backInRight animate__delay-5s">ITS A CUSTOM VERSION OF FAMOUS GAME DEVELOPMENT BY IREM FOR SEGA IN 1987</h3>
+            <h3 class="animate__animated animate__backInRight animate__delay-5s">THIS R-TYPE IS A SMALL VERSION OF THE FAMOUS GAME DEVELOPED BY IREM IN 1987</h3>
+          </div>
+        </article>
+        <article id="dificulty" class="row align-items-center">
+          <div class="col-6 offset-3">
+            <h2 class="animate__animated animate__backInRight">SELECT YOUR LEVEL</h2>
+            <p class="animate__animated animate__backInRight animate__delay-2s"><a href="#0" dificulty="1" class="btn btn-outline-success btn-block btn-lg dificulty-selector">EASY</a></p>
+            <p class="animate__animated animate__backInRight animate__delay-3s"><a href="#0" dificulty="2" class="btn btn-outline-primary btn-block btn-lg dificulty-selector">MEDIUM</a></p>
+            <p class="animate__animated animate__backInRight animate__delay-4s"><a href="#0" dificulty="3" class="btn btn-outline-warning btn-block btn-lg dificulty-selector">HARD</a></p>
+            <p class="animate__animated animate__backInRight animate__delay-5s"><a href="#0" dificulty="8" class="btn btn-outline-danger btn-block btn-lg dificulty-selector">CRAZY</a></p>
           </div>
         </article>
         <video id="video" src="./video/intro.mp4" controls="false"></video>

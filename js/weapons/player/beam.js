@@ -22,6 +22,7 @@ class Beamshoot extends Shoot {
     this.vx = 10
 
   }
+
   findClosest(arr, num) {
     let closest = arr[0];
     for (let item of arr) {
@@ -59,6 +60,10 @@ class Beamshoot extends Shoot {
       this._animate()
       this.tick = 0
     }
+  }
+
+  die() {
+    this.x = this._ctx.canvas.width + this.w
   }
 
   isVisible() {

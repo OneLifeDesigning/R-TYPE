@@ -12,7 +12,7 @@ class Terrain {
 
     this.isTop = isTop
 
-    this.vx = GLOBAL_SPEED_X
+    this.vx = GLOBAL_SPEED_X * -2
 
     this.collisable = false
   }
