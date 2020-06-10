@@ -24,6 +24,7 @@ class EnemyButterfly {
     this.collisable = true
     this.walker = false
     this.supply = false
+    this.armory = false
 
     // NOTE: frame are number sprites
     this.img.frames = 8
@@ -98,6 +99,10 @@ class EnemyButterfly {
     return this.supply
   }
 
+  isArmory() {
+    return this.armory
+  }
+
   isWallker() {
     return this.walker
   }
@@ -123,6 +128,7 @@ class EnemyButterfly {
       this.x = -this.w * 2
     }, 350)
   }
+
   _animate() {
     if (this.img.frameIndex++ >= 7) {
       this.img.frameIndex = 0

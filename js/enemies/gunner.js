@@ -17,6 +17,8 @@ class EnemyGunner {
     this.collisable = true
     this.walker = true
     this.supply = false
+    this.armory = false
+
 
     this.healt = 100
 
@@ -79,6 +81,10 @@ class EnemyGunner {
 
   isSupply() {
     return this.supply
+  }
+
+  isArmory() {
+    return this.armory
   }
 
   isWallker() {

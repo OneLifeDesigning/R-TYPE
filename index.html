@@ -7,17 +7,28 @@
   <link rel="icon" type="image/png" href="./img/favicon.ico" />
   <title>R-TYPE Irem - 1ld - Version 0.001Aplpha</title>
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 
 <body>
-
-  <canvas id="canvas"></canvas>
-  <div id="interface">
-    <div>Lives</div>
-    <div>Bean</div>
-    <div>Score</div>
-    <div>MaxScore</div>
-  </div>
+  <main class="machine">
+    <section class="arcade">
+      <section id="screen" class="container">
+        <article id="intro">
+          <h3>WELLCOME TO NEW R-TYPE</h3>
+          <button id="play" class="btn btn-danger btn-lg">PLAY</button>
+        </article>
+        <video id="video" src="./video/intro.mp4" controls="false"></video>
+        <canvas id="canvas"></canvas>
+        <div id="interface">
+          <div>Lives <span>0</span></div>
+          <div>Bean <span>0</span></div>
+          <div>Score <span>0</span></div>
+          <div>MaxScore <span>0</span></div>
+        </div>
+      </section>
+    </section>
+  </main>
 
 
   <script src="./js/constants.js"></script>
@@ -31,6 +42,7 @@
   <script src="./js/weapons/player/shoot.js"></script>
   <script src="./js/weapons/player/beamload.js"></script>
   <script src="./js/weapons/player/beam.js"></script>
+  <script src="./js/weapons/player/bullet.js"></script>
   <script src="./js/weapons/player/weapons.js"></script>
   <script src="./js/player.js"></script>
   <script src="./js/interface.js"></script>

@@ -20,6 +20,8 @@ class Shoot {
 
     this.vx = 10
 
+    this.collisable = true
+
   }
 
   draw() {
@@ -52,5 +54,10 @@ class Shoot {
 
   isVisible() {
     return this.x <= this._ctx.canvas.width
+  }
+
+  isCollisable() {
+    return this.collisable
+
   }
 }

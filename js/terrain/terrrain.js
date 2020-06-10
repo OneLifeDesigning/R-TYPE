@@ -9,9 +9,12 @@ class Terrain {
     this.x = this._ctx.canvas.width + (this.w * positionX)
 
     this.y = this._ctx.canvas.height - this.h
+
     this.isTop = isTop
+
     this.vx = GLOBAL_SPEED_X
 
+    this.collisable = false
   }
 
 
@@ -38,4 +41,9 @@ class Terrain {
   isVisible() {
     return this.x + this.w >= 0
   }
+
+  isCollisable() {
+    return this.collisable
+  }
+
 }

@@ -15,7 +15,9 @@ class Armory {
     this.soteable = false
     this.collisable = true
     this.walker = false
-    this.supply = true
+    this.supply = false
+    this.armory = true
+
 
 
     // NOTE: frame are number sprites
@@ -27,7 +29,7 @@ class Armory {
   draw() {
     this._ctx.drawImage(
       this.img,
-      this.img.frameIndex * this.img.width / this.img.frames,
+      0,
       0,
       this.img.width / this.img.frames,
       this.img.height,
@@ -37,6 +39,7 @@ class Armory {
       this.h
     )
   }
+
   die() {
     this.collisable = false
     this.x = -this.w * 2
@@ -44,11 +47,6 @@ class Armory {
 
   move() {
     this.x += this.vx;
-  }
-
-
-  _animate() {
-
   }
 
   isVisible() {
@@ -61,6 +59,10 @@ class Armory {
 
   isSupply() {
     return this.supply
+  }
+
+  isArmory() {
+    return this.armory
   }
 
   isWallker() {

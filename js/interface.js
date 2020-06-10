@@ -8,9 +8,9 @@ class Interface {
 
   draw() {
     const interfaceDOM = document.getElementById('interface')
-    interfaceDOM.children[0].innerText = this.lives
-    interfaceDOM.children[1].innerText = this.beam
-    interfaceDOM.children[2].innerText = this.score
-    interfaceDOM.children[3].innerText = this.maxScore
+    interfaceDOM.children[0].querySelector('span').innerText = this.lives
+    interfaceDOM.children[1].querySelector('span').innerText = this.beam
+    interfaceDOM.children[2].querySelector('span').innerText = this.score
+    interfaceDOM.children[3].querySelector('span').innerText = this.maxScore
   }
 }

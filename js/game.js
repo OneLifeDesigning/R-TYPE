@@ -11,12 +11,16 @@ class Game {
     this._player = new Player(this._ctx, IMG_PLAYER)
     this._weapon = new Weapons(this._ctx, this._player)
 
+    this._bullet = new Bullet(this._ctx, this._player, IMG_WEAPON_BULLET)
 
     this._terrainBottom = []
     this._terrainTop = []
     this._enemiesAll = []
+    this.damage = 0
 
-    this._interface = new Interface()
+    this.maxScore = MAX_SCORE[0][1]
+
+    this._interface = new Interface(this.maxScore, this.damage)
 
     this.maxHeight = this._ctx.canvas.height - 60
 
@@ -47,6 +51,7 @@ class Game {
     this._bgPlanet.draw()
     this._player.draw()
     this._weapon.draw()
+    this._bullet.draw()
     this._drawTerrain()
     this._addEnemies()
     this._drawAndMoveEnemies()
@@ -61,6 +66,7 @@ class Game {
     this._bgPlanet.move()
     this._player.move()
     this._weapon.move()
+    this._bullet.move()
   }
 
   _randomNumber(number) {
@@ -115,24 +121,21 @@ class Game {
     this._terrainBottom = this._terrainBottom.filter(oB =>
       oB.isVisible()
     )
-    if (!this._bgPlanet.isVisible()) {
-      this._bgPlanet = null
-    }
   }
 
   // ENEMIES 
   _addEnemies() {
-    if (this._timeSupply++ >= 100 && this._timeSupply <= 101) {
-      this._enemiesAll.push(
-        new EnemySupply(
-          this._ctx,
-          this.maxHeight - (this.maxHeight / 3),
-          IMG_ENEMY_SUPPLY,
-          IMG_ENEMY_SUPPLY_EXPLOSION
-        )
-      )
-      this._timeSupply = 102
-    }
+    // if (this._timeSupply++ >= 400) {
+    //   this._enemiesAll.push(
+    //     new EnemySupply(
+    //       this._ctx,
+    //       this.maxHeight - (this.maxHeight / 3),
+    //       IMG_ENEMY_SUPPLY,
+    //       IMG_ENEMY_SUPPLY_EXPLOSION
+    //     )
+    //   )
+    //   this._timeSupply = 0
+    // }
     // if (this._timeLine++ >= 100 && this._enemiesAll.length <= 4) {
     //   this._enemiesAll.push(
     //     new EnemyButterfly(
@@ -154,11 +157,13 @@ class Game {
       enemy.move()
       if (enemy.isCollisable()) {
         if (this._checkCollisions(this._player, enemy)) {
-          if (enemy.isSupply()) {
+          if (!enemy.isArmory()) {
             enemy.die()
-          } else {
+            this._interface.lives -= 1
             this._player.die()
+          } else {
             enemy.die()
+            this._bullet = new Bullet(this._ctx, this._player, IMG_SHOOT_BULLET)
           }
         }
       }
@@ -204,18 +209,20 @@ class Game {
   _checkShoots() {
     this._weapon.shoots.map(thisShoot => {
       this._enemiesAll.forEach(enemy => {
-        if (enemy.isCollisable() && enemy.isShooteable()) {
+        if (enemy.isCollisable() && enemy.isShooteable() && !enemy.isArmory()) {
           if (this._checkCollisions(thisShoot, enemy, 10)) {
             if (thisShoot.damage === enemy.healt) {
               enemy.die()
-              if (enemy.isSupply()) {
-                this._enemiesAll.push(new Armory(this._ctx, IMG_ARMORY_PACKAGE_01, enemy.x, enemy.y))
-              }
+              this._interface.score += enemy.points
               thisShoot.x = this._ctx.canvas.width + thisShoot.w
             } else if (thisShoot.damage < enemy.healt) {
               enemy.healt -= thisShoot.damage
             } else {
               enemy.die()
+              this._interface.score += enemy.points
+            }
+            if (enemy.isSupply()) {
+              this._enemiesAll.push(new Armory(this._ctx, IMG_ARMORY_PACKAGE_01, enemy.x, enemy.y))
             }
           }
         }
@@ -242,6 +249,7 @@ class Game {
           if (this.damage < 100) {
             this.damage += 10
           }
+          this._interface.beam = this.damage
         }, 150);
       }
       if (e.keyCode === KEY_UP) {
@@ -263,6 +271,7 @@ class Game {
           this._weapon.beam(this.damage)
         }
         this.damage = 0
+        this._interface.beam = this.damage
         this.timer = clearInterval()
       }
       if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {

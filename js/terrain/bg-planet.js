@@ -2,16 +2,18 @@ class BgPlanet {
   constructor(ctx, img) {
     this._ctx = ctx
 
-    this.x = this._ctx.canvas.width * 3
+    this.x = this._ctx.canvas.width
     this.y = 0
 
-    this.vx = GLOBAL_SPEED_X / 4
+    this.vx = GLOBAL_SPEED_X / 15
 
 
     this.w = this._ctx.canvas.width
     this.h = this._ctx.canvas.height
 
     this._img = img
+
+    this.collisable = false
   }
 
   draw() {
@@ -27,9 +29,13 @@ class BgPlanet {
 
   move() {
     this.x += this.vx
-
   }
+
   isVisible() {
     return this.x + this.w >= 0
+  }
+
+  isCollisable() {
+    return this.collisable
   }
 }

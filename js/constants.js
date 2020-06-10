@@ -5,6 +5,11 @@ const KEY_DOWN = 40
 const KEY_ALT = 18
 const KEY_P = 80
 
+const MAX_SCORE = [
+  ['AAA', 17453],
+  ['BBB', 17153],
+  ['CCC', 17053]
+]
 const GLOBAL_SPEED_X = -1.5
 
 const LEVEL_1_IMG_BG_1 = new Image()
@@ -15,6 +20,9 @@ LEVEL_1_IMG_BG_2.src = './img/backgrounds/bg-planet.png'
 
 const IMG_PLAYER = new Image()
 IMG_PLAYER.src = './img/sprites/player.png'
+
+const IMG_WEAPON_BULLET = new Image()
+IMG_WEAPON_BULLET.src = './img/sprites/weapon-bullet.png'
 
 const IMG_SHOOT_BEAM = new Image()
 IMG_SHOOT_BEAM.src = './img/sprites/weapon-beam.png'
