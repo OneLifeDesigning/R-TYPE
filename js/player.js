@@ -24,10 +24,11 @@ class Player {
     this._img.frameIndex = 2
     this._imgM.frameIndex = 0
 
+    this.supply = false
     this.lives = 3
-
     this.damage = 0
-
+    this.healt = 0
+    this.points = -100
     this.tick = 0
     this.tickRight = 0
 
@@ -76,6 +77,7 @@ class Player {
       this._animate('default')
       this._animateMotor('default')
     }
+
     if (this.y + this.h >= this._ctx.canvas.height) {
       this.y = this._ctx.canvas.height - this.h
     }
@@ -92,11 +94,15 @@ class Player {
     }
 
   }
-
+  respawn() {
+    console.log('Im respawn now')
+  }
   die() {
-    // TODO
-    if (this.lives-- === 0) {
-      console.log('Game Over')
+    if (this.lives-- < 1) {
+      console.log('Game over')
+      return true
+    } else {
+      this.respawn()
     }
   }
 
@@ -115,26 +121,20 @@ class Player {
     }
   }
   _animateMotor(typeAnimation) {
-    if (this.tick++ >= 25 && typeAnimation === 'up') {
-      if (this._imgM.frameIndex++ >= 5) {
+    if (this.tick++ >= 10) {
+      if ((typeAnimation === 'up' || typeAnimation === 'default' || typeAnimation === 'left') && this._imgM.frameIndex++ >= 5) {
+        this._imgM.frameIndex = 4
+      }
+      if (typeAnimation === 'down' && this._imgM.frameIndex++ >= 7) {
+        this._imgM.frameIndex = 6
+      }
+      if (typeAnimation === 'right' && this._imgM.frameIndex-- <= 0) {
         this._imgM.frameIndex = 4
       }
       this.tick = 0
     }
-    if (this.tick++ >= 25 && typeAnimation === 'down') {
-      if (this._imgM.frameIndex++ >= 7) {
-        this._imgM.frameIndex = 6
-      }
-      this.tick = 0
-    }
-    if (this.tickRight++ >= 10 && typeAnimation === 'right') {
-      if (this._imgM.frameIndex-- <= 0) {
-        this._imgM.frameIndex = 3
-      }
-      this.tickRight = 0
-    }
-    if (typeAnimation === 'default') {
-      this._imgM.frameIndex = 4
-    }
+  }
+  isSupply() {
+    return this.supply
   }
 }

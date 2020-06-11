@@ -3,12 +3,10 @@ class EnemiesShot {
     this._ctx = ctx
 
     this.shooter = shooter
-    this.x = this.shooter.x
-    this.y = this.shooter.y
-
     this.player = player
-    this.shotTargetX = this.player.x
-    this.shotTargetY = this.player.y
+
+    this.x = Number(this.shooter.x)
+    this.y = Number(this.shooter.y)
 
     this.w = this._ctx.canvas.width / 43
     this.h = (this.w / 4) * 3
@@ -25,18 +23,39 @@ class EnemiesShot {
     this.img.frameIndexX = 1
     this.img.frameIndexY = 0
 
-    this.vx = GLOBAL_SPEED_X * 6
-    this.vy = GLOBAL_SPEED_Y * 6
+    // this.vx = Number(this.calctarget(this.shooter, this.player)[0])
+    // this.vy = Number(this.calctarget(this.shooter, this.player)[1])
+    this.vx = 1
+    this.vy = 1
 
+    this.damage = 100
+
+    this.supply = false
     this.collisable = true
-    this.dx = this.shooter.x - this.shotTargetX
-    this.dy = this.shooter.y - this.shotTargetY
-    this.angle = Math.atan2(this.dy, this.dx)
   }
 
   die() {
     this.x = this._ctx.canvas.width + this.w
   }
+
+  // getCenter(ele) {
+  //   return {
+  //     x: ele.x + ele.w / 2,
+  //     y: ele.y + ele.h / 2
+  //   }
+  // }
+
+  // calctarget(pl, ene) {
+  //   const playerCenter = this.getCenter(pl)
+  //   const enemyCenter = this.getCenter(ene)
+  //   const dx = playerCenter.x - enemyCenter.x
+  //   const dy = playerCenter.y - enemyCenter.y
+
+  //   const fangle = Math.sqrt(dx * dx + dy * dy)
+  //   const velx = (Math.cos(fangle) * 1).toFixed(4)
+  //   const vely = (Math.sin(fangle) * 1).toFixed(4)
+  //   return [velx, vely]
+  // }
 
   draw() {
     this._ctx.drawImage(
@@ -59,25 +78,10 @@ class EnemiesShot {
   }
 
   move() {
-    if (this.dx <= 0) {
-      this.x -= this.angle
-    } else {
-      this.x += this.angle
-    }
-    if (this.dy <= 0) {
-      this.y -= this.angle
-    } else {
-      this.y += this.angle
-    }
+    this.x += this.vx
+    this.y += this.vy
+
     if (this.tick++ === 20) {
-      console.log(this.shooter.x);
-      console.log(this.shooter.y);
-      console.log(this.shotTargetX);
-      console.log(this.shotTargetY);
-      console.log(this.dx);
-      console.log(this.dy);
-      console.log(this.angle);
-      debugger
       this._animate()
       this.tick = 0
     }
@@ -87,7 +91,11 @@ class EnemiesShot {
     return this.x <= this._ctx.canvas.width
   }
 
-  isCollisable() {
+  isCollisble() {
     return this.collisable
+  }
+
+  isSupply() {
+    return this.supply
   }
 }

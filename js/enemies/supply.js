@@ -19,7 +19,6 @@ class EnemySupply {
     this.img = img
     this.imgDie = imgDie
 
-    this.healt = 10
 
     this.isAShooter = isAShooter
 
@@ -28,6 +27,7 @@ class EnemySupply {
     this.walker = true
     this.supply = true
     this.armory = false
+    this.points = 0
 
     // NOTE: frame are number sprites
     this.img.frames = 8

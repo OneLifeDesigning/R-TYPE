@@ -70,9 +70,6 @@ class Bullet {
     }
   }
 
-  removeShots() {
-    this.shots = this.shots.filter(s => s.isVisible())
-  }
 
   isCollisable() {
     return this.collisable
@@ -83,6 +80,7 @@ class Bullet {
   }
 
   toFixed() {
+    this.tickStart = 1
     this.fixed = true
   }
 
@@ -97,7 +95,7 @@ class Bullet {
   }
 
   _animateJump() {
-    if (this.x <= this._ctx.canvas.width - (this._ctx.canvas.width / 5)) {
+    if (this.x <= this._ctx.canvas.width - (this._ctx.canvas.width / 4)) {
       this.x += (GLOBAL_SPEED_X * 5)
     } else {
       if (this.tickStart === 0) {
@@ -108,14 +106,14 @@ class Bullet {
   }
 
   _animateReturn(playerX, playerY) {
-    if (playerY - 4 > this.y && playerY !== this.y) {
+    if (playerY - 2 > this.y && playerY !== this.y) {
       this.y += GLOBAL_SPEED_X * 3
-    } else if (playerY + 4 < this.y && playerY !== this.y) {
+    } else if (playerY + 2 < this.y && playerY !== this.y) {
       this.y -= GLOBAL_SPEED_X * 3
     }
-    if (playerX - 4 > this.x && playerX !== this.x) {
+    if (playerX - 2 > this.x && playerX !== this.x) {
       this.x += GLOBAL_SPEED_X * 3
-    } else if (playerX + 4 < this.x && playerX !== this.x) {
+    } else if (playerX + 2 < this.x && playerX !== this.x) {
       this.x -= GLOBAL_SPEED_X * 3
     }
   }

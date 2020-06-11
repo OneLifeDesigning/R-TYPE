@@ -52,7 +52,7 @@ window.onload = () => {
   intro.classList.add('d-none')
   game.start()
   // canvas.classList.add('d-none')
-  interface.classList.add('d-none')
+  // interface.classList.add('d-none')
   dificulty.classList.add('d-none')
   video.classList.add('d-none')
 }

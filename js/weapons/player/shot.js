@@ -50,7 +50,8 @@ class Shot {
 
   move() {
     this.x += this.vx
-    if (this.tick++ === 1) {
+
+    if (this.tick++ === 5) {
       this._animate()
       this.tick = 0
     }

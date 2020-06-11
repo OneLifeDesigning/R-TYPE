@@ -17,6 +17,7 @@ class Armory {
     this.walker = false
     this.supply = false
     this.armory = true
+    this.points = 0
 
     this.isAShooter = isAShooter
 

@@ -8,13 +8,12 @@ class EnemyButterfly {
     this.w = ctx.canvas.width / 15
     this.h = (this.w / 4) * 3
 
-    this.vx = -3
-    this.vy = -2
+    this.vx = GLOBAL_SPEED_X * -3
+    this.vy = GLOBAL_SPEED_X * -2
 
     this.tick = 0
     this.tickMove = 0
     this.tickDie = 0
-    this.tickShoot = 0
 
     this.img = img
     this.imgDie = imgDie
@@ -32,7 +31,6 @@ class EnemyButterfly {
 
     this.isAShooter = isAShooter
 
-    this.shots = []
 
     // NOTE: frame are number sprites
     this.img.frames = 8
@@ -68,7 +66,6 @@ class EnemyButterfly {
         this.h
       )
     }
-    this.shots.forEach(s => s.draw())
   }
 
   clear() {
@@ -94,7 +91,6 @@ class EnemyButterfly {
         this.tickDie = 1
       }
     }
-    this.shots.forEach(s => s.move())
   }
 
   isVisible() {
@@ -125,20 +121,12 @@ class EnemyButterfly {
     return this.soteable
   }
 
-  shot() {
-    if (this.tickShoot++ >= 40) {
-      console.log('shot');
-
-      this.shots.push(new EnemiesShot(
-        this._ctx,
-        this,
-        this.player
-      ))
-      this.tickShoot = 0
-    }
-  }
-  removeShots() {
-    this.shots = this.shots.filter(s => s.isVisible())
+  shotEnemy(enemy, player) {
+    return new EnemiesShot(
+      this._ctx,
+      enemy,
+      player
+    )
   }
 
   stop() {

@@ -2,20 +2,26 @@ class Game {
   constructor(ctx) {
     this._ctx = ctx
 
-    this._intervalId = null
     this._timeLine = null
+    this._timeEnemies = null
     this._timeSupply = null
+    this.tickShot = 0
 
     this._bg = new Bg(this._ctx, LEVEL_1_IMG_BG_1)
     this._bgPlanet = new BgPlanet(this._ctx, LEVEL_1_IMG_BG_2)
     this._player = new Player(this._ctx, IMG_PLAYER, IMG_PLAYER_FIRE_MOTOR)
-    this._weapon = new Weapons(this._ctx, this._player)
-    this._weapon.bullet = null
+    this._weapon = new Weapon(this._ctx, this._player)
+    this._bullet = null
 
     this._terrainBottom = []
     this._terrainTop = []
     this._enemiesAll = []
+
+    this._enemiesShots = []
+    this._playerShots = []
+
     this.damage = 0
+
 
     this.maxScore = MAX_SCORE[0][1]
 
@@ -28,14 +34,16 @@ class Game {
 
   start() {
     this._addTerrain()
-    this._intervalId = setInterval(() => {
+    this._timeLine = setInterval(() => {
       this._clear()
       this._draw()
       this._move()
     }, 1000 / 70)
   }
   stop() {
-    this._intervalId = clearInterval()
+    setTimeout(() => {
+      this._timeLine = clearInterval(this._timeLine)
+    }, 500);
   }
 
   _clear() {
@@ -44,17 +52,21 @@ class Game {
 
   _draw() {
     this._clear()
-    this._weapon.removeShots()
+    this._removeShots()
     this._removeEnemy()
     this._bg.draw()
     this._bgPlanet.draw()
     this._player.draw()
     this._weapon.draw()
-
     this._drawTerrain()
     this._addEnemies()
     this._drawAndMoveEnemies()
     this._interface.draw()
+    this._addShotEnemies()
+    this._moveAndDrawShots()
+    if (this._bullet) {
+      this._bullet.draw()
+    }
   }
 
   _move() {
@@ -62,6 +74,9 @@ class Game {
     this._checkRuteEnemies()
     this._erraseTerrain()
     this._bg.move()
+    if (this._bullet) {
+      this._bullet.move(this._player.x + this._player.w, this._player.y)
+    }
     this._bgPlanet.move()
     this._player.move()
     this._weapon.move()
@@ -100,14 +115,27 @@ class Game {
       terrainTop.draw()
       terrainTop.move()
       if (this._checkCollisions(this._player, terrainTop, 10)) {
-        this._player.die()
+        this._interface.lives--
+        if (this._player.die()) {
+          this.stop()
+        }
+      }
+      if (this._bullet && this._checkCollisions(this._bullet, terrainTop)) {
+        this._bullet.toFixed()
       }
     })
+
     this._terrainBottom.forEach(terrainBottom => {
       terrainBottom.draw()
       terrainBottom.move()
       if (this._checkCollisions(this._player, terrainBottom, 10)) {
-        this._player.die()
+        this._interface.lives--
+        if (this._player.die()) {
+          this.stop()
+        }
+      }
+      if (this._bullet && this._checkCollisions(this._bullet, terrainBottom)) {
+        this._bullet.toFixed()
       }
     })
   }
@@ -123,7 +151,7 @@ class Game {
 
   // ENEMIES 
   _addEnemies() {
-    if (!this._weapon.bullet && (this._timeSupply++ === 600 || this._timeSupply++ === 6600)) {
+    if (!this._bullet && (this._timeSupply++ === 600 || this._timeSupply++ === 6600)) {
       this._enemiesAll.push(
         new EnemySupply(
           this._ctx,
@@ -137,7 +165,7 @@ class Game {
       }
     }
 
-    if (this._timeLine++ >= 100 && this._enemiesAll.length <= 4) {
+    if (this._timeEnemies++ >= 100 && this._enemiesAll.length <= 4) {
       this._enemiesAll.push(
         new EnemyButterfly(
           this._ctx,
@@ -150,7 +178,7 @@ class Game {
           Math.random() >= 0.5
         )
       )
-      this._timeLine = 0
+      this._timeEnemies = 0
     }
   }
 
@@ -158,30 +186,23 @@ class Game {
     this._enemiesAll.forEach(enemy => {
       enemy.draw()
       enemy.move()
-      if (enemy.isShooter()) {
-        if (Math.random() >= 0.7) {
-          enemy.shot()
-        }
-      }
-
       if (enemy.isCollisable()) {
         if (this._checkCollisions(this._player, enemy)) {
-          this._hitShot(this._player, enemy)
           if (!enemy.isArmory()) {
-            enemy.die()
-            this._interface.lives -= 1
-            this._player.die()
+            this._resolveCollision(this._player, enemy)
+            this._resolveCollision(enemy, this._player)
           } else {
             enemy.die()
-            this._weapon.bullet = new Bullet(this._ctx, this._player, IMG_WEAPON_BULLET)
+            this._bullet = new Bullet(this._ctx, this._player, IMG_WEAPON_BULLET)
           }
         }
-        if (this._weapon.bullet) {
-          if (this._checkCollisions(this._weapon.bullet, enemy)) {
-            this._hitShot(this._weapon.bullet, enemy)
+        if (this._bullet) {
+          if (this._checkCollisions(this._bullet, enemy)) {
+            this._resolveCollision(this._bullet, enemy)
+            this._resolveCollision(enemy, this._bullet)
           }
-          if (this._checkCollisions(this._weapon.bullet, this._player)) {
-            this._weapon.bullet.toFixed()
+          if (this._checkCollisions(this._bullet, this._player)) {
+            this._bullet.toFixed()
           }
         }
       }
@@ -224,17 +245,21 @@ class Game {
     }
   }
 
-  _hitShot(trigger, fired) {
-    if (trigger.damage === fired.healt) {
-      fired.die()
+  _resolveCollision(trigger, fired) {
+    if (trigger.damage >= fired.healt) {
+      if (fired.die()) {
+        this.stop()
+      }
       this._interface.score += fired.points
       if (trigger.die() === 'Errase') {
-        this._weapon.bullet = null
+        this._bullet = null
       }
     } else if (trigger.damage < fired.healt) {
       fired.healt -= trigger.damage
     } else {
-      fired.die()
+      if (fired.die()) {
+        this.stop()
+      }
       this._interface.score += fired.points
     }
     if (fired.isSupply()) {
@@ -242,11 +267,36 @@ class Game {
     }
   }
 
+  _addShotEnemies() {
+    this._enemiesAll.forEach(enemy => {
+      if (Math.floor(Math.random() * Math.floor(100)) >= 90 && enemy.isShooter() && this.tickShot++ >= 10) {
+        this._enemiesShots.push(enemy.shotEnemy(enemy, this._player))
+        this.tickShot = 0
+      }
+    })
+  }
+
+  _moveAndDrawShots() {
+    this._playerShots.forEach(pS => {
+      if (pS) {
+        pS.draw()
+        pS.move()
+      }
+    })
+    this._enemiesShots.forEach(eS => {
+      if (eS) {
+        eS.draw()
+        eS.move()
+      }
+    })
+  }
   _checkShots() {
-    this._weapon.shots.map(shotFromPlayer => {
+    this._playerShots.map(shotFromPlayer => {
       this._enemiesAll.forEach(enemy => {
         if (enemy.isShooter()) {
-          enemy.shots.forEach(shotFromEnemy => {
+          this._enemiesShots.forEach(shotFromEnemy => {
+            shotFromEnemy.draw()
+            shotFromEnemy.move()
             if (this._checkCollisions(this._player, shotFromEnemy, 10)) {
               this._player.die()
             }
@@ -254,7 +304,7 @@ class Game {
         }
         if (enemy.isCollisable() && enemy.isShoteable() && !enemy.isArmory()) {
           if (this._checkCollisions(shotFromPlayer, enemy, 10)) {
-            this._hitShot(shotFromPlayer, enemy)
+            this._resolveCollision(shotFromPlayer, enemy)
           }
         }
       })
@@ -269,27 +319,43 @@ class Game {
         }
       })
     })
+    this._enemiesShots.forEach(shotEnemy => {
+      if (this._checkCollisions(this._player, shotEnemy, 10)) {
+        this._resolveCollision(shotEnemy, this._player)
+      }
+      if (this._bullet) {
+        if (this._checkCollisions(this._bullet, shotEnemy)) {
+          this._resolveCollision(this._bullet, shotEnemy)
+        }
+      }
+    })
   }
 
+  _removeShots() {
+    this._playerShots = this._playerShots.filter(pS =>
+      pS.isVisible()
+    )
+    this._enemiesShots = this._enemiesShots.filter(eS =>
+      eS.isVisible()
+    )
+  }
   _setListeners() {
     document.addEventListener('keydown', e => {
-      if (e.keyCode === KEY_SPACE && this._weapon.bullet) {
-        if (this._weapon.bullet.isFixed()) {
-          this._weapon.bullet.toUnfixed()
+      if (e.keyCode === KEY_SPACE && this._bullet) {
+        if (this._bullet.isFixed()) {
+          this._bullet.toUnfixed()
         } else {
-          this._weapon.bullet.toFixed()
+          this._bullet.toFixed()
         }
       }
       if (e.keyCode === KEY_ALT) {
-        if (this._weapon.bullet) {
-          this._weapon.shot()
-          this._weapon.bullet.shot()
-        } else {
-          this._weapon.shot()
+        if (this._bullet) {
+          this._playerShots.push(this._bullet.shot())
         }
+        this._playerShots.push(this._weapon.shot())
         this.timer = setInterval(() => {
-          if (this._weapon.bullet) {
-            this._weapon.bullet.shot()
+          if (this._bullet) {
+            this._playerShots.push(this._bullet.shot())
           }
           this._weapon.beamLoadShow()
           if (this.damage < 100) {
@@ -303,7 +369,7 @@ class Game {
       } else if (e.keyCode === KEY_DOWN) {
         this._player.vy = +2
       } else if (e.keyCode === KEY_RIGHT) {
-        this._player.vx = 2
+        this._player.vx = +2
       } else if (e.keyCode === KEY_LEFT) {
         this._player.vx = -2
       }
@@ -314,7 +380,7 @@ class Game {
         clearInterval(this.timer)
         this._weapon.beamLoadStop()
         if (this.damage >= 10) {
-          this._weapon.beam(this.damage)
+          this._playerShots.push(this._weapon.beam(this.damage))
         }
         this.damage = 0
         this._interface.beam = this.damage
