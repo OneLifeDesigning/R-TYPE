@@ -1,9 +1,9 @@
 class Weapons {
-  constructor(ctx, shooter) {
-    this._ctx = ctx;
+  constructor(ctx, Shooter) {
+    this._ctx = ctx
 
-    this.shooter = shooter;
-    this.shoots = []
+    this.shooter = Shooter
+    this.shots = []
     this.beams = []
 
     this.bullet = null
@@ -11,18 +11,18 @@ class Weapons {
     this.timer = ''
     this.beamLoad = new BeamLoad(
       this._ctx,
-      IMG_SHOOT_BEAM_LOAD,
+      IMG_SHOT_BEAM_LOAD,
       this.shooter.x + this.shooter.w * 0.8,
       this.shooter.y + this.shooter.h * 0.2
     )
   }
 
-  shoot() {
+  shot() {
     if (this.bullet) {
-      this.shoots.push(this.bullet.shoot())
+      this.shots.push(this.bullet.shot())
     }
-    return this.shoots.push(
-      new Shoot(
+    return this.shots.push(
+      new Shot(
         this._ctx,
         this.shooter.x + this.shooter.w * 0.8,
         this.shooter.y + this.shooter.h * 0.3
@@ -39,10 +39,10 @@ class Weapons {
   }
 
   beam(damage) {
-    return this.shoots.push(
-      new Beamshoot(
+    return this.shots.push(
+      new BeamShot(
         this._ctx,
-        IMG_SHOOT_BEAM,
+        IMG_SHOT_BEAM,
         this.shooter.x + this.shooter.w * 0.3,
         this.shooter.y + this.shooter.h * 0.05,
         damage
@@ -50,8 +50,8 @@ class Weapons {
     )
   }
 
-  removeShoots() {
-    this.shoots = this.shoots.filter(s => s.isVisible())
+  removeShots() {
+    this.shots = this.shots.filter(s => s.isVisible())
   }
 
   draw() {
@@ -59,7 +59,7 @@ class Weapons {
       this.bullet.draw()
     }
     this.beamLoad.draw()
-    this.shoots.forEach(s => s.draw())
+    this.shots.forEach(s => s.draw())
   }
 
   move() {
@@ -75,6 +75,6 @@ class Weapons {
       this.shooter.y + this.shooter.h * 0.2
     )
 
-    this.shoots.forEach(s => s.move())
+    this.shots.forEach(s => s.move())
   }
 }

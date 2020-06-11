@@ -21,7 +21,7 @@ class Bg {
       this.y,
       this.w,
       this.h
-    );
+    )
 
     ctx.drawImage(
       this._img,
@@ -29,7 +29,7 @@ class Bg {
       this.y,
       this.w,
       this.h
-    );
+    )
 
   }
 

@@ -59,7 +59,7 @@ class EnemyGunner {
       }
     } else if (playerPosY >= this.y - 80 || playerPosY <= this.y + 80) {
       if (this.tickMove++ === 25) {
-        this._shoot()
+        this._shot()
         this.tickMove = 0
       }
     } else if (playerPosY == this.y) {
@@ -91,16 +91,16 @@ class EnemyGunner {
     return this.walker
   }
 
-  isShooteable() {
+  isShoteable() {
     return this.soteable
   }
   _animate() {
-    // TODO: when shoot and is floor animate
+    // TODO: when Shot and is floor animate
     if (this.tick++ === 15) {
       this.tick = 0
     }
   }
-  _shoot() {
+  _shot() {
     console.log('Hello im gunner and killYUONoooow')
   }
 }

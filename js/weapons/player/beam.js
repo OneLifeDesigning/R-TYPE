@@ -1,4 +1,4 @@
-class Beamshoot extends Shoot {
+class BeamShot extends Shot {
   constructor(ctx, img, x, y, damage) {
     super(ctx, x, y)
 
@@ -24,13 +24,13 @@ class Beamshoot extends Shoot {
   }
 
   findClosest(arr, num) {
-    let closest = arr[0];
+    let closest = arr[0]
     for (let item of arr) {
       if (Math.abs(item - num) < Math.abs(closest - num)) {
-        closest = item;
+        closest = item
       }
     }
-    return arr.indexOf(closest);
+    return arr.indexOf(closest)
   }
 
   draw() {

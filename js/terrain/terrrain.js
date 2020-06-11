@@ -21,12 +21,12 @@ class Terrain {
   draw() {
     if (this._img.src) {
       if (this.isTop === 0) {
-        this._ctx.drawImage(this._img, this.x, this.y, this.w, this.h);
+        this._ctx.drawImage(this._img, this.x, this.y, this.w, this.h)
       } else {
         this._ctx.save()
-        this._ctx.scale(1, -1);
-        this._ctx.drawImage(this._img, this.x, 0, this.w, -this.h);
-        this._ctx.restore();
+        this._ctx.scale(1, -1)
+        this._ctx.drawImage(this._img, this.x, 0, this.w, -this.h)
+        this._ctx.restore()
       }
     }
   }

@@ -1,5 +1,5 @@
 class Armory {
-  constructor(ctx, img, x, y) {
+  constructor(ctx, img, x, y, isAShooter) {
     this._ctx = ctx
     this.x = x
     this.y = y
@@ -18,6 +18,7 @@ class Armory {
     this.supply = false
     this.armory = true
 
+    this.isAShooter = isAShooter
 
 
     // NOTE: frame are number sprites
@@ -46,7 +47,11 @@ class Armory {
   }
 
   move() {
-    this.x += this.vx;
+    this.x += this.vx
+  }
+
+  isShooter() {
+    return this.isAShooter
   }
 
   isVisible() {
@@ -69,7 +74,7 @@ class Armory {
     return this.walker
   }
 
-  isShooteable() {
+  isShoteable() {
     return this.soteable
   }
 }

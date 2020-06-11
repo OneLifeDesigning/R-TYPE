@@ -44,7 +44,7 @@ class Game {
 
   _draw() {
     this._clear()
-    this._weapon.removeShoots()
+    this._weapon.removeShots()
     this._removeEnemy()
     this._bg.draw()
     this._bgPlanet.draw()
@@ -58,7 +58,7 @@ class Game {
   }
 
   _move() {
-    this._checkShoots()
+    this._checkShots()
     this._checkRuteEnemies()
     this._erraseTerrain()
     this._bg.move()
@@ -123,7 +123,7 @@ class Game {
 
   // ENEMIES 
   _addEnemies() {
-    if (!this._weapon.bullet && (this._timeSupply++ === 600 || this._timeSupply++ === 1600)) {
+    if (!this._weapon.bullet && (this._timeSupply++ === 600 || this._timeSupply++ === 6600)) {
       this._enemiesAll.push(
         new EnemySupply(
           this._ctx,
@@ -145,7 +145,9 @@ class Game {
             this.maxHeight - (this.maxHeight / 3)
           ),
           IMG_ENEMY_BUTTERFLY,
-          IMG_ENEMY_BUTTERFLY_EXPLOSION
+          IMG_ENEMY_BUTTERFLY_EXPLOSION,
+          this._player,
+          Math.random() >= 0.5
         )
       )
       this._timeLine = 0
@@ -156,6 +158,12 @@ class Game {
     this._enemiesAll.forEach(enemy => {
       enemy.draw()
       enemy.move()
+      if (enemy.isShooter()) {
+        if (Math.random() >= 0.7) {
+          enemy.shot()
+        }
+      }
+
       if (enemy.isCollisable()) {
         if (this._checkCollisions(this._player, enemy)) {
           this._hitShot(this._player, enemy)
@@ -234,23 +242,30 @@ class Game {
     }
   }
 
-  _checkShoots() {
-    this._weapon.shoots.map(playerShoot => {
+  _checkShots() {
+    this._weapon.shots.map(shotFromPlayer => {
       this._enemiesAll.forEach(enemy => {
-        if (enemy.isCollisable() && enemy.isShooteable() && !enemy.isArmory()) {
-          if (this._checkCollisions(playerShoot, enemy, 10)) {
-            this._hitShot(playerShoot, enemy)
+        if (enemy.isShooter()) {
+          enemy.shots.forEach(shotFromEnemy => {
+            if (this._checkCollisions(this._player, shotFromEnemy, 10)) {
+              this._player.die()
+            }
+          })
+        }
+        if (enemy.isCollisable() && enemy.isShoteable() && !enemy.isArmory()) {
+          if (this._checkCollisions(shotFromPlayer, enemy, 10)) {
+            this._hitShot(shotFromPlayer, enemy)
           }
         }
       })
       this._terrainTop.forEach(tT => {
-        if (this._checkCollisions(playerShoot, tT)) {
-          playerShoot.x = this._ctx.canvas.width + playerShoot.w
+        if (this._checkCollisions(shotFromPlayer, tT)) {
+          shotFromPlayer.x = this._ctx.canvas.width + shotFromPlayer.w
         }
       })
       this._terrainBottom.forEach(tB => {
-        if (this._checkCollisions(playerShoot, tB)) {
-          playerShoot.x = this._ctx.canvas.width + playerShoot.w
+        if (this._checkCollisions(shotFromPlayer, tB)) {
+          shotFromPlayer.x = this._ctx.canvas.width + shotFromPlayer.w
         }
       })
     })
@@ -267,21 +282,21 @@ class Game {
       }
       if (e.keyCode === KEY_ALT) {
         if (this._weapon.bullet) {
-          this._weapon.shoot()
-          this._weapon.bullet.shoot()
+          this._weapon.shot()
+          this._weapon.bullet.shot()
         } else {
-          this._weapon.shoot()
+          this._weapon.shot()
         }
         this.timer = setInterval(() => {
           if (this._weapon.bullet) {
-            this._weapon.bullet.shoot()
+            this._weapon.bullet.shot()
           }
           this._weapon.beamLoadShow()
           if (this.damage < 100) {
             this.damage += 10
           }
           this._interface.beam = this.damage
-        }, 150);
+        }, 150)
       }
       if (e.keyCode === KEY_UP) {
         this._player.vy = -2

@@ -14,6 +14,7 @@ const MAX_SCORE = [
   ['CCC', 17053]
 ]
 const GLOBAL_SPEED_X = 1
+const GLOBAL_SPEED_Y = 1
 
 const LEVEL_1_IMG_BG_1 = new Image()
 LEVEL_1_IMG_BG_1.src = './img/backgrounds/bg1.png'
@@ -30,11 +31,11 @@ IMG_PLAYER_FIRE_MOTOR.src = './img/sprites/fire-motor.png'
 const IMG_WEAPON_BULLET = new Image()
 IMG_WEAPON_BULLET.src = './img/sprites/weapon-bullet.png'
 
-const IMG_SHOOT_BEAM = new Image()
-IMG_SHOOT_BEAM.src = './img/sprites/weapon-beam.png'
+const IMG_SHOT_BEAM = new Image()
+IMG_SHOT_BEAM.src = './img/sprites/weapon-beam.png'
 
-const IMG_SHOOT_BEAM_LOAD = new Image()
-IMG_SHOOT_BEAM_LOAD.src = './img/sprites/weapon-beam-load.png'
+const IMG_SHOT_BEAM_LOAD = new Image()
+IMG_SHOT_BEAM_LOAD.src = './img/sprites/weapon-beam-load.png'
 
 const IMG_ENEMY_BUTTERFLY = new Image()
 IMG_ENEMY_BUTTERFLY.src = './img/sprites/enemy-butterfly.png'

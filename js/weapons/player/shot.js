@@ -1,4 +1,4 @@
-class Shoot {
+class Shot {
   constructor(ctx, x, y) {
     this._ctx = ctx
     this.x = x
@@ -8,7 +8,7 @@ class Shoot {
     this.h = (this.w / 4) * 3
 
     this.img = new Image()
-    this.img.src = './img/sprites/weapon-shoot.png'
+    this.img.src = './img/sprites/weapon-shot.png'
 
     this.tick = 0
     this.damage = 10

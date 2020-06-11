@@ -1,5 +1,5 @@
 class EnemySupply {
-  constructor(ctx, y, img, imgDie) {
+  constructor(ctx, y, img, imgDie, isAShooter) {
     this._ctx = ctx
 
     this.x = ctx.canvas.width
@@ -20,6 +20,8 @@ class EnemySupply {
     this.imgDie = imgDie
 
     this.healt = 10
+
+    this.isAShooter = isAShooter
 
     this.soteable = true
     this.collisable = true
@@ -99,6 +101,10 @@ class EnemySupply {
     return this.x + this.w >= 0
   }
 
+  isShooter() {
+    return this.isAShooter
+  }
+
   isCollisable() {
     return this.collisable
   }
@@ -115,7 +121,7 @@ class EnemySupply {
     return this.walker
   }
 
-  isShooteable() {
+  isShoteable() {
     return this.soteable
   }
 

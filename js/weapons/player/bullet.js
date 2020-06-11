@@ -1,8 +1,8 @@
 class Bullet {
   constructor(ctx, player, img) {
-    this._ctx = ctx;
+    this._ctx = ctx
 
-    this._player = player;
+    this._player = player
 
     this.w = ctx.canvas.width / 20
     this.h = (this.w / 4) * 3
@@ -55,8 +55,8 @@ class Bullet {
   }
 
 
-  shoot() {
-    return new Shoot(
+  shot() {
+    return new Shot(
       this._ctx,
       this.x + this.w * 0.8,
       this.y + this.h * 0.3
@@ -70,8 +70,8 @@ class Bullet {
     }
   }
 
-  removeShoots() {
-    this.shoots = this.shoots.filter(s => s.isVisible())
+  removeShots() {
+    this.shots = this.shots.filter(s => s.isVisible())
   }
 
   isCollisable() {

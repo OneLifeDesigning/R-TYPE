@@ -23,7 +23,7 @@ class BgPlanet {
       this.y,
       this.w,
       this.h
-    );
+    )
 
   }
 

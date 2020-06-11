@@ -8,9 +8,9 @@ const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
 
 setTimeout(() => {
-  play.classList.remove('animate__animated', 'animate__fadeIn');
-  play.classList.add('animate__animated', 'animate__pulse');
-}, 6000);
+  play.classList.remove('animate__animated', 'animate__fadeIn')
+  play.classList.add('animate__animated', 'animate__pulse')
+}, 6000)
 
 canvas.width = canvas.parentElement.clientWidth - 60
 canvas.height = Math.round((canvas.width / 16) * 9)
@@ -42,10 +42,10 @@ selectors.forEach(select => {
       game.start(select.getAttribute('dificulty'))
       setTimeout(() => {
         video.pause()
-      }, 1400);
-    }, 21000);
+      }, 1400)
+    }, 21000)
   })
-});
+})
 
 
 window.onload = () => {

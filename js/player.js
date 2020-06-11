@@ -28,7 +28,8 @@ class Player {
 
     this.damage = 0
 
-    this.timer = null
+    this.tick = 0
+    this.tickRight = 0
 
   }
 
@@ -39,7 +40,7 @@ class Player {
       0,
       this._imgM.width / this._imgM.frames,
       this._imgM.height,
-      this.x - this.w + 14,
+      this.x - this.w + 16,
       this.y,
       this.w,
       this.h
@@ -58,8 +59,8 @@ class Player {
   }
 
   move() {
-    this.y += this.vy;
-    this.x += this.vx;
+    this.y += this.vy
+    this.x += this.vx
 
     if (this.vy >= 0 && this.vy !== 0) {
       this._animate('down')
@@ -95,7 +96,7 @@ class Player {
   die() {
     // TODO
     if (this.lives-- === 0) {
-      console.log('Game Over');
+      console.log('Game Over')
     }
   }
 
@@ -114,21 +115,23 @@ class Player {
     }
   }
   _animateMotor(typeAnimation) {
-    if (typeAnimation === 'up' && this._imgM.frameIndex++ > 4) {
-      if (this._imgM.frameIndex >= 5) {
+    if (this.tick++ >= 25 && typeAnimation === 'up') {
+      if (this._imgM.frameIndex++ >= 5) {
         this._imgM.frameIndex = 4
       }
+      this.tick = 0
     }
-    if (typeAnimation === 'down' && this._imgM.frameIndex++ >= 6) {
-      if (this._imgM.frameIndex >= 7) {
+    if (this.tick++ >= 25 && typeAnimation === 'down') {
+      if (this._imgM.frameIndex++ >= 7) {
         this._imgM.frameIndex = 6
       }
+      this.tick = 0
     }
-    if (this.tick++ >= 10 && typeAnimation === 'right') {
+    if (this.tickRight++ >= 10 && typeAnimation === 'right') {
       if (this._imgM.frameIndex-- <= 0) {
         this._imgM.frameIndex = 3
       }
-      this.tick = 0
+      this.tickRight = 0
     }
     if (typeAnimation === 'default') {
       this._imgM.frameIndex = 4
