@@ -145,6 +145,9 @@ class Game {
         return pShots
       }
     })
+    if (this._bullet && this._bullet.is('die')) {
+      this._bullet = null
+    }
   }
 
   // ENEMIES 
@@ -197,7 +200,7 @@ class Game {
   }
 
   _checkRuteBullet() {
-    if (this._player.is('collisable')) {
+    if (this._bullet) {
       this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, this._bullet)
       this._checkCollisionsObjectWithTerrainArr(this._terrainTop, this._bullet)
       if (this._checkCollisionsObjToObject(this._bullet, this._player)) {
@@ -214,8 +217,10 @@ class Game {
         if (this._player.is('collisable') && this._checkCollisionsObjToObject(this._player, enemy)) {
           this._resolveCollisionPltoEnemy(this._player, enemy)
         }
-        if (this._checkCollisionsObjToObject(this._bullet, enemy)) {
-          this._resolveCollisionPltoEnemy(this._bullet, enemy)
+        if (this._bullet) {
+          if (this._checkCollisionsObjToObject(this._bullet, enemy)) {
+            this._resolveCollisionPltoEnemy(this._bullet, enemy)
+          }
         }
       }
     })
@@ -261,19 +266,20 @@ class Game {
 
 
   _resolveCollisionPltoEnemy(object, enemy) {
-
     if (object.is('player')) {
       this._interface.lives--
       object.die()
     }
     if (object.damage >= enemy.healt) {
       enemy.die()
-      this._interface.score += enemy.points
       if (object.is('bullet')) {
-        if (object.healt <= 0) {
+        this._interface.score += enemy.points * 5
+        if (object.healt <= 1) {
           object.die()
         }
         object.healt -= enemy.damage
+      } else {
+        this._interface.score += enemy.points
       }
     } else {
       enemy.healt -= object.damage

@@ -75,6 +75,7 @@ class Bullet {
       this.params.push('die')
       this.x = 0 - this.w * 100
       this.vx = 0
+      this.healt = 100
     }, 350)
   }
 
