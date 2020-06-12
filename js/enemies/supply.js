@@ -19,14 +19,8 @@ class EnemySupply {
     this.img = img
     this.imgDie = imgDie
 
+    this.params = ['shoteable', 'collisable', 'walker', 'supply']
 
-    this.isAShooter = isAShooter
-
-    this.soteable = true
-    this.collisable = true
-    this.walker = true
-    this.supply = true
-    this.armory = false
     this.points = 0
 
     // NOTE: frame are number sprites
@@ -86,13 +80,14 @@ class EnemySupply {
       this.tickFly = 1
     }
 
-
     if (this.x <= this._ctx.canvas.width / 2) {
       this._animateToFly()
       this.vx = GLOBAL_SPEED_X / -2
-      this.vy = -0.9
+      this.vy = GLOBAL_SPEED_Y * -0.9
       if (this.y <= this._ctx.canvas.height - 90 && this.tickFly++ >= 90) {
         this._animateFlying()
+        this.vx = GLOBAL_SPEED_X / -3
+        this.vy = GLOBAL_SPEED_Y * -1.4
       }
     }
   }
@@ -101,28 +96,8 @@ class EnemySupply {
     return this.x + this.w >= 0
   }
 
-  isShooter() {
-    return this.isAShooter
-  }
-
-  isCollisable() {
-    return this.collisable
-  }
-
-  isSupply() {
-    return this.supply
-  }
-
-  isArmory() {
-    return this.armory
-  }
-
-  isWallker() {
-    return this.walker
-  }
-
-  isShoteable() {
-    return this.soteable
+  is(value) {
+    return this.params.includes(value)
   }
 
   stop() {
@@ -144,11 +119,12 @@ class EnemySupply {
     this.vy = 0.4
     this.xy = 0.04
 
-    this.collisable = false
+    this.params.push('die')
+
     this.tickDie = 1
 
     setTimeout(() => {
-      this.x = -this.w * 2
+      this.x = this._ctx.canvas.width + this.w
     }, 350)
   }
 

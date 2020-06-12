@@ -1,5 +1,5 @@
 class EnemyButterfly {
-  constructor(ctx, y, img, imgDie, player, isAShooter) {
+  constructor(ctx, y, img, imgDie, player) {
     this._ctx = ctx
 
     this.x = ctx.canvas.width
@@ -21,16 +21,9 @@ class EnemyButterfly {
     this.healt = 10
     this.points = 100
 
-    this.soteable = true
-    this.collisable = true
-    this.walker = false
-    this.supply = false
-    this.armory = false
+    this.params = ['shoteable', 'collisable', 'shooter']
 
     this.player = player
-
-    this.isAShooter = isAShooter
-
 
     // NOTE: frame are number sprites
     this.img.frames = 8
@@ -97,28 +90,8 @@ class EnemyButterfly {
     return this.x + this.w >= 0
   }
 
-  isShooter() {
-    return this.isAShooter
-  }
-
-  isCollisable() {
-    return this.collisable
-  }
-
-  isSupply() {
-    return this.supply
-  }
-
-  isArmory() {
-    return this.armory
-  }
-
-  isWallker() {
-    return this.walker
-  }
-
-  isShoteable() {
-    return this.soteable
+  is(value) {
+    return this.params.includes(value)
   }
 
   shotEnemy(enemy, player) {
@@ -136,14 +109,13 @@ class EnemyButterfly {
   }
 
   die() {
-    this.vy = 0.4
-    this.xy = 0.04
-
-    this.collisable = false
+    this.params.push('die')
     this.tickDie = 1
 
+    this.vy = 0.4
+    this.xy = 0.04
     setTimeout(() => {
-      this.x = -this.w * 2
+      this.x = this._ctx.canvas.width + this.w
     }, 350)
   }
 

@@ -3,7 +3,7 @@ class Player {
     this._ctx = ctx
     this.tick = 0
 
-    this.x = this._ctx.canvas.width / 4
+    this.x = -500
 
     this._img = img
     this._imgM = imgMotor
@@ -13,7 +13,7 @@ class Player {
 
     this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
 
-    this.vx = 0
+    this.vx = 10
     this.vy = 0
 
 
@@ -24,13 +24,16 @@ class Player {
     this._img.frameIndex = 2
     this._imgM.frameIndex = 0
 
-    this.supply = false
+    this.params = ['player', 'respawn']
+
     this.lives = 3
     this.damage = 0
     this.healt = 0
     this.points = -100
+
     this.tick = 0
     this.tickRight = 0
+    this.tickRespawn = 1
 
   }
 
@@ -84,8 +87,7 @@ class Player {
     if (this.y <= 0) {
       this.y = 0
     }
-    if (this.x <= 0) {
-      this.vx = 0
+    if (this.tickRespawn !== 1 && this.x <= 0) {
       this.x = 0
     }
     if (this.x >= this._ctx.canvas.width - this.w) {
@@ -93,16 +95,33 @@ class Player {
       this.x = this._ctx.canvas.width - this.w
     }
 
+    if (this.tickRespawn === 1 && this.x >= this._ctx.canvas.width / 3) {
+      this.respawn()
+      this.vx = 0
+      this.tickRespawn = 0
+    }
+
   }
   respawn() {
-    console.log('Im respawn now')
+    this.params.push('shoteable')
+    this.params.push('collisable')
+    this.params = this.params.filter(param => param !== 'respawn')
   }
   die() {
-    if (this.lives-- < 1) {
-      console.log('Game over')
-      return true
+    if (this.lives-- <= 0) {
+      this.params.push('die')
+      console.log('die');
     } else {
-      this.respawn()
+      this.params.push('respawn')
+      this.params = this.params.filter(param => param !== 'shoteable')
+      this.params = this.params.filter(param => param !== 'collisable')
+      console.log('respawn');
+      setTimeout(() => {
+        this.tickRespawn = 1
+        this.x = -500
+        this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
+        this.vx = 10
+      }, 500)
     }
   }
 
@@ -134,7 +153,8 @@ class Player {
       this.tick = 0
     }
   }
-  isSupply() {
-    return this.supply
+
+  is(value) {
+    return this.params.includes(value)
   }
 }

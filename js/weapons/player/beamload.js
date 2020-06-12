@@ -46,6 +46,7 @@ class BeamLoad {
   play() {
     this.tick = 1
   }
+
   stop() {
     this.tick = 0
     this.img.frameIndex = 0

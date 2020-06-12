@@ -13,14 +13,9 @@ class EnemyGunner {
     this.tick = 0
     this.tickMove = 0
 
-    this.soteable = true
-    this.collisable = true
-    this.walker = true
-    this.supply = false
-    this.armory = false
+    this.params = ['shoteable', 'collisable', 'shooter', 'walker']
 
-
-    this.healt = 100
+    this.healt = 300
 
     this.img = new Image()
     this.img.src = '../img/sprites/enemy-gunner.png'
@@ -75,31 +70,16 @@ class EnemyGunner {
     return this.x + this.w >= 0
   }
 
-  isCollisable() {
-    return this.collisable
+  is(value) {
+    return this.params.includes(value)
   }
 
-  isSupply() {
-    return this.supply
-  }
-
-  isArmory() {
-    return this.armory
-  }
-
-  isWallker() {
-    return this.walker
-  }
-
-  isShoteable() {
-    return this.soteable
-  }
   _animate() {
-    // TODO: when Shot and is floor animate
     if (this.tick++ === 15) {
       this.tick = 0
     }
   }
+
   _shot() {
     console.log('Hello im gunner and killYUONoooow')
   }

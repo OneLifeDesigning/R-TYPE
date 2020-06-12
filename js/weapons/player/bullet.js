@@ -14,6 +14,9 @@ class Bullet {
 
     this.tickAnimation = 0
     this.tickStart = 0
+
+    this.params = ['collisable', 'bullet']
+
     this.damage = 10
     this.healt = 100
 
@@ -68,11 +71,12 @@ class Bullet {
     if (this.healt <= 0) {
       this.healt = 100
     }
+    this.x = this._ctx.canvas.width + this.w
   }
 
 
-  isCollisable() {
-    return this.collisable
+  is(value) {
+    return this.params.includes(value)
   }
 
   isFixed() {

@@ -29,12 +29,14 @@ class EnemiesShot {
     this.vy = 1
 
     this.damage = 100
+    this.healt = 0
 
-    this.supply = false
-    this.collisable = true
+    this.params = ['collisable']
+
   }
 
   die() {
+    this.params.push('die')
     this.x = this._ctx.canvas.width + this.w
   }
 
@@ -91,11 +93,8 @@ class EnemiesShot {
     return this.x <= this._ctx.canvas.width
   }
 
-  isCollisble() {
-    return this.collisable
+  is(value) {
+    return this.params.includes(value)
   }
 
-  isSupply() {
-    return this.supply
-  }
 }

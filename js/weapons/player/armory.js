@@ -1,5 +1,5 @@
 class Armory {
-  constructor(ctx, img, x, y, isAShooter) {
+  constructor(ctx, img, x, y) {
     this._ctx = ctx
     this.x = x
     this.y = y
@@ -12,15 +12,7 @@ class Armory {
     this.vx = GLOBAL_SPEED_X * -1
     this.vy = 0
 
-    this.soteable = false
-    this.collisable = true
-    this.walker = false
-    this.supply = false
-    this.armory = true
-    this.points = 0
-
-    this.isAShooter = isAShooter
-
+    this.params = ['collisable', 'armory']
 
     // NOTE: frame are number sprites
     this.img.frames = 1
@@ -43,39 +35,22 @@ class Armory {
   }
 
   die() {
-    this.collisable = false
-    this.x = -this.w * 2
+    this.params.push('die')
+
+    setTimeout(() => {
+      this.x = this._ctx.canvas.width + this.w
+    }, 350)
   }
 
   move() {
     this.x += this.vx
   }
 
-  isShooter() {
-    return this.isAShooter
-  }
-
   isVisible() {
     return this.x + this.w >= 0
   }
 
-  isCollisable() {
-    return this.collisable
-  }
-
-  isSupply() {
-    return this.supply
-  }
-
-  isArmory() {
-    return this.armory
-  }
-
-  isWallker() {
-    return this.walker
-  }
-
-  isShoteable() {
-    return this.soteable
+  is(value) {
+    return this.params.includes(value)
   }
 }

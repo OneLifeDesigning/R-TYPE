@@ -11,6 +11,8 @@ class Shot {
     this.img.src = './img/sprites/weapon-shot.png'
 
     this.tick = 0
+
+    this.healt = 0
     this.damage = 10
 
     // NOTE: frame are number sprites
@@ -20,11 +22,12 @@ class Shot {
 
     this.vx = 10
 
-    this.collisable = true
+    this.params = ['collisable']
 
   }
 
   die() {
+    this.params.push('die')
     this.x = this._ctx.canvas.width + this.w
   }
 
@@ -61,8 +64,7 @@ class Shot {
     return this.x <= this._ctx.canvas.width
   }
 
-  isCollisable() {
-    return this.collisable
-
+  is(value) {
+    return this.params.includes(value)
   }
 }
