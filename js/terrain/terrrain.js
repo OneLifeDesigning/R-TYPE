@@ -47,5 +47,4 @@ class Terrain {
   is(value) {
     return this.params.includes(value)
   }
-
 }

@@ -112,7 +112,6 @@ class Player {
   die() {
     if (this.lives-- <= 0) {
       this.params.push('die')
-      console.log('die');
     } else {
       this.params.push('respawn')
       this.params = this.params.filter(param => param !== 'killable')

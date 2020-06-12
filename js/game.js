@@ -17,6 +17,7 @@ class Game {
     this._terrainTop = []
     this._enemiesAll = []
     this._enemiesShots = []
+    this._enemiesExplosions = []
     this._playerShots = []
 
     this.damage = 0
@@ -128,9 +129,7 @@ class Game {
       return tB.isVisible()
     })
     this._enemiesAll = this._enemiesAll.filter(enemy => {
-      if (enemy.is('die') === false) {
-        return enemy.isVisible()
-      }
+      return enemy.isVisible()
     })
     this._enemiesShots = this._enemiesShots.filter(eShots => {
       if (eShots.is('die') === false) {
