@@ -114,12 +114,10 @@ class Player {
   die() {
     if (this.lives-- <= 0) {
       this.params.push('die')
-      console.log('die');
     } else {
       this.params.push('respawn')
       this.params = this.params.filter(param => param !== 'killable')
       this.params = this.params.filter(param => param !== 'collisable')
-      console.log('respawn');
       setTimeout(() => {
         this.tickRespawn = 1
         this.x = -500

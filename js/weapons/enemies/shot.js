@@ -95,6 +95,7 @@ class EnemiesShot {
     }
   }
   die() {
+    this.params = this.params.filter(param => param !== 'collisable')
     this.params.push('die')
     this.x = 0 - this.w
     this.y = 0 - this.h

@@ -261,7 +261,6 @@ class Game {
 
 
   _resolveCollisionPltoEnemy(object, enemy) {
-    console.log('hit');
 
     if (object.is('player')) {
       this._interface.lives--
@@ -271,6 +270,9 @@ class Game {
       enemy.die()
       this._interface.score += enemy.points
       if (object.is('bullet')) {
+        if (object.healt <= 0) {
+          object.die()
+        }
         object.healt -= enemy.damage
       }
     } else {

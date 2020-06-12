@@ -105,12 +105,12 @@ class EnemyButterfly {
   }
 
   die() {
+    this.params = this.params.filter(param => param !== 'collisable')
     this.tickDie = 1
     this.vy = 0.4
     this.xy = 0.04
-    this.params.push('die')
-
     setTimeout(() => {
+      this.params.push('die')
       this.x = 0 - this.w * 100
       this.vx = 0
     }, 350)

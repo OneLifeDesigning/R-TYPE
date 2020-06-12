@@ -67,13 +67,15 @@ class Bullet {
   }
 
   die() {
-    this.healt -= 1
-    if (this.healt <= 0) {
-      this.healt = 100
-    }
-    this.x = 0 - this.w
-    this.vx = 0
-    this.vy = 0
+    this.params = this.params.filter(param => param !== 'collisable')
+    this.tickDie = 1
+    this.vy = 0.4
+    this.xy = 0.04
+    setTimeout(() => {
+      this.params.push('die')
+      this.x = 0 - this.w * 100
+      this.vx = 0
+    }, 350)
   }
 
 
