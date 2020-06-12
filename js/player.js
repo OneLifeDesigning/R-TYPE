@@ -27,7 +27,7 @@ class Player {
     this.params = ['player', 'respawn']
 
     this.lives = 3
-    this.damage = 0
+    this.damage = 10
     this.healt = 0
     this.points = -100
 
@@ -103,24 +103,26 @@ class Player {
 
   }
   respawn() {
-    this.params.push('shoteable')
+    this.typeAnimation = 'right'
+    this.params.push('killable')
     this.params.push('collisable')
     this.params = this.params.filter(param => param !== 'respawn')
   }
+
   die() {
     if (this.lives-- <= 0) {
       this.params.push('die')
       console.log('die');
     } else {
       this.params.push('respawn')
-      this.params = this.params.filter(param => param !== 'shoteable')
+      this.params = this.params.filter(param => param !== 'killable')
       this.params = this.params.filter(param => param !== 'collisable')
       console.log('respawn');
       setTimeout(() => {
         this.tickRespawn = 1
         this.x = -500
         this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
-        this.vx = 10
+        this.vx = 7
       }, 500)
     }
   }

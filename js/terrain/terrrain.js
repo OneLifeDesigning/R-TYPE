@@ -14,6 +14,8 @@ class Terrain {
 
     this.vx = GLOBAL_SPEED_X * -2
 
+    this.params = ['collisable']
+
     this.collisable = false
   }
 
@@ -42,8 +44,8 @@ class Terrain {
     return this.x + this.w >= 0
   }
 
-  isCollisable() {
-    return this.collisable
+  is(value) {
+    return this.params.includes(value)
   }
 
 }

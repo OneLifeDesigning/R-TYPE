@@ -36,10 +36,7 @@ class Armory {
 
   die() {
     this.params.push('die')
-
-    setTimeout(() => {
-      this.x = this._ctx.canvas.width + this.w
-    }, 350)
+    this.x = 0 - this.w
   }
 
   move() {

@@ -19,9 +19,10 @@ class EnemyButterfly {
     this.imgDie = imgDie
 
     this.healt = 10
+
     this.points = 100
 
-    this.params = ['shoteable', 'collisable', 'shooter']
+    this.params = ['killable', 'collisable', 'shooter']
 
     this.player = player
 
@@ -79,7 +80,7 @@ class EnemyButterfly {
         this.tick = 0
       }
     } else {
-      if (this.tickDie++ >= 8) {
+      if (this.tickDie++ >= 10) {
         this._animateDie()
         this.tickDie = 1
       }
@@ -102,20 +103,15 @@ class EnemyButterfly {
     )
   }
 
-  stop() {
-    this.vx = 0
-    this.vy = 0
-    this.imgDie.frameIndex = 0
-  }
-
   die() {
-    this.params.push('die')
     this.tickDie = 1
-
     this.vy = 0.4
     this.xy = 0.04
+
     setTimeout(() => {
-      this.x = this._ctx.canvas.width + this.w
+      this.params.push('die')
+      this.x = 0 - this.w * 100
+      this.vx = 0
     }, 350)
   }
 
@@ -127,7 +123,7 @@ class EnemyButterfly {
 
   _animateDie() {
     if (this.imgDie.frameIndex++ >= 6) {
-      this.imgDie.frameIndex = 0
+      this.imgDie.frameIndex = 7
     }
   }
 

@@ -13,7 +13,7 @@ class EnemyGunner {
     this.tick = 0
     this.tickMove = 0
 
-    this.params = ['shoteable', 'collisable', 'shooter', 'walker']
+    this.params = ['killable', 'collisable', 'shooter', 'walker']
 
     this.healt = 300
 
@@ -80,7 +80,19 @@ class EnemyGunner {
     }
   }
 
-  _shot() {
-    console.log('Hello im gunner and killYUONoooow')
+  die() {
+    this.params.push('die')
+    this.tickDie = 1
+
+    this.vy = 0.4
+    this.xy = 0.04
+    setTimeout(() => {
+      this.x = 0 - this.w
+      this.vx = 0
+    }, 350)
   }
+
+  // _shot() {
+  //   console.log('Hello im gunner and killYUONoooow')
+  // }
 }

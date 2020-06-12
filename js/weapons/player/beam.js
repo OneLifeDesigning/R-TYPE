@@ -15,6 +15,10 @@ class BeamShot extends Shot {
     this.img.framesY = 5
 
     this.ranges = [20, 40, 60, 80, 100]
+
+    this.params = ['collisable']
+
+
     // NOTE: position actual "array"
     this.img.frameIndexX = 0
     this.img.frameIndexY = this.findClosest(this.ranges, this.damage)
@@ -60,13 +64,21 @@ class BeamShot extends Shot {
       this._animate()
       this.tick = 0
     }
+    if (this.x >= this._ctx.canvas.width + this.w || this.x <= 0 - this.w || this.y >= this._ctx.canvas.height + this.h || this.Y <= 0 - this.h) {
+      this.die()
+    }
   }
 
+
+
   die() {
-    this.x = this._ctx.canvas.width + this.w
+    this.params.push('die')
+    this.x = this._ctx.canvas.width + this.w + 10
+    this.vx = 0
   }
 
   isVisible() {
-    return this.x <= this._ctx.canvas.width
+    return this.x <= 0
   }
+
 }

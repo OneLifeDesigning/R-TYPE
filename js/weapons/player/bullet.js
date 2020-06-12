@@ -71,7 +71,9 @@ class Bullet {
     if (this.healt <= 0) {
       this.healt = 100
     }
-    this.x = this._ctx.canvas.width + this.w
+    this.x = 0 - this.w
+    this.vx = 0
+    this.vy = 0
   }
 
 

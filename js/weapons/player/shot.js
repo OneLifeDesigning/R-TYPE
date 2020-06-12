@@ -13,6 +13,7 @@ class Shot {
     this.tick = 0
 
     this.healt = 0
+
     this.damage = 10
 
     // NOTE: frame are number sprites
@@ -22,13 +23,14 @@ class Shot {
 
     this.vx = 10
 
-    this.params = ['collisable']
+    this.params = ['collisable', 'shot']
 
   }
 
   die() {
     this.params.push('die')
-    this.x = this._ctx.canvas.width + this.w
+    this.x = this._ctx.canvas.width + this.w + 10
+    this.vx = 0
   }
 
   draw() {
@@ -58,10 +60,13 @@ class Shot {
       this._animate()
       this.tick = 0
     }
+    if (this.x >= this._ctx.canvas.width + this.w || this.x <= 0 - this.w || this.y >= this._ctx.canvas.height + this.h || this.Y <= 0 - this.h) {
+      this.die()
+    }
   }
 
   isVisible() {
-    return this.x <= this._ctx.canvas.width
+    return this.x <= 0
   }
 
   is(value) {

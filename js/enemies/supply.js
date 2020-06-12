@@ -19,7 +19,7 @@ class EnemySupply {
     this.img = img
     this.imgDie = imgDie
 
-    this.params = ['shoteable', 'collisable', 'walker', 'supply']
+    this.params = ['killable', 'collisable', 'walker', 'supply']
 
     this.points = 0
 
@@ -118,13 +118,12 @@ class EnemySupply {
   die() {
     this.vy = 0.4
     this.xy = 0.04
-
-    this.params.push('die')
-
     this.tickDie = 1
 
     setTimeout(() => {
-      this.x = this._ctx.canvas.width + this.w
+      this.params.push('die')
+      this.x = 0 - this.w
+      this.vx = 0
     }, 350)
   }
 

@@ -5,6 +5,9 @@ class EnemiesShot {
     this.shooter = shooter
     this.player = player
 
+    this.playerCenter = this.getCenter(this.shooter)
+    this.enemyCenter = this.getCenter(this.player)
+
     this.x = Number(this.shooter.x)
     this.y = Number(this.shooter.y)
 
@@ -23,41 +26,32 @@ class EnemiesShot {
     this.img.frameIndexX = 1
     this.img.frameIndexY = 0
 
-    // this.vx = Number(this.calctarget(this.shooter, this.player)[0])
-    // this.vy = Number(this.calctarget(this.shooter, this.player)[1])
-    this.vx = 1
-    this.vy = 1
+    this.angle = this.calcAngle(this.playerCenter, this.enemyCenter)
+    this.angle = this.angle <= 1 ? 1 : this.angle
+    this.vx = this.angle
+    this.vy = this.angle
 
     this.damage = 100
     this.healt = 0
 
-    this.params = ['collisable']
+    this.params = ['collisable', 'shot']
 
   }
 
-  die() {
-    this.params.push('die')
-    this.x = this._ctx.canvas.width + this.w
+
+
+  getCenter(ele) {
+    return {
+      x: ele.x + ele.w / 2,
+      y: ele.y + ele.h / 2
+    }
   }
 
-  // getCenter(ele) {
-  //   return {
-  //     x: ele.x + ele.w / 2,
-  //     y: ele.y + ele.h / 2
-  //   }
-  // }
-
-  // calctarget(pl, ene) {
-  //   const playerCenter = this.getCenter(pl)
-  //   const enemyCenter = this.getCenter(ene)
-  //   const dx = playerCenter.x - enemyCenter.x
-  //   const dy = playerCenter.y - enemyCenter.y
-
-  //   const fangle = Math.sqrt(dx * dx + dy * dy)
-  //   const velx = (Math.cos(fangle) * 1).toFixed(4)
-  //   const vely = (Math.sin(fangle) * 1).toFixed(4)
-  //   return [velx, vely]
-  // }
+  calcAngle(pl, ene) {
+    const dx = ene.x > pl.x ? ene.x - pl.x : pl.x - ene.x
+    const dy = ene.y > pl.y ? ene.y - pl.y : pl.y - ene.y
+    return Math.atan2(dx, dy)
+  }
 
   draw() {
     this._ctx.drawImage(
@@ -80,17 +74,36 @@ class EnemiesShot {
   }
 
   move() {
-    this.x += this.vx
-    this.y += this.vy
+    if (this.enemyCenter.x > this.playerCenter.x) {
+      this.x += this.vx
+    } else {
+      this.x -= this.vx
+    }
+    if (this.enemyCenter.y > this.playerCenter.y) {
+      this.y += this.vy
+    } else {
+      this.y -= this.vy
+    }
 
     if (this.tick++ === 20) {
       this._animate()
       this.tick = 0
     }
+
+    if (this.x >= this._ctx.canvas.width + this.w || this.x <= 0 - this.w || this.y >= this._ctx.canvas.height + this.h || this.Y <= 0 - this.h) {
+      this.die()
+    }
+  }
+  die() {
+    this.params.push('die')
+    this.x = 0 - this.w
+    this.y = 0 - this.h
+    this.vx = 0
+    this.vy = 0
   }
 
   isVisible() {
-    return this.x <= this._ctx.canvas.width
+    return this.x <= 0
   }
 
   is(value) {
