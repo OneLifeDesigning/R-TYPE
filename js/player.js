@@ -143,7 +143,10 @@ class Player {
   }
   _animateMotor(typeAnimation) {
     if (this.tick++ >= 10) {
-      if ((typeAnimation === 'up' || typeAnimation === 'default' || typeAnimation === 'left') && this._imgM.frameIndex++ >= 5) {
+      if (typeAnimation === 'left') {
+        this._imgM.frameIndex = 5
+      }
+      if ((typeAnimation === 'up' || typeAnimation === 'default') && this._imgM.frameIndex++ >= 5) {
         this._imgM.frameIndex = 4
       }
       if (typeAnimation === 'down' && this._imgM.frameIndex++ >= 7) {
