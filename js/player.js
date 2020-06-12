@@ -98,14 +98,16 @@ class Player {
     if (this.tickRespawn === 1 && this.x >= this._ctx.canvas.width / 3) {
       this.respawn()
       this.vx = 0
+      setTimeout(() => {
+        this.params.push('killable')
+        this.params.push('collisable')
+      }, 1000)
       this.tickRespawn = 0
     }
 
   }
   respawn() {
     this.typeAnimation = 'right'
-    this.params.push('killable')
-    this.params.push('collisable')
     this.params = this.params.filter(param => param !== 'respawn')
   }
 

@@ -70,7 +70,7 @@ class Game {
   _move() {
     // this._checkShots()
     // this._checkRuteEnemies()
-    // this._checkRutePlayer()
+    this._checkRutePlayer()
     this._bg.move()
     this._bgPlanet.move()
     // if (this._bullet) {
@@ -184,75 +184,76 @@ class Game {
   //   })
   // }
 
-  // _checkRutePlayer() {
-  //   this._checkCollisionsAnyWhidtTerrain(this._terrainTop, this._player)
-  //   this._checkCollisionsAnyWhidtTerrain(this._terrainBottom, this._player)
+  _checkRutePlayer() {
+    this._checkCollisionsAnyWhidtTerrain(this._terrainTop, this._player)
+    this._checkCollisionsAnyWhidtTerrain(this._terrainBottom, this._player)
 
-  //   if (this._bullet && (this._checkCollisions(this._bullet, this._terrainBottom) || this._checkCollisions(this._bullet, this._terrainTop) || this._checkCollisions(this._bullet, this._player))) {
-  //     this._bullet.toFixed()
-  //   }
-  //   this._enemiesAll.forEach(enemy => {
-  //     if (this._checkCollisions(this._player, enemy)) {
-  //       this._resolveCollision(this._player, enemy)
-  //     }
-  //     if (this._bullet) {
-  //       if (this._checkCollisions(this._bullet, enemy)) {
-  //         this._resolveCollision(this._bullet, enemy)
-  //       }
-  //     }
-  //   })
-  // }
+    if (this._bullet && (this._checkCollisions(this._bullet, this._terrainBottom) || this._checkCollisions(this._bullet, this._terrainTop) || this._checkCollisions(this._bullet, this._player))) {
+      this._bullet.toFixed()
+    }
+    this._enemiesAll.forEach(enemy => {
+      if (this._checkCollisions(this._player, enemy)) {
+        this._resolveCollision(this._player, enemy)
+      }
+      if (this._bullet) {
+        if (this._checkCollisions(this._bullet, enemy)) {
+          this._resolveCollision(this._bullet, enemy)
+        }
+      }
+    })
+  }
 
-  // _checkRuteEnemies() {
-  //   this._enemiesAll.forEach(enemy => {
-  //     this._checkCollisionsAnyWhidtTerrain(this._terrainTop, enemy)
-  //     this._checkCollisionsAnyWhidtTerrain(this._terrainBottom, enemy)
-  //   })
-  // }
+  _checkRuteEnemies() {
+    this._enemiesAll.forEach(enemy => {
+      this._checkCollisionsAnyWhidtTerrain(this._terrainTop, enemy)
+      this._checkCollisionsAnyWhidtTerrain(this._terrainBottom, enemy)
+    })
+  }
 
-  // _checkCollisions(objectOne, objectTwo, fineTuning) {
-  //   const colisionX = objectOne.x + objectOne.w - (fineTuning ? fineTuning : 10) >= objectTwo.x && objectOne.x <= objectTwo.x + (objectTwo.w - (fineTuning ? fineTuning : 10))
-  //   const colisionY = objectOne.y + objectOne.h - (fineTuning ? fineTuning : 10) >= objectTwo.y && objectOne.y <= objectTwo.y + (objectTwo.h - (fineTuning ? fineTuning : 15))
-  //   if (colisionX && colisionY) {
-  //     return true
-  //   }
-  // }
-  // _checkCollisionsAnyWhidtTerrain(terrain, object) {
-  //   terrain.forEach(terrainEl => {
-  //     if (this._checkCollisions(object, terrainEl)) {
-  //       this._resolveCollision(object, terrainEl)
-  //     }
-  //   })
-  // }
+  // COLLISIONS
+  _checkCollisions(objectOne, objectTwo, fineTuning) {
+    const colisionX = objectOne.x + objectOne.w - (fineTuning ? fineTuning : 10) >= objectTwo.x && objectOne.x <= objectTwo.x + (objectTwo.w - (fineTuning ? fineTuning : 10))
+    const colisionY = objectOne.y + objectOne.h - (fineTuning ? fineTuning : 10) >= objectTwo.y && objectOne.y <= objectTwo.y + (objectTwo.h - (fineTuning ? fineTuning : 15))
+    if (colisionX && colisionY) {
+      return true
+    }
+  }
+  _checkCollisionsAnyWhidtTerrain(terrain, object) {
+    terrain.forEach(terrainEl => {
+      if (this._checkCollisions(object, terrainEl)) {
+        this._resolveCollision(object, terrainEl)
+      }
+    })
+  }
 
-  // _resolveCollision(trigger, fired) {
-  //   if (trigger.is('collisable') && fired.is('collisable')) {
-  //     if (trigger.is('walker')) {
-  //       trigger.walk()
-  //     }
-  //     if (trigger.is('player') && !fired.is('armory') && !fired.is('armory')) {
-  //       this._interface.lives--
-  //       trigger.die()
-  //       if (trigger.damage >= fired.healt) {
-  //         fired.die()
-  //         if (fired.points) {
-  //           this._interface.score += fired.points
-  //         }
-  //       } else {
-  //         fired.healt -= trigger.damage
-  //       }
+  _resolveCollision(trigger, fired) {
+    if (trigger.is('collisable') && fired.is('collisable')) {
+      if (trigger.is('walker')) {
+        trigger.walk()
+      }
+      if (trigger.is('player') && !fired.is('armory') && !fired.is('armory')) {
+        this._interface.lives--
+        trigger.die()
+        if (trigger.damage >= fired.healt) {
+          fired.die()
+          if (fired.points) {
+            this._interface.score += fired.points
+          }
+        } else {
+          fired.healt -= trigger.damage
+        }
 
-  //       if (fired.is('supply')) {
-  //         fired.die()
-  //         this._enemiesAll.push(new Armory(this._ctx, IMG_ARMORY_PACKAGE_01, fired.x, fired.y))
-  //       }
-  //     } else {
-  //       fired.die()
-  //       this._bullet = new Bullet(this._ctx, this._player, IMG_WEAPON_BULLET)
-  //     }
-  //   }
-  // }
-
+        if (fired.is('supply')) {
+          fired.die()
+          this._enemiesAll.push(new Armory(this._ctx, IMG_ARMORY_PACKAGE_01, fired.x, fired.y))
+        }
+      } else {
+        fired.die()
+        this._bullet = new Bullet(this._ctx, this._player, IMG_WEAPON_BULLET)
+      }
+    }
+  }
+  // SHOOTS
   // _resolveHits(trigger, fired) {
   //   if (fired.is('player')) {
   //     trigger.die()
