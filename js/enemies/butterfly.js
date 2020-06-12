@@ -19,6 +19,7 @@ class EnemyButterfly {
     this.imgDie = imgDie
 
     this.healt = 10
+    this.damage = 10
 
     this.points = 100
 
@@ -107,9 +108,9 @@ class EnemyButterfly {
     this.tickDie = 1
     this.vy = 0.4
     this.xy = 0.04
+    this.params.push('die')
 
     setTimeout(() => {
-      this.params.push('die')
       this.x = 0 - this.w * 100
       this.vx = 0
     }, 350)
