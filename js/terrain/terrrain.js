@@ -22,7 +22,7 @@ class Terrain {
 
   draw() {
     if (this._img.src) {
-      if (this.isTop === 0) {
+      if (!this.isTop) {
         this._ctx.drawImage(this._img, this.x, this.y, this.w, this.h)
       } else {
         this._ctx.save()
@@ -34,7 +34,7 @@ class Terrain {
   }
 
   move() {
-    if (this.isTop === 1) {
+    if (this.isTop) {
       this.y = 0
     }
     this.x += this.vx

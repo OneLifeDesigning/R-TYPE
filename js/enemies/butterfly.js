@@ -1,5 +1,5 @@
 class EnemyButterfly {
-  constructor(ctx, y, img, imgDie, player) {
+  constructor(ctx, y, img, imgDie) {
     this._ctx = ctx
 
     this.x = ctx.canvas.width
@@ -24,8 +24,6 @@ class EnemyButterfly {
     this.points = 100
 
     this.params = ['killable', 'collisable', 'shooter']
-
-    this.player = player
 
     // NOTE: frame are number sprites
     this.img.frames = 8
@@ -81,7 +79,7 @@ class EnemyButterfly {
         this.tick = 0
       }
     } else {
-      if (this.tickDie++ >= 10) {
+      if (this.tickDie++ >= 6) {
         this._animateDie()
         this.tickDie = 1
       }
@@ -105,15 +103,16 @@ class EnemyButterfly {
   }
 
   die() {
-    this.params = this.params.filter(param => param !== 'collisable')
     this.tickDie = 1
+    this.params = this.params.filter(param => param !== 'killable')
+    this.params = this.params.filter(param => param !== 'collisable')
     this.vy = 0.4
     this.xy = 0.04
     setTimeout(() => {
       this.params.push('die')
       this.x = 0 - this.w * 100
       this.vx = 0
-    }, 350)
+    }, 320)
   }
 
   _animate() {

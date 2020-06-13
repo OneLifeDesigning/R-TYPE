@@ -16,6 +16,9 @@ class EnemySupply {
     this.tickMove = 0
     this.tickDie = 0
 
+    this.healt = 10
+    this.damage = 10
+
     this.img = img
     this.imgDie = imgDie
 
@@ -80,7 +83,7 @@ class EnemySupply {
       this.tickFly = 1
     }
 
-    if (this.x <= this._ctx.canvas.width / 2) {
+    if (this.x <= this._ctx.canvas.width - this._ctx.canvas.width / 3) {
       this._animateToFly()
       this.vx = GLOBAL_SPEED_X / -2
       this.vy = GLOBAL_SPEED_Y * -0.9
@@ -108,17 +111,27 @@ class EnemySupply {
 
   walk() {
     this.vx = GLOBAL_SPEED_X / -2
-    this.y += -10
+    this.y += -5
     this.vy = 0
     this.img.frameIndex = 3
     this.tickFly = 0
     this.tickWalk = 1
   }
 
+  toFlyDown() {
+    if (this.tickWalk === 1) {
+      this.vy = GLOBAL_SPEED_Y
+      this.tickFly = 1
+      this.tickWalk = 0
+    }
+  }
+
   die() {
     this.vy = 0.4
     this.xy = 0.04
     this.tickDie = 1
+    this.params = this.params.filter(param => param !== 'killable')
+    this.params = this.params.filter(param => param !== 'collisable')
 
     setTimeout(() => {
       this.params.push('die')
