@@ -109,7 +109,7 @@ class EnemySupply {
     this.imgDie.frameIndex = 0
   }
 
-  walk() {
+  doTerreain() {
     this.vx = GLOBAL_SPEED_X / -2
     this.y += -5
     this.vy = 0
@@ -117,13 +117,9 @@ class EnemySupply {
     this.tickFly = 0
     this.tickWalk = 1
   }
-
-  toFlyDown() {
-    if (this.tickWalk === 1) {
-      this.vy = GLOBAL_SPEED_Y
-      this.tickFly = 1
-      this.tickWalk = 0
-    }
+  undoTerrain() {
+    this.tickFly = 1
+    this.tickWalk = 0
   }
 
   die() {
@@ -134,7 +130,9 @@ class EnemySupply {
     this.params = this.params.filter(param => param !== 'collisable')
 
     setTimeout(() => {
-      this.params.push('die')
+      if (this.params.indexOf('die') === -1) {
+        this.params.push('die')
+      }
       this.x = 0 - this.w
       this.vx = 0
     }, 350)

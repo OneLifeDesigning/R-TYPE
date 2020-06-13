@@ -72,7 +72,9 @@ class Bullet {
     this.vy = 0.4
     this.xy = 0.04
     setTimeout(() => {
-      this.params.push('die')
+      if (this.params.indexOf('die') === -1) {
+        this.params.push('die')
+      }
       this.x = 0 - this.w * 100
       this.vx = 0
       this.healt = 100

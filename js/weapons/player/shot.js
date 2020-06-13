@@ -29,7 +29,9 @@ class Shot {
 
   die() {
     this.params = this.params.filter(param => param !== 'collisable')
-    this.params.push('die')
+    if (this.params.indexOf('die') === -1) {
+      this.params.push('die')
+    }
     this.x = this._ctx.canvas.width + this.w + 10
     this.vx = 0
   }

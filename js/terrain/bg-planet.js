@@ -5,7 +5,7 @@ class BgPlanet {
     this.x = this._ctx.canvas.width
     this.y = 0
 
-    this.vx = GLOBAL_SPEED_X / -15
+    this.vx = GLOBAL_SPEED_X / -8
 
 
     this.w = this._ctx.canvas.width

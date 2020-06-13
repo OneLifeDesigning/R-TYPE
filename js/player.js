@@ -108,9 +108,15 @@ class Player {
       this.respawn()
       this.vx = 0
       setTimeout(() => {
-        this.params.push('killable')
-        this.params.push('collisable')
         this.tickRespawn = 0
+      }, 500)
+      setTimeout(() => {
+        if (this.params.indexOf('killable') === -1) {
+          this.params.push('killable')
+        }
+        if (this.params.indexOf('collisable') === -1) {
+          this.params.push('collisable')
+        }
       }, 1500)
     }
 
@@ -123,9 +129,13 @@ class Player {
   die() {
     if (this.tickRespawn === 0) {
       if (this.lives-- <= 0) {
-        this.params.push('die')
+        if (this.params.indexOf('die') === -1) {
+          this.params.push('die')
+        }
       } else {
-        this.params.push('respawn')
+        if (this.params.indexOf('respawn') === -1) {
+          this.params.push('respawn')
+        }
         this.params = this.params.filter(param => param !== 'killable')
         this.params = this.params.filter(param => param !== 'collisable')
         setTimeout(() => {

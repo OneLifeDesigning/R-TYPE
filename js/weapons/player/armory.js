@@ -35,7 +35,9 @@ class Armory {
   }
 
   die() {
-    this.params.push('die')
+    if (this.params.indexOf('die') === -1) {
+      this.params.push('die')
+    }
     this.x = 0 - this.w
   }
 

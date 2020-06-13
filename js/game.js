@@ -4,6 +4,7 @@ class Game {
 
     this._timeLine = null
     this._timeEnemies = null
+    this._timeGunner = null
     this._timeSupply = null
     this.tickShot = 0
 
@@ -59,10 +60,10 @@ class Game {
     this._player.draw()
     this._weapon.draw()
     this._drawAndMoveTerrain()
-    this._drawAndMoveEnemies()
     this._drawAndMoveShots()
-    this._addEnemies()
+    this._drawAndMoveEnemies()
     this._addShotEnemies()
+    this._addEnemies()
     if (this._bullet) {
       this._checkRuteBullet()
       this._bullet.draw()
@@ -166,27 +167,42 @@ class Game {
     //   }
     // }
 
-    if (this._timeEnemies++ >= 100 && this._enemiesAll.length <= 4) {
+    // if (this._timeEnemies++ >= 100 && this._enemiesAll.length <= 4) {
+    //   this._enemiesAll.push(
+    //     new EnemyButterfly(
+    //       this._ctx,
+    //       this._randomNumber(
+    //         this.maxHeight - (this.maxHeight / 3)
+    //       ),
+    //       IMG_ENEMY_BUTTERFLY,
+    //       IMG_ENEMY_BUTTERFLY_EXPLOSION,
+    //       this._player,
+    //       Math.random() >= 0.5
+    //     )
+    //   )
+    //   this._timeEnemies = 0
+    // }
+    if (this._timeGunner++ >= 100 && this._enemiesAll.length <= 0) {
       this._enemiesAll.push(
-        new EnemyButterfly(
+        new EnemyGunner(
           this._ctx,
-          this._randomNumber(
-            this.maxHeight - (this.maxHeight / 3)
-          ),
-          IMG_ENEMY_BUTTERFLY,
-          IMG_ENEMY_BUTTERFLY_EXPLOSION,
-          this._player,
-          Math.random() >= 0.5
+          IMG_ENEMY_GUNNER,
+          IMG_ENEMY_GUNNER_MOTOR,
+          IMG_ENEMY_GUNNER_GHOST
         )
       )
-      this._timeEnemies = 0
+      this._timeGunner = 0
     }
   }
 
   _drawAndMoveEnemies() {
     this._enemiesAll.forEach(enemy => {
       enemy.draw()
-      enemy.move()
+      if (enemy.is('gunner')) {
+        enemy.move(this._player.x, this._player.y)
+      } else {
+        enemy.move()
+      }
     })
   }
 
@@ -211,7 +227,7 @@ class Game {
 
   _checkRuteEnemies() {
     this._enemiesAll.forEach(enemy => {
-      if (enemy.is('collisable')) {
+      if (!enemy.is('walker')) {
         this._checkCollisionsObjectWithTerrainArr(this._terrainTop, enemy)
         this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, enemy)
         if (this._player.is('collisable') && this._checkCollisionsObjToObject(this._player, enemy)) {
@@ -222,6 +238,8 @@ class Game {
             this._resolveCollisionPltoEnemy(this._bullet, enemy)
           }
         }
+      } else {
+        this._checkCollisionsWalkerWithTerrain(enemy)
       }
     })
   }
@@ -242,6 +260,14 @@ class Game {
       }
     })
   }
+  _checkCollisionsWalkerWithTerrain(object) {
+    if (this._terrainBottom.some(terrainEl => this._checkCollisionsObjToObject(object, terrainEl)) ||
+      this._terrainTop.some(terrainEl => this._checkCollisionsObjToObject(object, terrainEl))) {
+      object.doTerreain()
+    } else {
+      object.undoTerrain()
+    }
+  }
 
   // RESOLVE COLLISIONS
   _resolveCollisionsObjectWithTerrain(object, terrainTop) {
@@ -256,9 +282,6 @@ class Game {
       object.die()
     } else if (object.is('bullet')) {
       object.toFixed()
-      //  TODO: The boss arent collisable moveOtherPosition
-      // } else if (object.is('boss')) {
-      //   object.moveOtherPosition()
     } else {
       object.die()
     }
@@ -273,6 +296,9 @@ class Game {
       }
       if (object.damage >= enemy.healt) {
         enemy.die()
+        console.log(object.damage);
+        console.log(enemy.healt);
+
         if (object.is('bullet')) {
           this._interface.score += enemy.points * 5
           if (object.healt <= 1) {
@@ -295,9 +321,11 @@ class Game {
   // SHOOTS
   _addShotEnemies() {
     this._enemiesAll.forEach(enemy => {
-      if (Math.floor(Math.random() * Math.floor(100)) >= 99 && enemy.is('shooter') && enemy.isVisible() && this.tickShot++ >= 10) {
+      if (Math.floor(Math.random() * Math.floor(100)) >= 98 && enemy.is('shooter') && enemy.is('flyer') && enemy.isVisible() && this.tickShot++ >= 10) {
         this._enemiesShots.push(enemy.shotEnemy(enemy, this._player))
         this.tickShot = 0
+      } else if (enemy.is('gunner') && enemy.readyToShot()) {
+        this._enemiesShots.push(enemy.shotEnemy(enemy.x, enemy.y))
       }
     })
   }
@@ -312,21 +340,21 @@ class Game {
     this._enemiesShots.forEach(eS => {
       if (eS) {
         eS.draw()
-        eS.move()
+        eS.move(eS.shooter)
       }
     })
   }
 
   _checkShots() {
-    // this._playerShots.forEach(shotFromPlayer => {
-    //   this._enemiesAll.forEach(enemy => {
-    //     if (enemy.is('killable') && !enemy.is('armory') && this._checkCollisionsObjToObject(shotFromPlayer, enemy, 10)) {
-    //       this._resolveHits(shotFromPlayer, enemy)
-    //     }
-    //   })
-    //   this._checkCollisionsObjectWithTerrainArr(this._terrainTop, shotFromPlayer)
-    //   this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, shotFromPlayer)
-    // })
+    this._playerShots.forEach(shotFromPlayer => {
+      this._enemiesAll.forEach(enemy => {
+        if (enemy.is('killable') && !enemy.is('armory') && this._checkCollisionsObjToObject(shotFromPlayer, enemy, 10)) {
+          this._resolveHits(shotFromPlayer, enemy)
+        }
+      })
+      this._checkCollisionsObjectWithTerrainArr(this._terrainTop, shotFromPlayer)
+      this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, shotFromPlayer)
+    })
     this._enemiesShots.forEach(shotFromEnemy => {
       if (this._player.is('killable') && this._checkCollisionsObjToObject(this._player, shotFromEnemy, 10)) {
         this._resolveHits(shotFromEnemy, this._player)
@@ -343,6 +371,7 @@ class Game {
     if (shooted.is('player')) {
       shooted.die()
       shot.die()
+      this._interface.lives--
     } else {
       if (shot.damage <= shooted.healt) {
         shooted.healt -= shot.damage

@@ -40,6 +40,15 @@ IMG_SHOT_BEAM_LOAD.src = './img/sprites/weapon-beam-load.png'
 const IMG_ENEMY_BUTTERFLY = new Image()
 IMG_ENEMY_BUTTERFLY.src = './img/sprites/enemy-butterfly.png'
 
+const IMG_ENEMY_GUNNER = new Image()
+IMG_ENEMY_GUNNER.src = './img/sprites/enemy-gunner.png'
+
+const IMG_ENEMY_GUNNER_MOTOR = new Image()
+IMG_ENEMY_GUNNER_MOTOR.src = './img/sprites/enemy-gunner-motor.png'
+
+const IMG_ENEMY_GUNNER_GHOST = new Image()
+IMG_ENEMY_GUNNER_GHOST.src = './img/sprites/enemy-gunner-ghost.png'
+
 const IMG_ENEMY_BUTTERFLY_EXPLOSION = new Image()
 IMG_ENEMY_BUTTERFLY_EXPLOSION.src = './img/sprites/enemy-butterfly-explosion.png'
 

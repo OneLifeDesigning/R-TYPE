@@ -19,7 +19,7 @@ body,
 main {
   font-family: 'Pixeboy', 'ArcadeClassic';
   text-align: center;
-  background-color: #04c2f9;
+  background-color: #393e46;
   color: aqua;
   box-sizing: content-box;
   height: 100vh;
@@ -42,9 +42,9 @@ canvas {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('../img/backgrounds/bg-arcade.png');
+  /* background-image: url('../img/backgrounds/bg-arcade.png');
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center; */
 }
 
 .btn {
