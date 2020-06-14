@@ -3,7 +3,7 @@ class Shot {
     this._ctx = ctx
     this.x = x
     this.y = y
-
+    this.type = 'shotPlayer'
     this.w = this._ctx.canvas.width / 43
     this.h = (this.w / 4) * 3
 
@@ -22,18 +22,17 @@ class Shot {
     this.img.frameIndex = 0
 
     this.vx = 10
+    this.vy = 0
 
-    this.params = ['collisable', 'shot']
+    this.params = ['collisable', 'shot', 'shotPlayer']
 
   }
 
   die() {
-    this.params = this.params.filter(param => param !== 'collisable')
     if (this.params.indexOf('die') === -1) {
       this.params.push('die')
     }
-    this.x = this._ctx.canvas.width + this.w + 10
-    this.vx = 0
+    this.params = this.params.filter(param => param !== 'collisable')
   }
 
   draw() {
@@ -66,10 +65,6 @@ class Shot {
     if (this.x >= this._ctx.canvas.width + this.w || this.x <= 0 - this.w || this.y >= this._ctx.canvas.height + this.h || this.Y <= 0 - this.h) {
       this.die()
     }
-  }
-
-  isVisible() {
-    return this.x <= 0
   }
 
   is(value) {

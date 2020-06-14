@@ -34,8 +34,4 @@ class BgPlanet {
   isVisible() {
     return this.x + this.w >= 0
   }
-
-  isCollisable() {
-    return this.collisable
-  }
 }

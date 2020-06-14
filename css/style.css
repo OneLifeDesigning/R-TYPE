@@ -19,7 +19,6 @@ body,
 main {
   font-family: 'Pixeboy', 'ArcadeClassic';
   text-align: center;
-  background-color: #393e46;
   color: aqua;
   box-sizing: content-box;
   height: 100vh;
@@ -42,9 +41,8 @@ canvas {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  /* background-image: url('../img/backgrounds/bg-arcade.png');
-  background-repeat: no-repeat;
-  background-position: center; */
+  background-color: #000000;
+
 }
 
 .btn {
@@ -69,14 +67,51 @@ canvas {
 
 #interface {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  background-color: #000000;
-  height: 2.5rem;
-  padding: 0.3125rem;
-  margin-top: -10px;
+  background-color: #393e46;
+  padding: 0 0.3125rem 0.3125rem;
+  margin-top: -0.625rem;
 }
 
+#interface>div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 0.3125rem;
+}
+
+#interface>div:first-child {
+  margin-left: 0.625rem;
+}
+
+#interface>div>span {
+  margin-left: 0.625rem;
+  color: azure;
+}
+
+.progress {
+  margin-left: 0.625rem;
+  min-width: 200px;
+  border-radius: 0px;
+}
+
+.progress-bar {
+  background-color: aqua;
+}
+
+.lives img {
+  max-height: 25px;
+}
+
+.buttons {
+  align-items: flex-end;
+}
+
+.buttons a {
+  border-radius: 0px;
+  box-shadow: none;
+}
 
 .animate__animated.animate__backInRight {
   --animate-delay: 1s;

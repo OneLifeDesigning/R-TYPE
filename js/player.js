@@ -3,6 +3,8 @@ class Player {
     this._ctx = ctx
     this.tick = 0
 
+    this.type = 'player'
+
     this.x = -500
 
     this._img = img
@@ -74,7 +76,7 @@ class Player {
   move() {
     this.y += this.vy
     this.x += this.vx
-
+    this.params = this.params.filter(param => param !== 'reload')
     if (this.vy >= 0 && this.vy !== 0) {
       this._animate('down')
       this._animateMotor('down')
@@ -109,7 +111,7 @@ class Player {
       this.vx = 0
       setTimeout(() => {
         this.tickRespawn = 0
-      }, 500)
+      }, 300)
       setTimeout(() => {
         if (this.params.indexOf('killable') === -1) {
           this.params.push('killable')
@@ -117,7 +119,7 @@ class Player {
         if (this.params.indexOf('collisable') === -1) {
           this.params.push('collisable')
         }
-      }, 1500)
+      }, 1200)
     }
 
   }
@@ -127,8 +129,14 @@ class Player {
   }
 
   die() {
+    if (this.params.indexOf('reload') === -1) {
+      this.params.push('reload')
+    }
+    this.params = this.params.filter(param => param !== 'killable')
+    this.params = this.params.filter(param => param !== 'collisable')
+
     if (this.tickRespawn === 0) {
-      if (this.lives-- <= 0) {
+      if (this.lives <= 0) {
         if (this.params.indexOf('die') === -1) {
           this.params.push('die')
         }
@@ -136,14 +144,12 @@ class Player {
         if (this.params.indexOf('respawn') === -1) {
           this.params.push('respawn')
         }
-        this.params = this.params.filter(param => param !== 'killable')
-        this.params = this.params.filter(param => param !== 'collisable')
         setTimeout(() => {
           this.tickRespawn = 1
           this.x = -500
           this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
           this.vx = 7
-        }, 500)
+        }, 200);
       }
     }
   }

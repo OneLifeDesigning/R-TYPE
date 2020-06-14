@@ -3,15 +3,21 @@ class Game {
     this._ctx = ctx
 
     this._timeLine = null
-    this._timeEnemies = null
+    this._timeButterfy = null
     this._timeGunner = null
     this._timeSupply = null
-    this.tickShot = 0
+    this._tickShot = 0
+
+    this.music = new Audio('./sounds/theme.m4a')
+    this.music.volume = 0.2
+
+    this.soundsPlay = true
 
     this._bg = new Bg(this._ctx, LEVEL_1_IMG_BG_1)
     this._bgPlanet = new BgPlanet(this._ctx, LEVEL_1_IMG_BG_2)
-    this._player = new Player(this._ctx, IMG_PLAYER, IMG_PLAYER_FIRE_MOTOR, IMG_ENEMY_BUTTERFLY_EXPLOSION)
+    this._player = new Player(this._ctx, IMG_PLAYER, IMG_PLAYER_FIRE_MOTOR)
     this._weapon = new Weapon(this._ctx, this._player)
+
     this._bullet = null
 
     this._terrainBottom = []
@@ -19,6 +25,7 @@ class Game {
     this._enemiesAll = []
     this._enemiesShots = []
     this._playerShots = []
+    this._explosionsDies = []
 
     this.damage = 0
 
@@ -26,6 +33,7 @@ class Game {
     this.maxScore = MAX_SCORE[0][1]
 
     this._interface = new Interface(this.maxScore, this.damage)
+    this._interface.lives = this._player.lives
 
     this.maxHeight = this._ctx.canvas.height - 60
 
@@ -33,17 +41,18 @@ class Game {
   }
 
   start() {
+    this.music.play()
     this._addTerrain()
     this._timeLine = setInterval(() => {
       this._clear()
       this._draw()
       this._move()
+      this._interface.update()
     }, 1000 / 70)
   }
-  stop() {
-    setTimeout(() => {
-      this._timeLine = clearInterval(this._timeLine)
-    }, 500);
+
+  pause() {
+    this._timeLine = clearInterval(this._timeLine)
   }
 
   _clear() {
@@ -66,9 +75,11 @@ class Game {
     this._addEnemies()
     if (this._bullet) {
       this._checkRuteBullet()
+    }
+    if (this._bullet) {
       this._bullet.draw()
     }
-    this._interface.draw()
+    this._drawAndMoveExplosions()
   }
 
   _move() {
@@ -124,65 +135,73 @@ class Game {
   }
 
   _removeIfNotVisible() {
+    this._enemiesAll = this._enemiesAll.filter(enemy => {
+      if (!enemy.is('die') && enemy.isVisible()) {
+        return enemy
+      } else {
+        this._addExplosion(enemy)
+      }
+    })
+    this._enemiesShots = this._enemiesShots.filter(eShots => {
+      if (!eShots.is('die')) {
+        return eShots
+      } else {
+        this._addExplosion(eShots)
+      }
+    })
+    this._playerShots = this._playerShots.filter(pShots => {
+      if (!pShots.is('die')) {
+        return pShots
+      } else {
+        this._addExplosion(pShots)
+      }
+    })
     this._terrainTop = this._terrainTop.filter(oT => {
       return oT.isVisible()
     })
     this._terrainBottom = this._terrainBottom.filter(tB => {
       return tB.isVisible()
     })
-    this._enemiesAll = this._enemiesAll.filter(enemy => {
-      if (!enemy.is('die')) {
-        return enemy.isVisible()
+    this._explosionsDies = this._explosionsDies.filter(explosion => {
+      if (!explosion.is('end')) {
+        return explosion
       }
     })
-    this._enemiesShots = this._enemiesShots.filter(eShots => {
-      if (!eShots.is('die')) {
-        return eShots
-      }
-    })
-    this._playerShots = this._playerShots.filter(pShots => {
-      if (!pShots.is('die')) {
-        return pShots
-      }
-    })
-    if (this._bullet && this._bullet.is('die')) {
-      this._bullet = null
-      this._timeSupply = 0
-    }
   }
 
   // ENEMIES 
   _addEnemies() {
-    // if (!this._bullet && (this._timeSupply++ === 700)) {
-    //   this._enemiesAll.push(
-    //     new EnemySupply(
-    //       this._ctx,
-    //       this.maxHeight - (this.maxHeight / 3),
-    //       IMG_ENEMY_SUPPLY,
-    //       IMG_ENEMY_SUPPLY_EXPLOSION
-    //     )
-    //   )
-    //   if (MAX_TIME_LINE <= this._timeSupply) {
-    //     this._timeSupply = 0
-    //   }
-    // }
+    if (!this._bullet && this._timeSupply++ >= 700 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
+      this._enemiesAll.push(
+        new EnemySupply(
+          this._ctx,
+          this.maxHeight - (this.maxHeight / 3),
+          IMG_ENEMY_SUPPLY
+        )
+      )
+      this._timeSupply = 0
+    }
 
-    // if (this._timeEnemies++ >= 100 && this._enemiesAll.length <= 4) {
-    //   this._enemiesAll.push(
-    //     new EnemyButterfly(
-    //       this._ctx,
-    //       this._randomNumber(
-    //         this.maxHeight - (this.maxHeight / 3)
-    //       ),
-    //       IMG_ENEMY_BUTTERFLY,
-    //       IMG_ENEMY_BUTTERFLY_EXPLOSION,
-    //       this._player,
-    //       Math.random() >= 0.5
-    //     )
-    //   )
-    //   this._timeEnemies = 0
-    // }
-    if (this._timeGunner++ >= 100 && this._enemiesAll.length <= 0) {
+    if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 10) {
+      for (let i = 0; i < DIFICULTY; i++) {
+        this._enemiesAll.push(
+          new EnemyButterfly(
+            this._ctx,
+            this._randomNumber(
+              this._ctx.canvas.width / 2
+            ),
+            this._randomNumber(
+              this.maxHeight - (this.maxHeight / 3)
+            ),
+            IMG_ENEMY_BUTTERFLY,
+            this._player,
+            Math.random() >= 0.5
+          )
+        )
+      }
+      this._timeButterfy = 0
+    }
+    if (this._timeGunner++ >= 100 && !this._enemiesAll.some(enemy => enemy.is('gunner'))) {
       this._enemiesAll.push(
         new EnemyGunner(
           this._ctx,
@@ -213,6 +232,9 @@ class Game {
       this._checkCollisionsObjectWithTerrainArr(this._terrainTop, this._player)
       this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, this._player)
     }
+    if (this._player.is('reload')) {
+      this._addExplosion(this._player)
+    }
   }
 
   _checkRuteBullet() {
@@ -222,6 +244,11 @@ class Game {
       if (this._checkCollisionsObjToObject(this._bullet, this._player)) {
         this._bullet.toFixed()
       }
+    }
+    if (this._bullet && this._bullet.is('die')) {
+      this._addExplosion(this._bullet)
+      this._bullet = null
+      this._timeSupply = 0
     }
   }
 
@@ -239,6 +266,12 @@ class Game {
           }
         }
       } else {
+        if (enemy.is('supply') && this._checkCollisionsObjToObject(this._player, enemy)) {
+          this._resolveCollisionPltoEnemy(this._player, enemy)
+        }
+        if (enemy.is('gunner') && this._checkCollisionsObjToObject(this._player, enemy)) {
+          this._player.die()
+        }
         this._checkCollisionsWalkerWithTerrain(enemy)
       }
     })
@@ -278,7 +311,8 @@ class Game {
         object.die()
       }
     } else if (object.is('player')) {
-      this._interface.lives--
+      object.lives--
+      this._interface.lives = object.lives
       object.die()
     } else if (object.is('bullet')) {
       object.toFixed()
@@ -291,13 +325,15 @@ class Game {
   _resolveCollisionPltoEnemy(object, enemy) {
     if (!enemy.is('armory')) {
       if (object.is('player')) {
-        this._interface.lives--
+        object.lives--
+        this._interface.lives = object.lives
         object.die()
+      }
+      if (enemy.is('supply')) {
+        this._enemiesAll.push(new Armory(this._ctx, IMG_ARMORY_PACKAGE_01, enemy.x, enemy.y))
       }
       if (object.damage >= enemy.healt) {
         enemy.die()
-        console.log(object.damage);
-        console.log(enemy.healt);
 
         if (object.is('bullet')) {
           this._interface.score += enemy.points * 5
@@ -321,10 +357,10 @@ class Game {
   // SHOOTS
   _addShotEnemies() {
     this._enemiesAll.forEach(enemy => {
-      if (Math.floor(Math.random() * Math.floor(100)) >= 98 && enemy.is('shooter') && enemy.is('flyer') && enemy.isVisible() && this.tickShot++ >= 10) {
+      if (Math.floor(Math.random() * Math.floor(100)) >= 98 && enemy.is('shooter') && enemy.is('flyer') && enemy.isVisible() && this._tickShot++ >= 10) {
         this._enemiesShots.push(enemy.shotEnemy(enemy, this._player))
-        this.tickShot = 0
-      } else if (enemy.is('gunner') && enemy.readyToShot()) {
+        this._tickShot = 0
+      } else if (enemy.is('gunner') && enemy.is('shooter') && enemy.readyToShot()) {
         this._enemiesShots.push(enemy.shotEnemy(enemy.x, enemy.y))
       }
     })
@@ -360,7 +396,7 @@ class Game {
         this._resolveHits(shotFromEnemy, this._player)
       }
       if (this._bullet && this._checkCollisionsObjToObject(this._bullet, shotFromEnemy)) {
-        this._resolveHits(this._bullet, shotFromEnemy)
+        this._resolveHits(shotFromEnemy, this._bullet)
       }
       this._checkCollisionsObjectWithTerrainArr(this._terrainTop, shotFromEnemy)
       this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, shotFromEnemy)
@@ -369,9 +405,10 @@ class Game {
 
   _resolveHits(shot, shooted) {
     if (shooted.is('player')) {
-      shooted.die()
+      shooted.lives--
+      this._interface.lives = shooted.lives
       shot.die()
-      this._interface.lives--
+      shooted.die()
     } else {
       if (shot.damage <= shooted.healt) {
         shooted.healt -= shot.damage
@@ -385,15 +422,23 @@ class Game {
       } else {
         shooted.die()
       }
-
       if (shooted.is('supply')) {
-        // shot.die()
         this._enemiesAll.push(new Armory(this._ctx, IMG_ARMORY_PACKAGE_01, shooted.x, shooted.y))
       }
     }
   }
 
+  // EXPLOSIONS
+  _addExplosion(object) {
+    this._explosionsDies.push(new Explosions(this._ctx, object, OBJECT_EXPLOSIONS))
+  }
 
+  _drawAndMoveExplosions() {
+    this._explosionsDies.forEach(explosion => {
+      explosion.draw()
+      explosion.move()
+    })
+  }
 
   _setListeners() {
     document.addEventListener('keydown', e => {
@@ -421,13 +466,13 @@ class Game {
         }, 150)
       }
       if (e.keyCode === KEY_UP) {
-        this._player.vy = -2
+        this._player.vy = -GLOBAL_SPEED_Y * 3
       } else if (e.keyCode === KEY_DOWN) {
-        this._player.vy = +2
+        this._player.vy = +GLOBAL_SPEED_Y * 3
       } else if (e.keyCode === KEY_RIGHT && !this._player.is('respawn')) {
-        this._player.vx = +2
+        this._player.vx = +GLOBAL_SPEED_X * 3
       } else if (e.keyCode === KEY_LEFT && !this._player.is('respawn')) {
-        this._player.vx = -2
+        this._player.vx = -GLOBAL_SPEED_X * 3
       }
     })
 

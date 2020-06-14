@@ -21,7 +21,7 @@
           </div>
           <div class="col-12">
             <img src="./img/intro/logo-intro.png" alt="R-TYPE Logotipe ©" class="img-fluid animate__animated animate__zoomInRight">
-            <a href="#0" id="play" class="btn btn-outline-danger btn-lg  animate__animated animate__fadeIn animate__delay-5s">CLICK HERE TO START</a>
+            <a href="#0" id="play" class="btn btn-outline-danger btn-lg  animate__animated animate__fadeIn animate__delay-5s"><img src="./img/interface/play.svg" class="img-fluid" alt="CLICK HERE TO PLAY"> CLICK HERE TO PLAY</a>
           </div>
           <div class="col-12">
             <h3 class="animate__animated animate__backInRight animate__delay-5s">THIS R-TYPE IS A SMALL VERSION OF THE FAMOUS GAME DEVELOPED BY IREM IN 1987</h3>
@@ -39,10 +39,19 @@
         <video id="video" src="./video/intro.mp4" controls="false"></video>
         <canvas id="canvas"></canvas>
         <div id="interface">
-          <div>Lives <span>0</span></div>
+          <div class="lives">Lives <span></span></div>
           <div>Bean <span>0</span></div>
           <div>Score <span>0</span></div>
           <div>MaxScore <span>0</span></div>
+          <div>
+            <div class="buttons">
+              <a href="#0" class="btn btn-secondary mr-2" id="interface-mute"><img src="./img/interface/volume-x.svg" class="img-fluid" alt="Mute"></a>
+              <a href="#0" class="btn btn-secondary mr-2" id="interface-unmute"><img src="./img/interface/volume-2.svg" class="img-fluid" alt="UnMute"></a>
+              <a href="#0" class="btn btn-secondary mr-2" id="interface-pause"><img src="./img/interface/pause.svg" class="img-fluid" alt="Pause"></a>
+              <a href="#0" class="btn btn-secondary mr-2" id="interface-play"><img src="./img/interface/play.svg" class="img-fluid" alt="Credits"></a>
+              <a href="#0" class="btn btn-secondary" id="interface-settings"><img src="./img/interface/settings.svg" class="img-fluid" alt="Settings"></a>
+            </div>
+          </div>
         </div>
       </section>
     </section>
@@ -50,6 +59,7 @@
 
 
   <script src="./js/constants.js"></script>
+  <script src="./js/explosions.js"></script>
   <script src="./js/terrain/bg-stars.js"></script>
   <script src="./js/terrain/bg-planet.js"></script>
   <script src="./js/terrain/terrrain.js"></script>

@@ -2,6 +2,8 @@ class EnemyGunner {
   constructor(ctx, img, imgM, imgT) {
     this._ctx = ctx
 
+    this.type = 'gunner'
+
     this.w = this._ctx.canvas.width / 6
     this.h = (this.w / 4) * 3
 
@@ -17,8 +19,13 @@ class EnemyGunner {
 
     this.params = ['gunner', 'collisable', 'killable', 'shooter', 'walker']
 
-    this.healt = 300
-    this.damage = 1000
+    this.healt = 300 * DIFICULTY
+    this.damage = 1000 * DIFICULTY
+
+    this.points = 1000 * DIFICULTY
+
+    this.audioLoad = new Audio('./sounds/beam-enemy-load.wav')
+    this.audioLoad.volume = 0.1
 
     this.tickAnimate = 0
     this.tickWalk = 0
@@ -148,6 +155,7 @@ class EnemyGunner {
       }
     }
   }
+
   isVisible() {
     return this.x + this.w >= 0
   }
@@ -183,11 +191,15 @@ class EnemyGunner {
     if (this.params.indexOf('killable') === -1) {
       this.params.push('killable')
     }
+    if (this.params.indexOf('shooter') === -1) {
+      this.params.push('shooter')
+    }
   }
 
   doTerreain() {
     this.tickWalk = 1
     this.params = this.params.filter(param => param !== 'killable')
+    this.params = this.params.filter(param => param !== 'shooter')
     if (this.tickAnimate++ >= 10) {
       this._animateMotorGhostt(this.img.frameIndex)
       this.tickAnimate = 0
@@ -195,17 +207,13 @@ class EnemyGunner {
   }
 
   die() {
+    this.params = this.params.filter(param => param !== 'killable')
+    this.params = this.params.filter(param => param !== 'collisable')
+    this.vy = 0.4
+    this.xy = 0.04
     if (this.params.indexOf('die') === -1) {
       this.params.push('die')
     }
-    this.tickDie = 1
-    this.img.frameIndex = 0
-    this.vy = 0.4
-    this.xy = 0.04
-    setTimeout(() => {
-      this.x = 0 - this.w
-      this.vx = 0
-    }, 350)
   }
 
   readyToShot() {
@@ -213,6 +221,10 @@ class EnemyGunner {
   }
 
   shotEnemy() {
+
+    if (game.soundsPlay) {
+      this.audioLoad.play()
+    }
     this.tickShot = 0
     this.preparedShot = false
     return new EnemiesBeam(

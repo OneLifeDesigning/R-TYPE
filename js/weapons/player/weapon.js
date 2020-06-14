@@ -4,7 +4,6 @@ class Weapon {
 
     this.shooter = shooter
 
-    this.timer = ''
 
     this.beamLoad = new BeamLoad(
       this._ctx,

@@ -4,6 +4,8 @@ class EnemiesBeam {
     this._ctx = ctx
     this.shooter = shooter
 
+    this.type = 'beamEnemy'
+
     this.x = this.shooter.x - this.shooter.w * 0.12
     this.y = this.shooter.y + this.shooter.h * 0.18
 
@@ -11,10 +13,12 @@ class EnemiesBeam {
     this.w = this._ctx.canvas.width / 8
     this.h = (this.w / 18) * 8
 
-    this.damage = 100
+    this.damage = 30
 
     this.img = new Image()
     this.img.src = './img/sprites/enemy-gunner-beam.png'
+    this.audioShot = new Audio('./sounds/beam-enemy.wav')
+    this.audioShot.volume = 0.2
 
     this.params = ['collisable', 'beam']
 
@@ -29,6 +33,7 @@ class EnemiesBeam {
     this.tickMove = 0
 
     this.vx = GLOBAL_SPEED_X * 2
+    this.vy = 0
   }
 
   draw() {
@@ -52,6 +57,9 @@ class EnemiesBeam {
       this.y = shooter.y + shooter.h * 0.2
       if (this.tickCharge++ >= 30) {
         this._animateChargin()
+        if (game.soundsPlay) {
+          this.audioShot.play()
+        }
         this.tickCharge = 0
       }
     } else {
@@ -80,8 +88,7 @@ class EnemiesBeam {
     if (this.params.indexOf('die') === -1) {
       this.params.push('die')
     }
-    this.x = -(this._ctx.canvas.width + this.w + 10)
-    this.vx = 0
+    this.params = this.params.filter(param => param !== 'collisable')
   }
 
   is(value) {
