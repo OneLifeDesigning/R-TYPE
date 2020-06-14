@@ -96,6 +96,6 @@ class EnemiesBeam {
   }
 
   isVisible() {
-    return this.x + this.w >= 0 && this.x < this._ctx.canvas.width - this.w
+    return this.x + this.w >= 0 && this.x <= this._ctx.canvas.width
   }
 }

@@ -33,6 +33,7 @@ class Explosions {
         if (explosion.type === 'shotPlayer') {
           this.vx = 0
           this.vy = 0
+          this.audio.volume = 0.1
         }
         if (explosion.type === 'beamPlayer') {
           this.y -= 20
@@ -52,7 +53,6 @@ class Explosions {
     if (this.params.indexOf('end') === -1) {
       this.params.push('end')
     }
-
     this.x = 0 - this.w + 10
   }
 
@@ -89,6 +89,9 @@ class Explosions {
     }
   }
 
+  isVisible() {
+    return this.x >= 0 && this.x + this.w <= this._ctx.canvas.width
+  }
 
   is(value) {
     return this.params.includes(value)

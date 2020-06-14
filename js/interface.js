@@ -26,7 +26,7 @@ class Interface {
       this.oldLives = this.lives
     }
 
-    this.interfaceDOM.children[1].querySelector('span').innerHTML = `<div class="progress"><div class="progress-bar" role="progressbar" style="width: ${this.beam}%" aria-valuenow="${this.beam}" aria-valuemin="0" aria-valuemax="100"></div></div>`
+    this.interfaceDOM.children[1].querySelector('span').innerHTML = `<div class="progress"><div class="progress-bar${this.beam === 100 ? ' full' : ''}" role="progressbar" style="width: ${this.beam}%" aria-valuenow="${this.beam}" aria-valuemin="0" aria-valuemax="100"></div></div>`
 
     this.interfaceDOM.children[2].querySelector('span').innerText = this.score
 

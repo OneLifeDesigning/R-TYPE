@@ -68,6 +68,10 @@ class EnemiesShot {
     )
   }
 
+  isVisible() {
+    return this.x + this.w >= 0 && this.x + this.w <= this._ctx.canvas.width
+  }
+
   _animate() {
     if (this.img.frameIndex++ >= 3) {
       this.img.frameIndex = 0

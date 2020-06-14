@@ -136,24 +136,30 @@ class Game {
 
   _removeIfNotVisible() {
     this._enemiesAll = this._enemiesAll.filter(enemy => {
-      if (!enemy.is('die') && enemy.isVisible()) {
+      if (!enemy.is('die')) {
         return enemy
       } else {
-        this._addExplosion(enemy)
+        if (enemy.isVisible()) {
+          this._addExplosion(enemy)
+        }
       }
     })
     this._enemiesShots = this._enemiesShots.filter(eShots => {
       if (!eShots.is('die')) {
         return eShots
       } else {
-        this._addExplosion(eShots)
+        if (eShots.isVisible()) {
+          this._addExplosion(eShots)
+        }
       }
     })
     this._playerShots = this._playerShots.filter(pShots => {
       if (!pShots.is('die')) {
         return pShots
       } else {
-        this._addExplosion(pShots)
+        if (pShots.isVisible()) {
+          this._addExplosion(pShots)
+        }
       }
     })
     this._terrainTop = this._terrainTop.filter(oT => {

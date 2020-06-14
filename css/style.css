@@ -100,6 +100,10 @@ canvas {
   background-color: aqua;
 }
 
+.progress-bar.full {
+  background-color: red;
+}
+
 .lives img {
   max-height: 25px;
 }
@@ -125,6 +129,10 @@ canvas {
 
 .animate__animated.animate__zoomInRight {
   --animate-duration: 6s;
+}
+
+.animate__animated.animate__shakeY {
+  --animate-repeat: 5;
 }
 
 @media (min-width: 576px) {

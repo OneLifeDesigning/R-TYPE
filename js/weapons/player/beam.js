@@ -10,8 +10,10 @@ class BeamShot extends Shot {
 
     this.img = new Image()
     this.img.src = './img/sprites/weapon-beam.png'
+
     this.audioShot = new Audio('./sounds/beam.wav')
     this.audioShot.volume = 0.2
+
     this.audioShotBig = new Audio('./sounds/beam-long.wav')
     this.audioShotBig.volume = 0.2
 
@@ -89,7 +91,7 @@ class BeamShot extends Shot {
   }
 
   isVisible() {
-    return this.x <= 0
+    return this.x + this.w >= 0 && this.x <= this._ctx.canvas.width
   }
 
 }

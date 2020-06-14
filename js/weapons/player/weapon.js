@@ -4,6 +4,11 @@ class Weapon {
 
     this.shooter = shooter
 
+    this.audioBeam = new Audio('./sounds/beam-load-player.wav')
+    this.audioBeam.volume = 0.1
+
+    this.audioShot = new Audio('./sounds/shot-player.wav')
+    this.audioShot.volume = 0.1
 
     this.beamLoad = new BeamLoad(
       this._ctx,
@@ -14,6 +19,10 @@ class Weapon {
   }
 
   shot() {
+    if (this.audioShot && game.soundsPlay) {
+      this.audioShot.play()
+    }
+
     return new Shot(
       this._ctx,
       this.shooter.x + this.shooter.w * 0.8,
@@ -22,10 +31,17 @@ class Weapon {
   }
 
   beamLoadShow() {
+    if (this.audioBeam && game.soundsPlay) {
+      this.audioBeam.play()
+    }
     this.beamLoad.play()
   }
 
   beamLoadStop() {
+    if (this.audioBeam && game.soundsPlay) {
+      this.audioBeam.pause()
+      this.audioBeam.currentTime = 0
+    }
     this.beamLoad.stop()
   }
 
