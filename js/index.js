@@ -46,7 +46,7 @@ video.height = canvas.height
 video.removeAttribute("controls")
 
 const game = new Game(ctx)
-let DIFICULTY = 2
+let DIFICULTY = 1
 
 const hideIsShow = (parent) => {
   for (let i = 0; i < parent.childNodes.length; i++) {
@@ -126,6 +126,7 @@ let oldWindow = null
 btnCredits.addEventListener("click", () => {
   if (game._timeLine !== 0) {
     game.pause()
+    btnRestar.classList.toggle('d-none')
   }
   btnMute.classList.add('d-none')
   btnUnMute.classList.add('d-none')
@@ -140,6 +141,7 @@ btnCredits.addEventListener("click", () => {
 btnClose.addEventListener("click", () => {
   if (game._timeLine !== 0) {
     game.start()
+    btnRestar.classList.toggle('d-none')
     btnPause.classList.remove('d-none')
   } else {
     btnPlay.classList.remove('d-none')
@@ -163,6 +165,7 @@ btnRestar.addEventListener("click", () => {
   } else {
     btnUnMute.classList.remove('d-none')
   }
+  btnClose.classList.toggle('d-none')
   gameOver.classList.toggle('d-none')
   formScore.classList.toggle('d-none')
   credits.classList.toggle('d-none')

@@ -56,7 +56,7 @@ class EnemyCyborg {
   move(x) {
     this.x += this.vx
 
-    if (x >= this.x) {
+    if (x >= this.x + 50) {
       if (this.tickAnimRight++ >= 30) {
         this._animateRight()
         this.tickAnimRight = 0
