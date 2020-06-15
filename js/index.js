@@ -82,8 +82,9 @@ play.addEventListener("click", () => {
 
 btnPause.addEventListener("click", () => {
   game.pause()
-  game.musicPlay = false
-  game.music.pause()
+  if (game.musicPlay) {
+    game.music.pause()
+  }
   btnPlay.classList.toggle('d-none')
   btnPause.classList.toggle('d-none')
 })
@@ -93,13 +94,9 @@ btnPlay.addEventListener("click", () => {
     oldWindow = hideIsShow(screen)
     video.pause()
     canvas.classList.remove('d-none')
-  } else {
-    if (game.musicPlay) {
-      game.musicPlay = true
-    }
-    if (game.musicPlay) {
-      game.music.play()
-    }
+  }
+  if (game.musicPlay) {
+    game.music.play()
   }
   game.start()
   btnPause.classList.toggle('d-none')

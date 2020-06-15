@@ -20,7 +20,7 @@ class EnemyGunner {
     this.params = ['gunner', 'collisable', 'killable', 'shooter', 'walker']
 
     this.healt = 300 * DIFICULTY
-    this.damage = 1000 * DIFICULTY
+    this.damage = 200 * DIFICULTY
 
     this.points = 1000 * DIFICULTY
 

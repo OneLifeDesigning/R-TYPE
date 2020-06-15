@@ -58,7 +58,6 @@ class Weapon {
   beam(damage) {
     return new BeamShot(
       this._ctx,
-      IMG_SHOT_BEAM,
       this.x,
       this.y,
       damage

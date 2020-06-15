@@ -20,7 +20,7 @@ class Bullet {
     this.params = ['collisable', 'bullet', 'killable']
 
     this.damage = 100
-    this.healt = 1000
+    this.healt = 1000 / DIFICULTY
 
     this.fixed = false
 

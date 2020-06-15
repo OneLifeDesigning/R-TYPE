@@ -1,8 +1,10 @@
 class EnemiesBeam {
   constructor(ctx, shooter) {
-
     this._ctx = ctx
     this.shooter = shooter
+
+    this.damage = this.shooter.damage
+    this.healt = this.shooter.healt
 
     this.type = 'beamEnemy'
 

@@ -1,20 +1,22 @@
-class EnemyButterfly {
+class EnemyCyborg {
   constructor(ctx, x, y, img) {
     this._ctx = ctx
 
-    this.type = 'butterfly'
+    this.type = 'cyborg'
 
     this.x = this._ctx.canvas.width + x
     this.y = 60 + y
 
     this.w = this._ctx.canvas.width / 15
-    this.h = (this.w / 4) * 3
+    this.h = (this.w / 3) * 3
 
-    this.vx = GLOBAL_SPEED_X * -3
-    this.vy = GLOBAL_SPEED_X * -2
+    this.vx = GLOBAL_SPEED_X * -1
+    this.vy = GLOBAL_SPEED_X * -1
 
-    this.tickAnimButter = 0
+    this.tickAnimLeft = 0
+    this.tickAnimRight = 0
     this.tickMove = 0
+    this.tickChangeDirection = 0
     this.img = img
 
     this.audioShot = new Audio('./sounds/shot-enemy.wav')
@@ -25,10 +27,10 @@ class EnemyButterfly {
 
     this.points = 100 * DIFICULTY
 
-    this.params = ['flyer', 'killable', 'collisable', 'shooter']
+    this.params = ['flyer', 'killable', 'collisable', 'shooter', 'cyborg']
 
     // NOTE: frame are number sprites
-    this.img.frames = 8
+    this.img.frames = 6
     // NOTE: position actual "array"
     this.img.frameIndex = 1
   }
@@ -51,17 +53,48 @@ class EnemyButterfly {
     this._ctx.clearRect(this.x, this.y, this.w, this.h)
   }
 
-  move() {
-    this.y += this.vy
+  move(x) {
     this.x += this.vx
 
-    if (this.tickMove++ === 60 || this.y <= 60) {
+    if (x >= this.x) {
+      if (this.tickAnimRight++ >= 30) {
+        this._animateRight()
+        this.tickAnimRight = 0
+      }
+      if (this.tickChangeDirection === 0) {
+        this.tickChangeDirection = 1
+      }
+    } else {
+      if (this.tickChangeDirection === 1) {
+        this.vx *= -1
+        this.tickChangeDirection = 0
+        if (this.x + this.w >= this._ctx.canvas.width) {
+          this.die()
+        }
+      }
+      if (this.tickAnimLeft++ >= 30) {
+        this._animateLeft()
+        this.tickAnimLeft = 0
+      }
+    }
+
+    this.y += this.vy
+
+    if (this.tickMove++ === 120 || this.y <= 80) {
       this.vy *= -1
       this.tickMove = 0
     }
-    if (this.tickAnimButter++ >= 30) {
-      this._animate()
-      this.tickAnimButter = 0
+  }
+
+  _animateLeft() {
+    if (this.img.frameIndex++ >= 2) {
+      this.img.frameIndex = 0
+    }
+  }
+
+  _animateRight() {
+    if (this.img.frameIndex++ >= 5) {
+      this.img.frameIndex = 3
     }
   }
 
@@ -89,12 +122,6 @@ class EnemyButterfly {
     this.params = this.params.filter(param => param !== 'collisable')
     if (this.params.indexOf('die') === -1) {
       this.params.push('die')
-    }
-  }
-
-  _animate() {
-    if (this.img.frameIndex++ >= 7) {
-      this.img.frameIndex = 0
     }
   }
 }

@@ -4,8 +4,11 @@ class Game {
 
     this._timeLine = 0
     this._timeButterfy = 0
+    this._timeCyborg = 0
     this._timeGunner = 0
+    this._timeKamikaze = 0
     this._timeSupply = 0
+    this._timeTerrain = 0
     this._tickShot = 0
 
     this.music = new Audio('./sounds/theme.m4a')
@@ -43,7 +46,13 @@ class Game {
   }
 
   start() {
-    this._addTerrain()
+    if (this.musicPlay) {
+      this.music.play()
+    }
+    if (this._timeTerrain === 0) {
+      this._addTerrain()
+      this._timeTerrain = 1
+    }
     this._timeLine = setInterval(() => {
       this._clear()
       this._draw()
@@ -206,15 +215,24 @@ class Game {
       terrainBottom.draw()
       terrainBottom.move()
     })
+    if (this._terrainBottom.length === 0 && this._terrainTop.length === 0 && ) {
+      this._addTerrain()
+    }
   }
 
   _removeIfNotVisible() {
     this._enemiesAll = this._enemiesAll.filter(enemy => {
       if (!enemy.is('die')) {
+        if (!enemy.isVisible() && enemy.is('butterfly')) {
+          enemy.die()
+        }
         return enemy
       } else {
+        console.log(enemy.isVisible());
         if (enemy.isVisible()) {
           this._addExplosion(enemy)
+        } else {
+          enemy.die()
         }
       }
     })
@@ -251,7 +269,7 @@ class Game {
 
   // ENEMIES 
   _addEnemies() {
-    if (!this._bullet && this._timeSupply++ >= 700 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
+    if (!this._bullet && this._timeSupply++ >= 2000 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
       this._enemiesAll.push(
         new EnemySupply(
           this._ctx,
@@ -262,8 +280,8 @@ class Game {
       this._timeSupply = 0
     }
 
-    if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 10) {
-      for (let i = 0; i < DIFICULTY; i++) {
+    if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 10 * DIFICULTY) {
+      for (let i = 0; i < 2 * DIFICULTY; i++) {
         this._enemiesAll.push(
           new EnemyButterfly(
             this._ctx,
@@ -273,15 +291,46 @@ class Game {
             this._randomNumber(
               this.maxHeight - (this.maxHeight / 3)
             ),
-            IMG_ENEMY_BUTTERFLY,
-            this._player,
-            Math.random() >= 0.5
+            IMG_ENEMY_BUTTERFLY
           )
         )
       }
       this._timeButterfy = 0
     }
-    if (this._timeGunner++ >= 100 && !this._enemiesAll.some(enemy => enemy.is('gunner'))) {
+    if (this._timeKamikaze++ >= 1000 && this._enemiesAll.length <= 6 * DIFICULTY) {
+      for (let i = 0; i < DIFICULTY; i++) {
+        this._enemiesAll.push(
+          new EnemyKamikaze(
+            this._ctx,
+            this._randomNumber(
+              this._ctx.canvas.width
+            ),
+            this._ctx.canvas.height - 120,
+            IMG_ENEMY_KAMIKAZE
+          )
+        )
+      }
+      this._timeKamikaze = 0
+    }
+
+    if (this._timeCyborg++ >= 8000 && (this._enemiesAll.length <= 8 * DIFICULTY || !this._enemiesAll.some(enemy => enemy.is('cyborg')))) {
+      for (let i = 0; i < DIFICULTY; i++) {
+        this._enemiesAll.push(
+          new EnemyCyborg(
+            this._ctx,
+            this._randomNumber(
+              this._ctx.canvas.width / 2
+            ),
+            this._randomNumber(
+              this.maxHeight - (this.maxHeight / 2)
+            ),
+            IMG_ENEMY_CYBORG
+          )
+        )
+      }
+      this._timeCyborg = 0
+    }
+    if (this._timeGunner++ >= 10000 && !this._enemiesAll.some(enemy => enemy.is('gunner'))) {
       this._enemiesAll.push(
         new EnemyGunner(
           this._ctx,
@@ -297,7 +346,7 @@ class Game {
   _drawAndMoveEnemies() {
     this._enemiesAll.forEach(enemy => {
       enemy.draw()
-      if (enemy.is('gunner')) {
+      if (enemy.is('gunner') || enemy.is('cyborg') || enemy.is('kamikaze')) {
         enemy.move(this._player.x, this._player.y)
       } else {
         enemy.move()
@@ -347,6 +396,9 @@ class Game {
         }
       } else {
         if (enemy.is('supply') && this._checkCollisionsObjToObject(this._player, enemy)) {
+          this._resolveCollisionPltoEnemy(this._player, enemy)
+        }
+        if (enemy.is('kamikaze') && this._checkCollisionsObjToObject(this._player, enemy)) {
           this._resolveCollisionPltoEnemy(this._player, enemy)
         }
         if (enemy.is('gunner') && this._checkCollisionsObjToObject(this._player, enemy)) {
@@ -494,8 +546,6 @@ class Game {
       }
     } else {
       if (shot.damage < shooted.healt) {
-        console.log(shooted.healt);
-        console.log(shot.healt);
         shooted.healt -= shot.damage
         if (shooted.healt <= 0) {
           shooted.die()
@@ -505,6 +555,9 @@ class Game {
         }
         shot.die()
       } else {
+        if (shot.damage === shooted.healt) {
+          shot.die()
+        }
         if (shooted.points) {
           this._interface.score += shooted.points
         }

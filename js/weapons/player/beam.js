@@ -1,5 +1,5 @@
 class BeamShot extends Shot {
-  constructor(ctx, img, x, y, damage) {
+  constructor(ctx, x, y, damage) {
     super(ctx, x, y)
 
     this.w = this._ctx.canvas.width / 9
@@ -75,10 +75,10 @@ class BeamShot extends Shot {
     if (this.x >= this._ctx.canvas.width + this.w || this.x <= 0 - this.w || this.y >= this._ctx.canvas.height + this.h || this.Y <= 0 - this.h) {
       this.die()
     }
-    if (this.img.framesX === 1 && game.musicPlay) {
+    if (this.img.framesX === 1 && game.soundsPlay) {
       this.audioShot.play()
     }
-    if (this.img.framesX === 2 && game.musicPlay) {
+    if (this.img.framesX === 2 && game.soundsPlay) {
       this.audioShotBig.play()
     }
   }
