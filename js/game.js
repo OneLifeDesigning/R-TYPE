@@ -313,7 +313,7 @@ class Game {
     }
 
     if (this._timeCyborg++ >= 8000 && (this._enemiesAll.length <= 8 * DIFICULTY)) {
-      for (let i = 0; i < DIFICULTY; i++) {
+      for (let i = 0; i < 2 * DIFICULTY; i++) {
         this._enemiesAll.push(
           new EnemyCyborg(
             this._ctx,
