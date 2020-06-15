@@ -215,7 +215,7 @@ class Game {
       terrainBottom.draw()
       terrainBottom.move()
     })
-    if (this._terrainBottom.length === 0 && this._terrainTop.length === 0 && ) {
+    if (this._terrainBottom.length === 0 && this._terrainTop.length === 0) {
       this._addTerrain()
     }
   }
@@ -228,7 +228,6 @@ class Game {
         }
         return enemy
       } else {
-        console.log(enemy.isVisible());
         if (enemy.isVisible()) {
           this._addExplosion(enemy)
         } else {
@@ -269,7 +268,7 @@ class Game {
 
   // ENEMIES 
   _addEnemies() {
-    if (!this._bullet && this._timeSupply++ >= 2000 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
+    if (!this._bullet && this._timeSupply++ >= 1000 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
       this._enemiesAll.push(
         new EnemySupply(
           this._ctx,

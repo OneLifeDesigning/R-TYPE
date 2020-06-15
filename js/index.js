@@ -2,6 +2,7 @@ const video = document.getElementById("video")
 const intro = document.getElementById("intro")
 const dificulty = document.getElementById("dificulty")
 const interface = document.getElementById("interface")
+const loader = document.getElementById("loader")
 const credits = document.getElementById("credits")
 const screen = document.getElementById("screen")
 const play = document.getElementById("play")
@@ -197,6 +198,9 @@ saverBtn.addEventListener('click', () => {
 
 
 window.onload = () => {
+  setTimeout(() => {
+    loader.classList.add('d-none')
+  }, 1000);
   credits.classList.add('d-none')
   canvas.classList.add('d-none')
   dificulty.classList.add('d-none')
