@@ -9,6 +9,8 @@ const selectors = dificulty.querySelectorAll('.dificulty-selector')
 const canvas = document.getElementById("canvas")
 const gameOver = document.getElementById("gameOver")
 const formScore = document.getElementById("formScore")
+const loader = document.getElementById("loader")
+
 const ctx = canvas.getContext("2d")
 
 const saverBtn = document.getElementById("saverBtn")
@@ -197,6 +199,9 @@ saverBtn.addEventListener('click', () => {
 
 
 window.onload = () => {
+  setTimeout(() => {
+    loader.classList.add('d-none')
+  }, 1000);
   credits.classList.add('d-none')
   canvas.classList.add('d-none')
   dificulty.classList.add('d-none')
