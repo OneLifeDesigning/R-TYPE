@@ -29,6 +29,11 @@ h2,
 h3 {
   letter-spacing: 2px;
   text-shadow: 2px 1px 0px #FFFF;
+  margin-bottom: 0;
+}
+
+h1.card-title {
+  text-shadow: none
 }
 
 canvas {
@@ -42,7 +47,6 @@ canvas {
   align-items: center;
   height: 100vh;
   background-color: #000000;
-
 }
 
 .btn {
@@ -53,7 +57,8 @@ canvas {
 #video,
 #game,
 #dificulty,
-#interface {
+#interface,
+#credits {
   margin: 0px auto;
   background-color: #000000;
   overflow: hidden;
@@ -63,6 +68,23 @@ canvas {
 
 #intro {
   text-align: center;
+}
+
+#credits {
+  overflow: hidden;
+  overflow-y: auto
+}
+
+#credits h4 {
+  margin-bottom: 0;
+}
+
+.ohana {
+  max-height: 150px;
+}
+
+.w-100 {
+  width: 100%
 }
 
 #interface {
@@ -98,6 +120,7 @@ canvas {
 
 .progress-bar {
   background-color: aqua;
+  color: black;
 }
 
 .progress-bar.full {
@@ -106,6 +129,11 @@ canvas {
 
 .lives img {
   max-height: 25px;
+  margin-right: 0.8rem;
+}
+
+.lives:last-child img {
+  margin-right: 0;
 }
 
 .buttons {
@@ -131,9 +159,6 @@ canvas {
   --animate-duration: 6s;
 }
 
-.animate__animated.animate__shakeY {
-  --animate-repeat: 5;
-}
 
 @media (min-width: 576px) {
 

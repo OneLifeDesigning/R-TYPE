@@ -32,7 +32,7 @@ class EnemiesBeam {
     this.tickCharge = 0
     this.tickMove = 0
 
-    this.vx = GLOBAL_SPEED_X * 2
+    this.vx = GLOBAL_SPEED_X * 6
     this.vy = 0
   }
 

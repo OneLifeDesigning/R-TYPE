@@ -2,20 +2,32 @@ const video = document.getElementById("video")
 const intro = document.getElementById("intro")
 const dificulty = document.getElementById("dificulty")
 const interface = document.getElementById("interface")
+const credits = document.getElementById("credits")
+const screen = document.getElementById("screen")
 const play = document.getElementById("play")
 const selectors = dificulty.querySelectorAll('.dificulty-selector')
 const canvas = document.getElementById("canvas")
+const gameOver = document.getElementById("gameOver")
 const ctx = canvas.getContext("2d")
+
+const saverBtn = document.getElementById("saverBtn")
+const bestPlayer = document.getElementById("bestPlayer")
+let theBest = JSON.parse(localStorage.getItem('score')) ? JSON.parse(localStorage.getItem('score')) : JSON.parse(JSON.stringify({
+  name: 'A',
+  score: 0
+}))
 
 const btnMute = document.getElementById('interface-mute')
 const btnUnMute = document.getElementById('interface-unmute')
 const btnPause = document.getElementById('interface-pause')
 const btnPlay = document.getElementById('interface-play')
-const btnSettings = document.getElementById('interface-settings')
+const btnCredits = document.getElementById('interface-credits')
+const btnClose = document.getElementById('interface-close')
+const btnRestar = document.getElementById('interface-restart')
 
 setTimeout(() => {
-  play.classList.remove('animate__animated', 'animate__fadeIn')
-  play.classList.add('animate__animated', 'animate__pulse')
+  play.classList.toggle('animate__animated', 'animate__fadeIn')
+  play.classList.toggle('animate__animated', 'animate__pulse')
 }, 6000)
 
 canvas.width = canvas.parentElement.clientWidth - 60
@@ -24,6 +36,8 @@ intro.style.width = canvas.width + 'px'
 intro.style.height = canvas.height + 'px'
 dificulty.style.width = canvas.width + 'px'
 dificulty.style.height = canvas.height + 'px'
+credits.style.width = canvas.width + 'px'
+credits.style.height = canvas.height + 'px'
 
 video.width = canvas.width
 video.height = canvas.height
@@ -32,15 +46,23 @@ video.removeAttribute("controls")
 const game = new Game(ctx)
 let DIFICULTY = 1
 
+const hideIsShow = (parent) => {
+  for (let i = 0; i < parent.childNodes.length; i++) {
+    if (screen.childNodes[i].nodeType == 1 && !screen.childNodes[i].classList.contains('d-none')) {
+      screen.childNodes[i].classList.add('d-none')
+      return screen.childNodes[i]
+    }
+
+  }
+}
 selectors.forEach(select => {
   select.addEventListener("click", () => {
     video.play()
-    dificulty.classList.add('d-none')
-    video.classList.remove('d-none')
+    dificulty.classList.toggle('d-none')
+    video.classList.toggle('d-none')
     setTimeout(() => {
-      canvas.classList.remove('d-none')
-      interface.classList.remove('d-none')
-      video.classList.add('d-none')
+      canvas.classList.toggle('d-none')
+      video.classList.toggle('d-none')
       DIFICULTY = select.getAttribute('dificulty')
       game.start()
       setTimeout(() => {
@@ -51,47 +73,112 @@ selectors.forEach(select => {
 })
 
 play.addEventListener("click", () => {
-  intro.classList.add('d-none')
-  dificulty.classList.remove('d-none')
+  intro.classList.toggle('d-none')
+  dificulty.classList.toggle('d-none')
 })
 
 btnPause.addEventListener("click", () => {
   game.pause()
   game.soundsPlay = false
   game.music.pause()
-  btnPlay.classList.remove('d-none')
-  btnPause.classList.add('d-none')
+  btnPlay.classList.toggle('d-none')
+  btnPause.classList.toggle('d-none')
 })
 
 btnPlay.addEventListener("click", () => {
   game.start()
   game.soundsPlay = true
   game.music.pause()
-  btnPause.classList.remove('d-none')
-  btnPlay.classList.add('d-none')
+  btnPause.classList.toggle('d-none')
+  btnPlay.classList.toggle('d-none')
 })
 
 btnMute.addEventListener("click", () => {
   game.soundsPlay = false
   game.music.pause()
-  btnMute.classList.add('d-none')
-  btnUnMute.classList.remove('d-none')
+  btnMute.classList.toggle('d-none')
+  btnUnMute.classList.toggle('d-none')
 })
 
 btnUnMute.addEventListener("click", () => {
-  game.soundsPlay =
-    game.music.play()
-  btnUnMute.classList.add('d-none')
-  btnMute.classList.remove('d-none')
+  game.soundsPlay = true
+  game.music.play()
+  btnMute.classList.toggle('d-none')
+  btnUnMute.classList.toggle('d-none')
 })
 
+let oldWindow = null
+btnCredits.addEventListener("click", () => {
+  if (game._timeLine !== 0) {
+    game.pause()
+  }
+  oldWindow = hideIsShow(screen)
+  credits.classList.toggle('d-none')
+  btnCredits.classList.toggle('d-none')
+  btnClose.classList.toggle('d-none')
+})
+
+btnClose.addEventListener("click", () => {
+  if (game._timeLine !== 0) {
+    game.start()
+  }
+  oldWindow.classList.toggle('d-none')
+  credits.classList.toggle('d-none')
+  btnCredits.classList.toggle('d-none')
+  btnClose.classList.toggle('d-none')
+})
+
+btnRestar.addEventListener("click", () => {
+  game.restart()
+  credits.classList.toggle('d-none')
+  btnCredits.classList.toggle('d-none')
+})
+
+
+saverBtn.addEventListener('click', () => {
+  const name = document.getElementById("nameInput").value;
+  const score = document.getElementById("scoreInput").value;
+  const level = DIFICULTY
+
+  if (theBest.score <= score) {
+    saverBtn.classList.add('disabled')
+    saverBtn.innerText = 'SCORE SAVED'
+    saverBtn.classList.remove('d-none')
+
+    let playerScore = {
+      name: name,
+      score: score,
+      level: level
+    }
+    localStorage.setItem('score', JSON.stringify(playerScore));
+
+    setTimeout(() => {
+      saverBtn.classList.remove('disabled')
+      saverBtn.innerText = 'SAVE'
+      theBest = JSON.parse(localStorage.getItem('score'))
+      bestPlayer.innerHTML = `${theBest.name} - ${theBest.score} - LEVEL: ${theBest.level}`
+    }, 500);
+  } else {
+    saverBtn.classList.add('d-none')
+  }
+})
+
+
 window.onload = () => {
-  intro.classList.add('d-none')
-  game.start()
-  // canvas.classList.add('d-none')
-  // interface.classList.add('d-none')
-  btnPlay.classList.add('d-none')
-  btnUnMute.classList.add('d-none')
+  // game.start()
+  // intro.classList.add('d-none')
+  credits.classList.add('d-none')
+  canvas.classList.add('d-none')
   dificulty.classList.add('d-none')
   video.classList.add('d-none')
+  btnPlay.classList.add('d-none')
+  btnPause.classList.add('d-none')
+  btnClose.classList.add('d-none')
+  btnRestar.classList.add('d-none')
+  btnUnMute.classList.add('d-none')
+  btnMute.classList.add('d-none')
+
+  if (theBest) {
+    bestPlayer.innerHTML = `${theBest.name} - ${theBest.score} - LEVEL: ${theBest.level}`
+  }
 }

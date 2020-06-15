@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="icon" type="image/png" href="./img/favicon.ico" />
-  <title>R-TYPE By 1ld - © Irem - Version 0.002 Alpha</title>
+  <title>R-TYPE By 1ld - © Irem - Version 0.010 Beta</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
   <link rel="stylesheet" href="./css/style.css">
@@ -21,7 +21,7 @@
           </div>
           <div class="col-12">
             <img src="./img/intro/logo-intro.png" alt="R-TYPE Logotipe ©" class="img-fluid animate__animated animate__zoomInRight">
-            <a href="#0" id="play" class="btn btn-outline-danger btn-lg  animate__animated animate__fadeIn animate__delay-5s"><img src="./img/interface/play.svg" class="img-fluid" alt="CLICK HERE TO PLAY"> CLICK HERE TO PLAY</a>
+            <a href="#0" id="play" class="btn btn-outline-danger btn-lg  animate__animated animate__fadeIn animate__delay-5s">CLICK HERE TO PLAY</a>
           </div>
           <div class="col-12">
             <h3 class="animate__animated animate__backInRight animate__delay-5s">THIS R-TYPE IS A SMALL VERSION OF THE FAMOUS GAME DEVELOPED BY IREM IN 1987</h3>
@@ -38,6 +38,85 @@
         </article>
         <video id="video" src="./video/intro.mp4" controls="false"></video>
         <canvas id="canvas"></canvas>
+        <div id="credits">
+          <div class="row align-items-end">
+            <div class="col-12 col-md-6">
+              <div class="card text-white bg-dark mb-3 d-none" id="gameOver">
+                <div class="card-body">
+                  <h1 class="card-title mb-0">GAME OVER</h1>
+                </div>
+              </div>
+              <div id="formScore" class="card text-white bg-dark mb-3 d-none">
+                <div class="card-body">
+                  <h5 class="card-title">YOUR SCORE</h5>
+                  <form class="form">
+                    <div class="form-row align-items-center">
+                      <div class="col-sm-5 my-1">
+                        <label for="name">Name</label>
+                      </div>
+                      <div class="col-sm-7 my-1">
+                        <input type="text" class="form-control" id="nameInput" placeholder="YOUR NAME" maxlength="3">
+                      </div>
+                    </div>
+                    <div class="form-row align-items-center">
+                      <div class="col-sm-5 my-1">
+                        <label for="scoreInput">YOUR SCORE</label>
+                      </div>
+                      <div class="col-sm-7 my-1">
+                        <input type="text" id="scoreInput" class="form-control" placeholder="" value="" readonly="true">
+                      </div>
+                    </div>
+                    <div class="form-row align-items-center">
+                      <div class="offset-5 col-sm-7 my-1">
+                        <button type="submit" id="saverBtn" class="btn btn-outline-light btn-block">SAVE</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="card text-white bg-dark mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">BEST PLAYER</h5>
+                  <ol class="list-group">
+                    <li class="list-group-item list-group-item-dark">
+                      <h4><img src="img/interface/star.svg" class="img-fluid" alt="BEST PLAYER">
+                        <span id="bestPlayer"></span></h4>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="accordion" id="accordionExample">
+                <div class="card text-white bg-dark mb-3">
+                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <img src="./img/interface/keyboard.png" class="img-fluid card-img-top" alt="Keyboard">
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">HOW TO PLAY</h5>
+                    <p class="card-text">
+                      Is easy, push key alt to shot, space bar to fix and unfix bullet, and move with arrows keys
+                    </p>
+                    <a href="#0" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">SEE IMAGE</a>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion" id="accordionDue">
+                <div class="card text-white bg-dark mb-3">
+                  <div class="card-body">
+                    <div id="collapseDue" class="collapse" aria-labelledby="headingOne" data-parent="#accordionDue">
+                      <p class="card-text">And, thanks for sound and graphics resources to: Goemar www.retrogamezone.co.uk, Arcom www.spriters-resource.com, rtype.fandom.com, davidrb.itch.io, clockworkchilli.com, pexels.com and mrsiraphol freepik.com</p>
+                      <img src="./img/interface/ohana.svg" class="img-fluid mt-1 ohana" alt="Ohana">
+                    </div>
+                    <h1 class="card-title" type="button" data-toggle="collapse" data-target="#collapseDue" aria-expanded="true" aria-controls="collapseDue">
+                      SPECIAL THANKS<br> <small>To my wife for HER PATIENCE<br>these two endless weeks</small>
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="interface">
           <div class="lives">Lives <span></span></div>
           <div>Bean <span>0</span></div>
@@ -49,14 +128,15 @@
               <a href="#0" class="btn btn-secondary mr-2" id="interface-unmute"><img src="./img/interface/volume-2.svg" class="img-fluid" alt="UnMute"></a>
               <a href="#0" class="btn btn-secondary mr-2" id="interface-pause"><img src="./img/interface/pause.svg" class="img-fluid" alt="Pause"></a>
               <a href="#0" class="btn btn-secondary mr-2" id="interface-play"><img src="./img/interface/play.svg" class="img-fluid" alt="Credits"></a>
-              <a href="#0" class="btn btn-secondary" id="interface-settings"><img src="./img/interface/settings.svg" class="img-fluid" alt="Settings"></a>
+              <a href="#0" class="btn btn-secondary" id="interface-credits"><img src="./img/interface/credits.svg" class="img-fluid" alt="Credits"></a>
+              <a href="#0" class="btn btn-secondary" id="interface-close"><img src="./img/interface/x.svg" class="img-fluid" alt="Close"></a>
+              <a href="#0" class="btn btn-danger" id="interface-restart"><img src="./img/interface/rotate-cw.svg" class="img-fluid" alt="Restart"></a>
             </div>
           </div>
         </div>
       </section>
     </section>
   </main>
-
 
   <script src="./js/constants.js"></script>
   <script src="./js/explosions.js"></script>
@@ -78,6 +158,10 @@
   <script src="./js/interface.js"></script>
   <script src="./js/game.js"></script>
   <script src="./js/index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

@@ -2,14 +2,17 @@ class Game {
   constructor(ctx) {
     this._ctx = ctx
 
-    this._timeLine = null
-    this._timeButterfy = null
-    this._timeGunner = null
-    this._timeSupply = null
+    this._timeLine = 0
+    this._timeButterfy = 0
+    this._timeGunner = 0
+    this._timeSupply = 0
     this._tickShot = 0
 
     this.music = new Audio('./sounds/theme.m4a')
     this.music.volume = 0.2
+
+    this.musicGameOver = new Audio('./sounds/game-over.wav')
+    this.musicGameOver.volume = 0.4
 
     this.soundsPlay = true
 
@@ -29,10 +32,9 @@ class Game {
 
     this.damage = 0
 
+    this.tickLives = 1
 
-    this.maxScore = MAX_SCORE[0][1]
-
-    this._interface = new Interface(this.maxScore, this.damage)
+    this._interface = new Interface(this.damage)
     this._interface.lives = this._player.lives
 
     this.maxHeight = this._ctx.canvas.height - 60
@@ -48,10 +50,41 @@ class Game {
       this._draw()
       this._move()
       this._interface.update()
-    }, 1000 / 70)
+      if (this._player.is('die')) {
+        this.gameOver()
+      } else {
+        if (this.tickLives === 1 && this._interface.score >= 5000 * this.tickLives) {
+          this.tickLives = ++this.tickLives * this.tickLives
+          this._interface.lives += 1
+          this._player.lives += 1
+        }
+      }
+    }, 1000 / 60)
   }
 
+  restart() {
+    this.stop();
+    this._clear();
+    this.start();
+  }
   pause() {
+    this._timeLine = clearInterval(this._timeLine)
+  }
+  gameOver() {
+    this.scoreMarker = document.getElementById("scoreInput").value = this._interface.score;
+    this.pause()
+    this.music.pause()
+    this.musicGameOver.play()
+
+    btnClose.classList.toggle('d-none')
+    btnCredits.classList.toggle('d-none')
+    btnRestar.classList.toggle('d-none')
+
+    document.getElementById("formScore").classList.toggle('d-none')
+    gameOver.classList.toggle('d-none')
+    canvas.classList.toggle('d-none')
+    credits.classList.toggle('d-none')
+
     this._timeLine = clearInterval(this._timeLine)
   }
 
@@ -415,8 +448,11 @@ class Game {
       this._interface.lives = shooted.lives
       shot.die()
       shooted.die()
+      if (shooted.points) {
+        this._interface.score += shooted.points
+      }
     } else {
-      if (shot.damage <= shooted.healt) {
+      if (shot.damage < shooted.healt) {
         shooted.healt -= shot.damage
         if (shooted.healt <= 0) {
           shooted.die()
@@ -426,6 +462,9 @@ class Game {
         }
         shot.die()
       } else {
+        if (shooted.points) {
+          this._interface.score += shooted.points
+        }
         shooted.die()
       }
       if (shooted.is('supply')) {

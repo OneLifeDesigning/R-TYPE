@@ -10,11 +10,6 @@ const MOD_SPEED_SIZE = 1080 / (document.getElementById("canvas").parentElement.c
 
 let AUDIO = []
 
-const MAX_SCORE = [
-  ['AAA', 17453],
-  ['BBB', 17153],
-  ['CCC', 17053]
-]
 const GLOBAL_SPEED_X = (MOD_SPEED_SIZE >= 2 ? MOD_SPEED_SIZE / 4 : MOD_SPEED_SIZE)
 const GLOBAL_SPEED_Y = (MOD_SPEED_SIZE >= 2 ? MOD_SPEED_SIZE / 4 : MOD_SPEED_SIZE)
 
