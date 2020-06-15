@@ -216,7 +216,7 @@ class Game {
       terrainBottom.draw()
       terrainBottom.move()
     })
-    if (this._terrainBottom.length === 0 && this._terrainTop.length === 0 && ) {
+    if (this._terrainBottom.length === 0 && this._terrainTop.length === 0) {
       this._addTerrain()
     }
   }
