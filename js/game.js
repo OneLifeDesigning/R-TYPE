@@ -279,7 +279,7 @@ class Game {
       this._timeSupply = 0
     }
 
-    if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 10 * DIFICULTY) {
+    if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 4 * DIFICULTY) {
       for (let i = 0; i < 2 * DIFICULTY; i++) {
         this._enemiesAll.push(
           new EnemyButterfly(
@@ -312,7 +312,7 @@ class Game {
       this._timeKamikaze = 0
     }
 
-    if (this._timeCyborg++ >= 8000 && (this._enemiesAll.length <= 8 * DIFICULTY || !this._enemiesAll.some(enemy => enemy.is('cyborg')))) {
+    if (this._timeCyborg++ >= 8000 && (this._enemiesAll.length <= 8 * DIFICULTY)) {
       for (let i = 0; i < DIFICULTY; i++) {
         this._enemiesAll.push(
           new EnemyCyborg(

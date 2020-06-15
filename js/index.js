@@ -64,7 +64,11 @@ selectors.forEach(select => {
     video.play()
     dificulty.classList.toggle('d-none')
     video.classList.toggle('d-none')
+    btnMute.classList.add('d-none')
+    btnPlay.classList.add('d-none')
     setTimeout(() => {
+      btnMute.classList.remove('d-none')
+      btnPause.classList.remove('d-none')
       canvas.classList.toggle('d-none')
       video.classList.toggle('d-none')
       DIFICULTY = select.getAttribute('dificulty')
