@@ -6,15 +6,12 @@ const KEY_ALT = 18
 const KEY_SPACE = 32
 const KEY_P = 80
 
-const MAX_TIME_LINE = 300000
+const MOD_SPEED_SIZE = 1080 / (document.getElementById("canvas").parentElement.clientWidth)
 
-const MAX_SCORE = [
-  ['AAA', 17453],
-  ['BBB', 17153],
-  ['CCC', 17053]
-]
-const GLOBAL_SPEED_X = 1
-const GLOBAL_SPEED_Y = 1
+let AUDIO = []
+
+const GLOBAL_SPEED_X = (MOD_SPEED_SIZE >= 2 ? MOD_SPEED_SIZE / 4 : MOD_SPEED_SIZE)
+const GLOBAL_SPEED_Y = (MOD_SPEED_SIZE >= 2 ? MOD_SPEED_SIZE / 4 : MOD_SPEED_SIZE)
 
 const LEVEL_1_IMG_BG_1 = new Image()
 LEVEL_1_IMG_BG_1.src = './img/backgrounds/bg1.png'
@@ -40,14 +37,23 @@ IMG_SHOT_BEAM_LOAD.src = './img/sprites/weapon-beam-load.png'
 const IMG_ENEMY_BUTTERFLY = new Image()
 IMG_ENEMY_BUTTERFLY.src = './img/sprites/enemy-butterfly.png'
 
-const IMG_ENEMY_BUTTERFLY_EXPLOSION = new Image()
-IMG_ENEMY_BUTTERFLY_EXPLOSION.src = './img/sprites/enemy-butterfly-explosion.png'
+const IMG_ENEMY_CYBORG = new Image()
+IMG_ENEMY_CYBORG.src = './img/sprites/enemy-cyborg.png'
+
+const IMG_ENEMY_KAMIKAZE = new Image()
+IMG_ENEMY_KAMIKAZE.src = './img/sprites/enemy-kamikaze.png'
+
+const IMG_ENEMY_GUNNER = new Image()
+IMG_ENEMY_GUNNER.src = './img/sprites/enemy-gunner.png'
+
+const IMG_ENEMY_GUNNER_MOTOR = new Image()
+IMG_ENEMY_GUNNER_MOTOR.src = './img/sprites/enemy-gunner-motor.png'
+
+const IMG_ENEMY_GUNNER_GHOST = new Image()
+IMG_ENEMY_GUNNER_GHOST.src = './img/sprites/enemy-gunner-ghost.png'
 
 const IMG_ENEMY_SUPPLY = new Image()
 IMG_ENEMY_SUPPLY.src = './img/sprites/enemy-supply.png'
-
-const IMG_ENEMY_SUPPLY_EXPLOSION = new Image()
-IMG_ENEMY_SUPPLY_EXPLOSION.src = './img/sprites/enemy-supply-explosion.png'
 
 const IMG_ARMORY_PACKAGE_01 = new Image()
 IMG_ARMORY_PACKAGE_01.src = './img/sprites/weapon-armory-01.png'
@@ -71,7 +77,62 @@ IMG_TERRAIN_ENTRANCE_BAY_1.src = './img/terrain/level-1/mod-entrance-bay-1.png'
 const IMG_TERRAIN_ENTRANCE_BAY_2 = new Image()
 IMG_TERRAIN_ENTRANCE_BAY_2.src = './img/terrain/level-1/mod-entrance-bay-2.png'
 
-
+const OBJECT_EXPLOSIONS = [{
+  type: 'supply',
+  src: './img/sprites/explosion-enemy-small.png',
+  audio: './sounds/explosion-enemy-small.wav',
+  frames: 6
+}, {
+  type: 'butterfly',
+  src: './img/sprites/explosion-enemy-medium.png',
+  audio: './sounds/explosion-enemy-medium.wav',
+  frames: 6
+}, {
+  type: 'cyborg',
+  src: './img/sprites/explosion-enemy-medium.png',
+  audio: './sounds/explosion-enemy-medium.wav',
+  frames: 6
+}, {
+  type: 'kamikaze',
+  src: './img/sprites/explosion-enemy-medium.png',
+  audio: './sounds/explosion-enemy-medium.wav',
+  frames: 6
+}, {
+  type: 'gunner',
+  src: './img/sprites/explosion-enemy-big.png',
+  audio: './sounds/explosion-enemy-big.wav',
+  frames: 8
+}, {
+  type: 'player',
+  src: './img/sprites/explosion-player.png',
+  audio: './sounds/explosion-player.wav',
+  frames: 6
+}, {
+  type: 'shotEnemy',
+  src: './img/sprites/explosion-shot-enemy.png',
+  audio: './sounds/explosion-shot-enemy.wav',
+  frames: 5
+}, {
+  type: 'beamEnemy',
+  src: './img/sprites/explosion-beam-enemy.png',
+  audio: './sounds/explosion-beam-enemy.wav',
+  frames: 6
+}, {
+  type: 'shotPlayer',
+  src: './img/sprites/explosion-shot-player.png',
+  audio: './sounds/explosion-shot-player.wav',
+  frames: 2
+}, {
+  type: 'beamPlayer',
+  src: './img/sprites/explosion-beam-player.png',
+  audio: './sounds/explosion-beam-player.wav',
+  frames: 5
+}, {
+  type: 'bullet',
+  src: './img/sprites/explosion-bullet.png',
+  audio: './sounds/explosion-bullet.wav',
+  frames: 6
+}]
 
 // TERRRAIN ARR GODD
 const LEVEL_1_IMG_TERRAIN_TOP = [
@@ -100,6 +161,128 @@ const LEVEL_1_IMG_TERRAIN_TOP = [
   '',
   '',
   IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_ENTRANCE_BAY_1,
+  IMG_TERRAIN_ENTRANCE_BAY_2,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
   IMG_TERRAIN_MOD_LOW_4,
   IMG_TERRAIN_MOD_MID,
   IMG_TERRAIN_MOD_HIG,
@@ -146,16 +329,99 @@ const LEVEL_1_IMG_TERRAIN_BOTTOM = [
   IMG_TERRAIN_MOD_LOW_5,
   IMG_TERRAIN_MOD_LOW_3,
   IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_ENTRANCE_BAY_1,
+  IMG_TERRAIN_ENTRANCE_BAY_2,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_HIG,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_ENTRANCE_BAY_1,
+  IMG_TERRAIN_ENTRANCE_BAY_2,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_ENTRANCE_BAY_1,
+  IMG_TERRAIN_ENTRANCE_BAY_2,
+  IMG_TERRAIN_MOD_LOW_1,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_LOW_2,
+  IMG_TERRAIN_MOD_LOW_5,
+  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_MID,
   IMG_TERRAIN_MOD_LOW_4,
   IMG_TERRAIN_MOD_HIG,
   IMG_TERRAIN_MOD_LOW_2,
   IMG_TERRAIN_MOD_MID,
   IMG_TERRAIN_MOD_LOW_1,
-  IMG_TERRAIN_MOD_LOW_3,
+  IMG_TERRAIN_MOD_MID,
+  IMG_TERRAIN_MOD_LOW_4,
+  IMG_TERRAIN_MOD_HIG,
   IMG_TERRAIN_MOD_LOW_2,
-  IMG_TERRAIN_MOD_LOW_5,
-  IMG_TERRAIN_ENTRANCE_BAY_1,
-  IMG_TERRAIN_ENTRANCE_BAY_2,
+  IMG_TERRAIN_MOD_MID,
   IMG_TERRAIN_MOD_LOW_1,
   IMG_TERRAIN_MOD_LOW_3,
   IMG_TERRAIN_MOD_LOW_2,

@@ -1,71 +1,161 @@
 class EnemyGunner {
-  constructor(ctx, y) {
+  constructor(ctx, img, imgM, imgT) {
     this._ctx = ctx
 
-    this.x = ctx.canvas.width
-    this.y = y
+    this.type = 'gunner'
 
-    this.w = ctx.canvas.width / 10
+    this.w = this._ctx.canvas.width / 6
     this.h = (this.w / 4) * 3
 
-    this.vx = -0.8
-    this.vy = 2
+    this.x = this._ctx.canvas.width + (this.w * 2)
+    this.y = this.h
+
+
+    this.vx = -GLOBAL_SPEED_X
+    this.vy = GLOBAL_SPEED_Y
+
     this.tick = 0
-    this.tickMove = 0
+    this.tickShot = 0
 
-    this.params = ['killable', 'collisable', 'shooter', 'walker']
+    this.params = ['gunner', 'collisable', 'killable', 'shooter', 'walker']
 
-    this.healt = 300
+    this.healt = 300 * DIFICULTY
+    this.damage = 200 * DIFICULTY
 
-    this.img = new Image()
-    this.img.src = '../img/sprites/enemy-gunner.png'
+    this.points = 1000 * DIFICULTY
+
+    this.audioLoad = new Audio('./sounds/beam-enemy-load.wav')
+    this.audioLoad.volume = 0.1
+
+    this.tickAnimate = 0
+    this.tickWalk = 0
+
+    this.preparedShot = false
+
+    this.img = img
+    this.imgM = imgM
+    this.imgT = imgT
+
     // NOTE: frame are number sprites
     this.img.frames = 3
+    this.imgM.frames = 3
+    this.imgT.frames = 3
     // NOTE: position actual "array"
     this.img.frameIndex = 1
+    this.imgM.frameIndex = 0
+    this.imgT.frameIndex = 0
   }
 
   draw() {
-    this._ctx.drawImage(
-      this.img,
-      this.img.frameIndex * this.img.width / this.img.frames,
-      0,
-      this.img.width / this.img.frames,
-      this.img.height,
-      this.x,
-      this.y,
-      this.w,
-      this.h
-    )
+    if (this.tickWalk === 1) {
+      this._ctx.globalAlpha = 0.5
+      this._ctx.drawImage(
+        this.imgM,
+        this.imgM.frameIndex * this.imgM.width / this.imgM.frames,
+        0,
+        this.imgM.width / this.imgM.frames,
+        this.imgM.height,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+      )
+      this._ctx.globalAlpha = 1
+      this._ctx.drawImage(
+        this.imgT,
+        this.imgT.frameIndex * this.imgT.width / this.imgT.frames,
+        0,
+        this.imgT.width / this.imgT.frames,
+        this.imgT.height,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+      )
+    } else {
+      this._ctx.drawImage(
+        this.imgM,
+        this.imgM.frameIndex * this.imgM.width / this.imgM.frames,
+        0,
+        this.imgM.width / this.imgM.frames,
+        this.imgM.height,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+      )
+      this._ctx.drawImage(
+        this.img,
+        this.img.frameIndex * this.img.width / this.img.frames,
+        0,
+        this.img.width / this.img.frames,
+        this.img.height,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+      )
+    }
   }
 
   move(playerPosX, playerPosY) {
-    if (playerPosY - 2 > this.y && playerPosY !== this.y) {
-      if (playerPosY - this.y <= 50) {
-        this.y += this.vy / 5
+    if (playerPosY - 20 > this.y && playerPosY !== this.y) {
+      if (playerPosY - this.y < 10) {
+        this.y += this.vy * 2
+        this.img.frameIndex = 1
+        if (this.tickAnimate++ >= 10) {
+          this._animateMotorPush()
+          this.tickAnimate = 0
+        }
       } else {
         this.y += this.vy
+        this.img.frameIndex = 1
+        if (this.tickAnimate++ >= 30) {
+          this._animateMotorPush()
+          this.tickAnimate = 0
+        }
       }
-    } else if (playerPosY + 2 < this.y && playerPosY !== this.y) {
-      if (this.y - playerPosY + 4 <= 50) {
-        this.y -= this.vy / 5
+    } else if (playerPosY + 20 < this.y && playerPosY !== this.y) {
+      if (this.y - playerPosY + 4 < 10) {
+        this.y -= this.vy * 2
+        this.img.frameIndex = 2
+        if (this.tickAnimate++ >= 10) {
+          this._animateMotorPush()
+          this.tickAnimate = 0
+        }
       } else {
         this.y -= this.vy
+        this.img.frameIndex = 2
+        if (this.tickAnimate++ >= 30) {
+          this._animateMotorPush()
+          this.tickAnimate = 0
+        }
       }
-    } else if (playerPosY >= this.y - 80 || playerPosY <= this.y + 80) {
-      if (this.tickMove++ === 25) {
-        this._shot()
-        this.tickMove = 0
+    } else if ((playerPosY >= this.y - 30 || playerPosY <= this.y + 30) && this.x <= this._ctx.canvas.width) {
+      this.img.frameIndex = 0
+      if (this.tickShot++ >= 150) {
+        this.preparedShot = true
+        this.tickShot = 1
+        this._animateMotorStatic()
       }
-    } else if (playerPosY == this.y) {
-      this.vy = 0
     }
-    if (playerPosX + 2 < this.x - ctx.canvas.width / 4 && this.x <= ctx.canvas.width) {
+    if (playerPosX - 10 < this.x - this._ctx.canvas.width / 3 && this.x >= this._ctx.canvas.width / 2) {
       this.x += this.vx
-    } else if (playerPosX >= this.x - ctx.canvas.width / 4) {
-      this.x -= this.vx * 5
+      this.img.frameIndex = 1
+      if (this.tickAnimate++ >= 20) {
+        this._animateMotorPull()
+        this.tickAnimate = 0
+      }
+    } else if (playerPosX - 10 > this.x - this._ctx.canvas.width / 4 && this.x <= this._ctx.canvas.width - this.w / 2) {
+      this.x -= this.vx * 2
+      this.img.frameIndex = 2
+      if (this.tickAnimate++ >= 20) {
+        this._animateMotorPush()
+        this.tickAnimate = 0
+      }
     }
   }
+
   isVisible() {
     return this.x + this.w >= 0
   }
@@ -74,25 +164,71 @@ class EnemyGunner {
     return this.params.includes(value)
   }
 
-  _animate() {
-    if (this.tick++ === 15) {
-      this.tick = 0
+  _animateMotorPush() {
+    if (this.imgM.frameIndex++ >= 2) {
+      this.imgM.frameIndex = 1
+    }
+  }
+
+  _animateMotorStatic() {
+    if (this.imgM.frameIndex++ >= 3) {
+      this.imgM.frameIndex = 2
+    }
+  }
+
+  _animateMotorPull() {
+    if (this.imgM.frameIndex++ >= 1) {
+      this.imgM.frameIndex = 0
+    }
+  }
+
+  _animateMotorGhostt(val) {
+    this.imgT.frameIndex = val
+  }
+
+  undoTerrain() {
+    this.tickWalk = 0
+    if (this.params.indexOf('killable') === -1) {
+      this.params.push('killable')
+    }
+    if (this.params.indexOf('shooter') === -1) {
+      this.params.push('shooter')
+    }
+  }
+
+  doTerreain() {
+    this.tickWalk = 1
+    this.params = this.params.filter(param => param !== 'killable')
+    this.params = this.params.filter(param => param !== 'shooter')
+    if (this.tickAnimate++ >= 10) {
+      this._animateMotorGhostt(this.img.frameIndex)
+      this.tickAnimate = 0
     }
   }
 
   die() {
-    this.params.push('die')
-    this.tickDie = 1
-
+    this.params = this.params.filter(param => param !== 'killable')
+    this.params = this.params.filter(param => param !== 'collisable')
     this.vy = 0.4
     this.xy = 0.04
-    setTimeout(() => {
-      this.x = 0 - this.w
-      this.vx = 0
-    }, 350)
+    if (this.params.indexOf('die') === -1) {
+      this.params.push('die')
+    }
   }
 
-  // _shot() {
-  //   console.log('Hello im gunner and killYUONoooow')
-  // }
+  readyToShot() {
+    return this.preparedShot
+  }
+
+  shotEnemy() {
+    if (game.musicPlay) {
+      this.audioLoad.play()
+    }
+    this.tickShot = 0
+    this.preparedShot = false
+    return new EnemiesBeam(
+      this._ctx,
+      this
+    )
+  }
 }

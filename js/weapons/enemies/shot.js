@@ -2,6 +2,8 @@ class EnemiesShot {
   constructor(ctx, shooter, player) {
     this._ctx = ctx
 
+    this.type = 'shotEnemy'
+
     this.shooter = shooter
     this.player = player
 
@@ -20,19 +22,18 @@ class EnemiesShot {
     this.tick = 0
 
     // NOTE: frame are number sprites
-    this.img.framesX = 5
-    this.img.framesY = 2
+    this.img.frames = 4
     // NOTE: position actual "array"
-    this.img.frameIndexX = 1
-    this.img.frameIndexY = 0
+    this.img.frameIndex = 1
 
     this.angle = this.calcAngle(this.playerCenter, this.enemyCenter)
     this.angle = this.angle <= 1 ? 1 : this.angle
+
     this.vx = this.angle
     this.vy = this.angle
 
-    this.damage = 100
-    this.healt = 0
+    this.damage = this.shooter.damage
+    this.healt = 1
 
     this.params = ['collisable', 'shot']
 
@@ -56,10 +57,10 @@ class EnemiesShot {
   draw() {
     this._ctx.drawImage(
       this.img,
-      this.img.frameIndexX * this.img.width / this.img.framesX,
+      this.img.frameIndex * this.img.width / this.img.frames,
       0,
-      this.img.width / this.img.framesX,
-      this.img.height / this.img.framesY,
+      this.img.width / this.img.frames,
+      this.img.height,
       this.x,
       this.y,
       this.w,
@@ -67,9 +68,13 @@ class EnemiesShot {
     )
   }
 
+  isVisible() {
+    return this.x + this.w >= 0 && this.x + this.w <= this._ctx.canvas.width
+  }
+
   _animate() {
-    if (this.img.frameIndexX++ >= 4) {
-      this.img.frameIndexX = 1
+    if (this.img.frameIndex++ >= 3) {
+      this.img.frameIndex = 0
     }
   }
 
@@ -95,11 +100,10 @@ class EnemiesShot {
     }
   }
   die() {
-    this.params.push('die')
-    this.x = 0 - this.w
-    this.y = 0 - this.h
-    this.vx = 0
-    this.vy = 0
+    if (this.params.indexOf('die') === -1) {
+      this.params.push('die')
+    }
+    this.params = this.params.filter(param => param !== 'collisable')
   }
 
   isVisible() {

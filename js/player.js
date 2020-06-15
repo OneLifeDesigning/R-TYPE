@@ -3,6 +3,8 @@ class Player {
     this._ctx = ctx
     this.tick = 0
 
+    this.type = 'player'
+
     this.x = -500
 
     this._img = img
@@ -34,10 +36,17 @@ class Player {
     this.tick = 0
     this.tickRight = 0
     this.tickRespawn = 1
+    this.tickTransparency = 0
 
   }
 
   draw() {
+    if (this.tickRespawn === 1) {
+      this._ctx.globalAlpha = 0.5
+    } else {
+      this._ctx.globalAlpha = 1
+    }
+
     this._ctx.drawImage(
       this._imgM,
       this._imgM.frameIndex * this._imgM.width / this._imgM.frames,
@@ -49,6 +58,7 @@ class Player {
       this.w,
       this.h
     )
+
     this._ctx.drawImage(
       this._img,
       this._img.frameIndex * this._img.width / this._img.frames,
@@ -60,12 +70,13 @@ class Player {
       this.w,
       this.h
     )
+    this._ctx.globalAlpha = 1
   }
 
   move() {
     this.y += this.vy
     this.x += this.vx
-
+    this.params = this.params.filter(param => param !== 'reload')
     if (this.vy >= 0 && this.vy !== 0) {
       this._animate('down')
       this._animateMotor('down')
@@ -98,14 +109,22 @@ class Player {
     if (this.tickRespawn === 1 && this.x >= this._ctx.canvas.width / 3) {
       this.respawn()
       this.vx = 0
-      this.tickRespawn = 0
+      setTimeout(() => {
+        this.tickRespawn = 0
+      }, 300)
+      setTimeout(() => {
+        if (this.params.indexOf('killable') === -1) {
+          this.params.push('killable')
+        }
+        if (this.params.indexOf('collisable') === -1) {
+          this.params.push('collisable')
+        }
+      }, 1200)
     }
 
   }
   respawn() {
     this.typeAnimation = 'right'
-    this.params.push('killable')
-    this.params.push('collisable')
     this.params = this.params.filter(param => param !== 'respawn')
   }
 
@@ -142,7 +161,10 @@ class Player {
   }
   _animateMotor(typeAnimation) {
     if (this.tick++ >= 10) {
-      if ((typeAnimation === 'up' || typeAnimation === 'default' || typeAnimation === 'left') && this._imgM.frameIndex++ >= 5) {
+      if (typeAnimation === 'left') {
+        this._imgM.frameIndex = 5
+      }
+      if ((typeAnimation === 'up' || typeAnimation === 'default') && this._imgM.frameIndex++ >= 5) {
         this._imgM.frameIndex = 4
       }
       if (typeAnimation === 'down' && this._imgM.frameIndex++ >= 7) {

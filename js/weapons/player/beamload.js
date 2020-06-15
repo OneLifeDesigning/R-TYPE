@@ -39,7 +39,7 @@ class BeamLoad {
 
     if (this.tick !== 0 && this.tick++ >= 8) {
       this._animate()
-      this.tick = 0
+      this.tick = 1
     }
   }
 

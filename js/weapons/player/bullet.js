@@ -2,6 +2,8 @@ class Bullet {
   constructor(ctx, player, img) {
     this._ctx = ctx
 
+    this.type = 'bullet'
+
     this._player = player
 
     this.w = ctx.canvas.width / 20
@@ -15,10 +17,10 @@ class Bullet {
     this.tickAnimation = 0
     this.tickStart = 0
 
-    this.params = ['collisable', 'bullet']
+    this.params = ['collisable', 'bullet', 'killable']
 
-    this.damage = 10
-    this.healt = 100
+    this.damage = 100
+    this.healt = 1000 / DIFICULTY
 
     this.fixed = false
 
@@ -67,13 +69,14 @@ class Bullet {
   }
 
   die() {
-    this.healt -= 1
-    if (this.healt <= 0) {
-      this.healt = 100
+    this.params = this.params.filter(param => param !== 'killable')
+    this.params = this.params.filter(param => param !== 'collisable')
+    this.vy = 0.4
+    this.xy = 0.04
+    if (this.params.indexOf('die') === -1) {
+      this.params.push('die')
     }
-    this.x = 0 - this.w
-    this.vx = 0
-    this.vy = 0
+    this.healt = 100
   }
 
 
@@ -86,6 +89,8 @@ class Bullet {
   }
 
   toFixed() {
+    this.vx = GLOBAL_SPEED_Y * 3
+    this.vy = GLOBAL_SPEED_X * 3
     this.tickStart = 1
     this.fixed = true
   }

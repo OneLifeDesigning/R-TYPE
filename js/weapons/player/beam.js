@@ -1,14 +1,21 @@
 class BeamShot extends Shot {
-  constructor(ctx, img, x, y, damage) {
+  constructor(ctx, x, y, damage) {
     super(ctx, x, y)
 
     this.w = this._ctx.canvas.width / 9
     this.h = (this.w / 24) * 8
 
+    this.type = 'beamPlayer'
     this.damage = damage
 
     this.img = new Image()
     this.img.src = './img/sprites/weapon-beam.png'
+
+    this.audioShot = new Audio('./sounds/beam.wav')
+    this.audioShot.volume = 0.2
+
+    this.audioShotBig = new Audio('./sounds/beam-long.wav')
+    this.audioShotBig.volume = 0.2
 
     // NOTE: frame are number sprites
     this.img.framesX = 2
@@ -24,6 +31,7 @@ class BeamShot extends Shot {
     this.img.frameIndexY = this.findClosest(this.ranges, this.damage)
 
     this.vx = 10
+    this.vy = 0
 
   }
 
@@ -67,18 +75,23 @@ class BeamShot extends Shot {
     if (this.x >= this._ctx.canvas.width + this.w || this.x <= 0 - this.w || this.y >= this._ctx.canvas.height + this.h || this.Y <= 0 - this.h) {
       this.die()
     }
+    if (this.img.framesX === 1 && game.soundsPlay) {
+      this.audioShot.play()
+    }
+    if (this.img.framesX === 2 && game.soundsPlay) {
+      this.audioShotBig.play()
+    }
   }
 
-
-
   die() {
-    this.params.push('die')
-    this.x = this._ctx.canvas.width + this.w + 10
-    this.vx = 0
+    if (this.params.indexOf('die') === -1) {
+      this.params.push('die')
+    }
+    this.params = this.params.filter(param => param !== 'collisable')
   }
 
   isVisible() {
-    return this.x <= 0
+    return this.x + this.w >= 0 && this.x <= this._ctx.canvas.width
   }
 
 }

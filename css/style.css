@@ -19,7 +19,6 @@ body,
 main {
   font-family: 'Pixeboy', 'ArcadeClassic';
   text-align: center;
-  background-color: #04c2f9;
   color: aqua;
   box-sizing: content-box;
   height: 100vh;
@@ -30,6 +29,11 @@ h2,
 h3 {
   letter-spacing: 2px;
   text-shadow: 2px 1px 0px #FFFF;
+  margin-bottom: 0;
+}
+
+h1.card-title {
+  text-shadow: none
 }
 
 canvas {
@@ -42,9 +46,7 @@ canvas {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('../img/backgrounds/bg-arcade.png');
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: #000000;
 }
 
 .btn {
@@ -55,7 +57,8 @@ canvas {
 #video,
 #game,
 #dificulty,
-#interface {
+#interface,
+#credits {
   margin: 0px auto;
   background-color: #000000;
   overflow: hidden;
@@ -67,16 +70,84 @@ canvas {
   text-align: center;
 }
 
+#credits {
+  overflow: hidden;
+  overflow-y: auto
+}
+
+#credits h4 {
+  margin-bottom: 0;
+}
+
+.ohana {
+  max-height: 150px;
+}
+
+.w-100 {
+  width: 100%
+}
+
+.mb-n-25 {
+  margin-bottom: -25px;
+}
+
 #interface {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #393e46;
+  padding: 0 0.3125rem 0.3125rem;
+  margin-top: -0.625rem;
+}
+
+#interface>div {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #000000;
-  height: 2.5rem;
-  padding: 0.3125rem;
-  margin-top: -10px;
+  padding-top: 0.3125rem;
 }
 
+#interface>div:first-child {
+  margin-left: 0.625rem;
+}
+
+#interface>div>span {
+  margin-left: 0.625rem;
+  color: azure;
+}
+
+.progress {
+  margin-left: 0.625rem;
+  min-width: 200px;
+  border-radius: 0px;
+}
+
+.progress-bar {
+  background-color: aqua;
+  color: black;
+}
+
+.progress-bar.full {
+  background-color: red;
+}
+
+.lives img {
+  max-height: 25px;
+  margin-right: 0.8rem;
+}
+
+.lives:last-child img {
+  margin-right: 0;
+}
+
+.buttons {
+  align-items: flex-end;
+}
+
+.buttons a {
+  border-radius: 0px;
+  box-shadow: none;
+}
 
 .animate__animated.animate__backInRight {
   --animate-delay: 1s;
@@ -89,8 +160,9 @@ canvas {
 }
 
 .animate__animated.animate__zoomInRight {
-  --animate-duration: 6s;
+  --animate-duration: 3s;
 }
+
 
 @media (min-width: 576px) {
 
@@ -139,11 +211,15 @@ canvas {
 }
 
 @media (min-width: 1200px) {
-  .machine {
-    background-size: auto 120%;
+  h1 {
+    font-size: 2.4rem;
   }
 
-  #screen {
-    margin-top: -180px;
+  h2 {
+    font-size: 1.7rem;
+  }
+
+  h3 {
+    font-size: 1.4rem;
   }
 }
