@@ -32,8 +32,8 @@ class EnemiesShot {
     this.vx = this.angle
     this.vy = this.angle
 
-    this.damage = 100
-    this.healt = 0
+    this.damage = this.shooter.damage
+    this.healt = 1
 
     this.params = ['collisable', 'shot']
 

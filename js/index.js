@@ -8,6 +8,7 @@ const play = document.getElementById("play")
 const selectors = dificulty.querySelectorAll('.dificulty-selector')
 const canvas = document.getElementById("canvas")
 const gameOver = document.getElementById("gameOver")
+const formScore = document.getElementById("formScore")
 const ctx = canvas.getContext("2d")
 
 const saverBtn = document.getElementById("saverBtn")
@@ -44,7 +45,7 @@ video.height = canvas.height
 video.removeAttribute("controls")
 
 const game = new Game(ctx)
-let DIFICULTY = 1
+let DIFICULTY = 2
 
 const hideIsShow = (parent) => {
   for (let i = 0; i < parent.childNodes.length; i++) {
@@ -55,8 +56,10 @@ const hideIsShow = (parent) => {
 
   }
 }
+
 selectors.forEach(select => {
   select.addEventListener("click", () => {
+
     video.play()
     dificulty.classList.toggle('d-none')
     video.classList.toggle('d-none')
@@ -79,30 +82,40 @@ play.addEventListener("click", () => {
 
 btnPause.addEventListener("click", () => {
   game.pause()
-  game.soundsPlay = false
+  game.musicPlay = false
   game.music.pause()
   btnPlay.classList.toggle('d-none')
   btnPause.classList.toggle('d-none')
 })
 
 btnPlay.addEventListener("click", () => {
+  if (game._timeLine === 0) {
+    oldWindow = hideIsShow(screen)
+    video.pause()
+    canvas.classList.remove('d-none')
+  } else {
+    if (game.musicPlay) {
+      game.musicPlay = true
+    }
+    if (game.musicPlay) {
+      game.music.play()
+    }
+  }
   game.start()
-  game.soundsPlay = true
-  game.music.pause()
   btnPause.classList.toggle('d-none')
   btnPlay.classList.toggle('d-none')
 })
 
 btnMute.addEventListener("click", () => {
-  game.soundsPlay = false
-  game.music.pause()
+  game.musicPlay = false
+  game.musicPlay = false
   btnMute.classList.toggle('d-none')
   btnUnMute.classList.toggle('d-none')
 })
 
 btnUnMute.addEventListener("click", () => {
-  game.soundsPlay = true
-  game.music.play()
+  game.musicPlay = true
+  game.musicPlay = true
   btnMute.classList.toggle('d-none')
   btnUnMute.classList.toggle('d-none')
 })
@@ -112,7 +125,11 @@ btnCredits.addEventListener("click", () => {
   if (game._timeLine !== 0) {
     game.pause()
   }
+  btnMute.classList.add('d-none')
+  btnUnMute.classList.add('d-none')
   oldWindow = hideIsShow(screen)
+  btnPause.classList.add('d-none')
+  btnPlay.classList.add('d-none')
   credits.classList.toggle('d-none')
   btnCredits.classList.toggle('d-none')
   btnClose.classList.toggle('d-none')
@@ -121,6 +138,14 @@ btnCredits.addEventListener("click", () => {
 btnClose.addEventListener("click", () => {
   if (game._timeLine !== 0) {
     game.start()
+    btnPause.classList.remove('d-none')
+  } else {
+    btnPlay.classList.remove('d-none')
+  }
+  if (game.musicPlay) {
+    btnMute.classList.remove('d-none')
+  } else {
+    btnUnMute.classList.remove('d-none')
   }
   oldWindow.classList.toggle('d-none')
   credits.classList.toggle('d-none')
@@ -130,7 +155,17 @@ btnClose.addEventListener("click", () => {
 
 btnRestar.addEventListener("click", () => {
   game.restart()
+  btnPause.classList.remove('d-none')
+  if (game.musicPlay) {
+    btnMute.classList.remove('d-none')
+  } else {
+    btnUnMute.classList.remove('d-none')
+  }
+  gameOver.classList.toggle('d-none')
+  formScore.classList.toggle('d-none')
   credits.classList.toggle('d-none')
+  canvas.classList.toggle('d-none')
+  btnRestar.classList.toggle('d-none')
   btnCredits.classList.toggle('d-none')
 })
 
@@ -165,20 +200,17 @@ saverBtn.addEventListener('click', () => {
 
 
 window.onload = () => {
-  // game.start()
-  // intro.classList.add('d-none')
   credits.classList.add('d-none')
   canvas.classList.add('d-none')
   dificulty.classList.add('d-none')
   video.classList.add('d-none')
-  btnPlay.classList.add('d-none')
   btnPause.classList.add('d-none')
   btnClose.classList.add('d-none')
   btnRestar.classList.add('d-none')
   btnUnMute.classList.add('d-none')
-  btnMute.classList.add('d-none')
 
   if (theBest) {
     bestPlayer.innerHTML = `${theBest.name} - ${theBest.score} - LEVEL: ${theBest.level}`
+    interface.children[3].querySelector('span').innerText = theBest.score
   }
 }

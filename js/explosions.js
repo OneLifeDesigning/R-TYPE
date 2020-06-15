@@ -81,7 +81,7 @@ class Explosions {
     this.x += this.vx
     if (this.tickAimation++ >= this.timeAnimation) {
       this._animate()
-      if (this.audio && game.soundsPlay) {
+      if (this.audio && game.musicPlay) {
         this.audio.play()
       }
 

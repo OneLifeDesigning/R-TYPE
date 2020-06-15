@@ -17,23 +17,23 @@
       <section id="screen" class="container">
         <article id="intro" class="row align-items-center">
           <div class="col-12">
-            <h1 class="animate__animated animate__backInRight animate__delay-5s">BLAS OFF AND TRIKE, THE EVIL BYDO EMPIRE!</h1>
+            <h1 class="animate__animated animate__backInRight animate__delay-3s">BLAST OFF AND STRIKE, THE EVIL BYDO EMPIRE!</h1>
           </div>
           <div class="col-12">
             <img src="./img/intro/logo-intro.png" alt="R-TYPE Logotipe ©" class="img-fluid animate__animated animate__zoomInRight">
             <a href="#0" id="play" class="btn btn-outline-danger btn-lg  animate__animated animate__fadeIn animate__delay-5s">CLICK HERE TO PLAY</a>
           </div>
           <div class="col-12">
-            <h3 class="animate__animated animate__backInRight animate__delay-5s">THIS R-TYPE IS A SMALL VERSION OF THE FAMOUS GAME DEVELOPED BY IREM IN 1987</h3>
+            <h3 class="animate__animated animate__backInRight animate__delay-3s">THIS R-TYPE IS A SMALL VERSION OF THE FAMOUS GAME DEVELOPED BY IREM IN 1987</h3>
           </div>
         </article>
         <article id="dificulty" class="row align-items-center">
           <div class="col-6 offset-3">
-            <h2 class="animate__animated animate__backInRight">SELECT YOUR LEVEL</h2>
-            <p class="animate__animated animate__backInRight animate__delay-2s"><a href="#0" dificulty="1" class="btn btn-outline-success btn-block btn-lg dificulty-selector">EASY</a></p>
-            <p class="animate__animated animate__backInRight animate__delay-3s"><a href="#0" dificulty="2" class="btn btn-outline-primary btn-block btn-lg dificulty-selector">MEDIUM</a></p>
-            <p class="animate__animated animate__backInRight animate__delay-4s"><a href="#0" dificulty="3" class="btn btn-outline-warning btn-block btn-lg dificulty-selector">HARD</a></p>
-            <p class="animate__animated animate__backInRight animate__delay-5s"><a href="#0" dificulty="8" class="btn btn-outline-danger btn-block btn-lg dificulty-selector">CRAZY</a></p>
+            <h2 class="animate__animated animate__backInRight mb-3">SELECT YOUR LEVEL</h2>
+            <p class="animate__animated animate__backInRight animate__delay-1s"><a href="#0" dificulty="1" class="btn btn-outline-success btn-block btn-lg dificulty-selector">EASY</a></p>
+            <p class="animate__animated animate__backInRight animate__delay-2s"><a href="#0" dificulty="2" class="btn btn-outline-primary btn-block btn-lg dificulty-selector">MEDIUM</a></p>
+            <p class="animate__animated animate__backInRight animate__delay-3s"><a href="#0" dificulty="3" class="btn btn-outline-warning btn-block btn-lg dificulty-selector">HARD</a></p>
+            <p class="animate__animated animate__backInRight animate__delay-4s"><a href="#0" dificulty="8" class="btn btn-outline-danger btn-block btn-lg dificulty-selector">CRAZY</a></p>
           </div>
         </article>
         <video id="video" src="./video/intro.mp4" controls="false"></video>
@@ -104,12 +104,12 @@
               <div class="accordion" id="accordionDue">
                 <div class="card text-white bg-dark mb-3">
                   <div class="card-body">
-                    <div id="collapseDue" class="collapse" aria-labelledby="headingOne" data-parent="#accordionDue">
-                      <p class="card-text">And, thanks for sound and graphics resources to: Goemar www.retrogamezone.co.uk, Arcom www.spriters-resource.com, rtype.fandom.com, davidrb.itch.io, clockworkchilli.com, pexels.com and mrsiraphol freepik.com</p>
-                      <img src="./img/interface/ohana.svg" class="img-fluid mt-1 ohana" alt="Ohana">
-                    </div>
-                    <h1 class="card-title" type="button" data-toggle="collapse" data-target="#collapseDue" aria-expanded="true" aria-controls="collapseDue">
-                      SPECIAL THANKS<br> <small>To my wife for HER PATIENCE<br>these two endless weeks</small>
+                    <a type="button" data-toggle="collapse" data-target="#collapseDue" aria-expanded="true" aria-controls="collapseDue">
+                      <p class="card-text">Thanks for sound and graphics resources to: Goemar www.retrogamezone.co.uk, Arcom www.spriters-resource.com, rtype.fandom.com, davidrb.itch.io, clockworkchilli.com, pexels.com and mrsiraphol freepik.com</p>
+                    </a>
+                    <h1 id="collapseDue" class="collapse" aria-labelledby="headingOne" data-parent="#accordionDue">
+                      <img src="./img/interface/ohana.svg" class="img-fluid mt-1 mb-n-25 ohana" alt="Ohana"> <br>
+                      SPECIAL THANKS<br> <small>To ELENA for HER PATIENCE<br>these two endless weeks</small>
                     </h1>
                   </div>
                 </div>
@@ -124,8 +124,8 @@
           <div>MaxScore <span>0</span></div>
           <div>
             <div class="buttons">
-              <a href="#0" class="btn btn-secondary mr-2" id="interface-mute"><img src="./img/interface/volume-x.svg" class="img-fluid" alt="Mute"></a>
-              <a href="#0" class="btn btn-secondary mr-2" id="interface-unmute"><img src="./img/interface/volume-2.svg" class="img-fluid" alt="UnMute"></a>
+              <a href="#0" class="btn btn-secondary mr-2" id="interface-mute"><img src="./img/interface/volume-2.svg" class="img-fluid" alt="Mute"></a>
+              <a href="#0" class="btn btn-secondary mr-2" id="interface-unmute"><img src="./img/interface/volume-x.svg" class="img-fluid" alt="UnMute"></a>
               <a href="#0" class="btn btn-secondary mr-2" id="interface-pause"><img src="./img/interface/pause.svg" class="img-fluid" alt="Pause"></a>
               <a href="#0" class="btn btn-secondary mr-2" id="interface-play"><img src="./img/interface/play.svg" class="img-fluid" alt="Credits"></a>
               <a href="#0" class="btn btn-secondary" id="interface-credits"><img src="./img/interface/credits.svg" class="img-fluid" alt="Credits"></a>
@@ -150,7 +150,6 @@
   <script src="./js/weapons/enemies/shot.js"></script>
   <script src="./js/weapons/player/armory.js"></script>
   <script src="./js/weapons/player/shot.js"></script>
-  <script src="./js/weapons/player/beamload.js"></script>
   <script src="./js/weapons/player/beam.js"></script>
   <script src="./js/weapons/player/bullet.js"></script>
   <script src="./js/weapons/player/weapon.js"></script>

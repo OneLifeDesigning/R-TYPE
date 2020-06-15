@@ -221,8 +221,7 @@ class EnemyGunner {
   }
 
   shotEnemy() {
-
-    if (game.soundsPlay) {
+    if (game.musicPlay) {
       this.audioLoad.play()
     }
     this.tickShot = 0

@@ -57,7 +57,7 @@ class EnemiesBeam {
       this.y = shooter.y + shooter.h * 0.2
       if (this.tickCharge++ >= 30) {
         this._animateChargin()
-        if (game.soundsPlay) {
+        if (game.musicPlay) {
           this.audioShot.play()
         }
         this.tickCharge = 0

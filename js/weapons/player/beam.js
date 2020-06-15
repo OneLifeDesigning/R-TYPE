@@ -75,10 +75,10 @@ class BeamShot extends Shot {
     if (this.x >= this._ctx.canvas.width + this.w || this.x <= 0 - this.w || this.y >= this._ctx.canvas.height + this.h || this.Y <= 0 - this.h) {
       this.die()
     }
-    if (this.img.framesX === 1 && game.soundsPlay) {
+    if (this.img.framesX === 1 && game.musicPlay) {
       this.audioShot.play()
     }
-    if (this.img.framesX === 2 && game.soundsPlay) {
+    if (this.img.framesX === 2 && game.musicPlay) {
       this.audioShotBig.play()
     }
   }

@@ -14,12 +14,12 @@ class Game {
     this.musicGameOver = new Audio('./sounds/game-over.wav')
     this.musicGameOver.volume = 0.4
 
-    this.soundsPlay = true
+    this.musicPlay = true
 
     this._bg = new Bg(this._ctx, LEVEL_1_IMG_BG_1)
     this._bgPlanet = new BgPlanet(this._ctx, LEVEL_1_IMG_BG_2)
     this._player = new Player(this._ctx, IMG_PLAYER, IMG_PLAYER_FIRE_MOTOR)
-    this._weapon = new Weapon(this._ctx, this._player)
+    this._weapon = new Weapon(this._ctx, this._player, IMG_SHOT_BEAM_LOAD)
 
     this._bullet = null
 
@@ -43,7 +43,6 @@ class Game {
   }
 
   start() {
-    this.music.play()
     this._addTerrain()
     this._timeLine = setInterval(() => {
       this._clear()
@@ -57,33 +56,70 @@ class Game {
           this.tickLives = ++this.tickLives * this.tickLives
           this._interface.lives += 1
           this._player.lives += 1
+          if (this.musicPlay) {
+            this.liveSound = new Audio('./sounds/armory.wav')
+            this.musicGameOver.volume = 0.4
+          }
         }
       }
     }, 1000 / 60)
   }
 
   restart() {
-    this.stop();
+    this._timeLine = clearInterval(this._timeLine)
+    this._bullet = null
+    this._bg = new Bg(this._ctx, LEVEL_1_IMG_BG_1)
+    this._bgPlanet = new BgPlanet(this._ctx, LEVEL_1_IMG_BG_2)
+    this._player = new Player(this._ctx, IMG_PLAYER, IMG_PLAYER_FIRE_MOTOR)
+    this._weapon = new Weapon(this._ctx, this._player, IMG_SHOT_BEAM_LOAD)
+
+    this._terrainBottom = []
+    this._terrainTop = []
+    this._enemiesAll = []
+    this._enemiesShots = []
+    this._playerShots = []
+    this._explosionsDies = []
+
+    this._interface = new Interface(this.damage)
+    this._interface.lives = this._player.lives
+
     this._clear();
     this.start();
   }
+
   pause() {
+    if (this.musicPlay) {
+      this.music.pause()
+    }
     this._timeLine = clearInterval(this._timeLine)
+    this._timeLine = 0
   }
+
   gameOver() {
     this.scoreMarker = document.getElementById("scoreInput").value = this._interface.score;
     this.pause()
-    this.music.pause()
-    this.musicGameOver.play()
+    if (this.musicPlay) {
+      this.music.pause()
+      this.music.currentTime = 0
+    }
+    if (this.musicPlay) {
+      this.musicGameOver.play()
+    }
+    this.musicPlay = false
+    this.musicPlay = false
 
-    btnClose.classList.toggle('d-none')
-    btnCredits.classList.toggle('d-none')
-    btnRestar.classList.toggle('d-none')
 
-    document.getElementById("formScore").classList.toggle('d-none')
-    gameOver.classList.toggle('d-none')
-    canvas.classList.toggle('d-none')
-    credits.classList.toggle('d-none')
+    btnCredits.classList.add('d-none')
+    btnPause.classList.add('d-none')
+    btnPlay.classList.add('d-none')
+    btnMute.classList.add('d-none')
+    btnUnMute.classList.add('d-none')
+    btnRestar.classList.remove('d-none')
+
+    formScore.classList.remove('d-none')
+    gameOver.classList.remove('d-none')
+    canvas.classList.add('d-none')
+    credits.classList.remove('d-none')
 
     this._timeLine = clearInterval(this._timeLine)
   }
@@ -93,14 +129,19 @@ class Game {
   }
 
   _draw() {
+    if (this.musicPlay) {
+      this.music.play()
+    } else {
+      this.music.pause()
+    }
     this._checkRutePlayer()
     this._checkRuteEnemies()
     this._removeIfNotVisible()
     this._clear()
     this._bg.draw()
     this._bgPlanet.draw()
-    this._player.draw()
     this._weapon.draw()
+    this._player.draw()
     this._drawAndMoveTerrain()
     this._drawAndMoveShots()
     this._drawAndMoveEnemies()
@@ -124,7 +165,7 @@ class Game {
       this._bullet.move(this._player.x + this._player.w, this._player.y)
     }
     this._player.move()
-    this._weapon.move()
+    this._weapon.move(this._player.x + this._player.w * 0.8, this._player.y + this._player.h * 0.2)
   }
 
   _randomNumber(number) {
@@ -396,7 +437,7 @@ class Game {
   // SHOOTS
   _addShotEnemies() {
     this._enemiesAll.forEach(enemy => {
-      if (Math.floor(Math.random() * Math.floor(100)) >= 98 && enemy.is('shooter') && enemy.is('flyer') && enemy.isVisible() && this._tickShot++ >= 10) {
+      if (Math.floor(Math.random() * Math.floor(100)) >= (98 - DIFICULTY) && enemy.is('shooter') && enemy.is('flyer') && enemy.isVisible() && this._tickShot++ >= 10) {
         this._enemiesShots.push(enemy.shotEnemy(enemy, this._player))
         this._tickShot = 0
       } else if (enemy.is('gunner') && enemy.is('shooter') && enemy.readyToShot()) {
@@ -453,6 +494,8 @@ class Game {
       }
     } else {
       if (shot.damage < shooted.healt) {
+        console.log(shooted.healt);
+        console.log(shot.healt);
         shooted.healt -= shot.damage
         if (shooted.healt <= 0) {
           shooted.die()
@@ -487,55 +530,59 @@ class Game {
 
   _setListeners() {
     document.addEventListener('keydown', e => {
-      if (e.keyCode === KEY_SPACE && this._bullet) {
-        if (this._bullet.isFixed()) {
-          this._bullet.toUnfixed()
-        } else {
-          this._bullet.toFixed()
+      if (this._timeLine !== 0) {
+        if (e.keyCode === KEY_SPACE && this._bullet) {
+          if (this._bullet.isFixed()) {
+            this._bullet.toUnfixed()
+          } else {
+            this._bullet.toFixed()
+          }
         }
-      }
-      if (e.keyCode === KEY_ALT) {
-        if (this._bullet) {
-          this._playerShots.push(this._bullet.shot())
-        }
-        this._playerShots.push(this._weapon.shot())
-        this.timer = setInterval(() => {
+        if (e.keyCode === KEY_ALT) {
           if (this._bullet) {
             this._playerShots.push(this._bullet.shot())
           }
-          this._weapon.beamLoadShow()
-          if (this.damage < 100) {
-            this.damage += 10
-          }
-          this._interface.beam = this.damage
-        }, 150)
-      }
-      if (e.keyCode === KEY_UP) {
-        this._player.vy = -GLOBAL_SPEED_Y * 3
-      } else if (e.keyCode === KEY_DOWN) {
-        this._player.vy = +GLOBAL_SPEED_Y * 3
-      } else if (e.keyCode === KEY_RIGHT && !this._player.is('respawn')) {
-        this._player.vx = +GLOBAL_SPEED_X * 3
-      } else if (e.keyCode === KEY_LEFT && !this._player.is('respawn')) {
-        this._player.vx = -GLOBAL_SPEED_X * 3
+          this._playerShots.push(this._weapon.shot())
+          this.timer = setInterval(() => {
+            if (this._bullet) {
+              this._playerShots.push(this._bullet.shot())
+            }
+            this._weapon.beamLoadShow()
+            if (this.damage < 100) {
+              this.damage += 10
+            }
+            this._interface.beam = this.damage
+          }, 150)
+        }
+        if (e.keyCode === KEY_UP) {
+          this._player.vy = -GLOBAL_SPEED_Y * 3
+        } else if (e.keyCode === KEY_DOWN) {
+          this._player.vy = +GLOBAL_SPEED_Y * 3
+        } else if (e.keyCode === KEY_RIGHT && !this._player.is('respawn')) {
+          this._player.vx = +GLOBAL_SPEED_X * 3
+        } else if (e.keyCode === KEY_LEFT && !this._player.is('respawn')) {
+          this._player.vx = -GLOBAL_SPEED_X * 3
+        }
       }
     })
 
     document.addEventListener('keyup', e => {
-      if (e.keyCode === KEY_ALT) {
-        clearInterval(this.timer)
-        this._weapon.beamLoadStop()
-        if (this.damage >= 10) {
-          this._playerShots.push(this._weapon.beam(this.damage))
+      if (game._timeLine !== 0) {
+        if (e.keyCode === KEY_ALT) {
+          clearInterval(this.timer)
+          this._weapon.beamLoadHide()
+          if (this.damage >= 10) {
+            this._playerShots.push(this._weapon.beam(this.damage))
+          }
+          this.damage = 0
+          this._interface.beam = this.damage
+          this.timer = clearInterval()
         }
-        this.damage = 0
-        this._interface.beam = this.damage
-        this.timer = clearInterval()
-      }
-      if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {
-        this._player.vy = 0
-      } else if ((e.keyCode === KEY_RIGHT || e.keyCode === KEY_LEFT) && !this._player.is('respawn')) {
-        this._player.vx = 0
+        if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {
+          this._player.vy = 0
+        } else if ((e.keyCode === KEY_RIGHT || e.keyCode === KEY_LEFT) && !this._player.is('respawn')) {
+          this._player.vx = 0
+        }
       }
     })
   }

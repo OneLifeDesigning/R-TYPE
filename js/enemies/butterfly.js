@@ -75,7 +75,7 @@ class EnemyButterfly {
   }
 
   shotEnemy(enemy, player) {
-    if (game.soundsPlay) {
+    if (game.musicPlay) {
       this.audioShot.play()
     }
     return new EnemiesShot(
