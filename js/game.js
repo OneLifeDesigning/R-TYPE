@@ -223,7 +223,18 @@ class Game {
 
   _removeIfNotVisible() {
     this._enemiesAll = this._enemiesAll.filter(enemy => {
-      return enemy.isVisible()
+      if (!enemy.is('die')) {
+        if (!enemy.isVisible() && enemy.is('butterfly')) {
+          enemy.die()
+        }
+        return enemy
+      } else {
+        if (enemy.isVisible()) {
+          this._addExplosion(enemy)
+        } else {
+          enemy.die()
+        }
+      }
     })
     this._enemiesShots = this._enemiesShots.filter(eShots => {
       if (!eShots.is('die')) {
@@ -258,7 +269,7 @@ class Game {
 
   // ENEMIES 
   _addEnemies() {
-    if (!this._bullet && this._timeSupply++ >= 2000 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
+    if (!this._bullet && this._timeSupply++ >= 1000 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
       this._enemiesAll.push(
         new EnemySupply(
           this._ctx,

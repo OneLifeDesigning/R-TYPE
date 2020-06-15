@@ -37,6 +37,11 @@ h1.card-title {
   text-shadow: none
 }
 
+canvas {
+  margin: 0 auto;
+  background-color: #000000;
+}
+
 #loader {
   display: flex;
   justify-content: center;
@@ -46,11 +51,6 @@ h1.card-title {
   background-color: #000000;
 }
 
-
-canvas {
-  margin: 0 auto;
-  background-color: #000000;
-}
 
 .machine {
   display: flex;
