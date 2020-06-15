@@ -302,7 +302,7 @@ class Game {
       this._timeKamikaze = 0
     }
 
-    if (this._timeCyborg++ >= 8000 && (this._enemiesAll.length <= 8 * DIFICULTY || !this._enemiesAll.some(enemy => enemy.is('cyborg')))) {
+    if (this._timeCyborg++ >= 1500 && (this._enemiesAll.length <= 8 * DIFICULTY || !this._enemiesAll.some(enemy => enemy.is('cyborg')))) {
       for (let i = 0; i < DIFICULTY; i++) {
         this._enemiesAll.push(
           new EnemyCyborg(
@@ -319,7 +319,7 @@ class Game {
       }
       this._timeCyborg = 0
     }
-    if (this._timeGunner++ >= 10000 && !this._enemiesAll.some(enemy => enemy.is('gunner'))) {
+    if (this._timeGunner++ >= 8000 && !this._enemiesAll.some(enemy => enemy.is('gunner'))) {
       this._enemiesAll.push(
         new EnemyGunner(
           this._ctx,
