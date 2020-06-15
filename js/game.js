@@ -30,7 +30,6 @@ class Game {
     this._terrainTop = []
     this._enemiesAll = []
     this._enemiesShots = []
-    this._enemiesExplosions = []
     this._playerShots = []
     this._explosionsDies = []
 
@@ -280,7 +279,7 @@ class Game {
       this._timeSupply = 0
     }
 
-    if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 10 * DIFICULTY) {
+    if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 4 * DIFICULTY) {
       for (let i = 0; i < 2 * DIFICULTY; i++) {
         this._enemiesAll.push(
           new EnemyButterfly(
@@ -297,7 +296,7 @@ class Game {
       }
       this._timeButterfy = 0
     }
-    if (this._timeKamikaze++ >= 1000 && this._enemiesAll.length <= 6 * DIFICULTY) {
+    if (this._timeKamikaze++ >= 200 && this._enemiesAll.length <= 4 * DIFICULTY) {
       for (let i = 0; i < DIFICULTY; i++) {
         this._enemiesAll.push(
           new EnemyKamikaze(
@@ -313,8 +312,8 @@ class Game {
       this._timeKamikaze = 0
     }
 
-    if (this._timeCyborg++ >= 1500 && (this._enemiesAll.length <= 8 * DIFICULTY || !this._enemiesAll.some(enemy => enemy.is('cyborg')))) {
-      for (let i = 0; i < DIFICULTY; i++) {
+    if (this._timeCyborg++ >= 200 && (this._enemiesAll.length <= 10 * DIFICULTY)) {
+      for (let i = 0; i < 2 * DIFICULTY; i++) {
         this._enemiesAll.push(
           new EnemyCyborg(
             this._ctx,
@@ -330,7 +329,7 @@ class Game {
       }
       this._timeCyborg = 0
     }
-    if (this._timeGunner++ >= 8000 && !this._enemiesAll.some(enemy => enemy.is('gunner'))) {
+    if (this._timeGunner++ >= 1500 && !this._enemiesAll.some(enemy => enemy.is('gunner'))) {
       this._enemiesAll.push(
         new EnemyGunner(
           this._ctx,
