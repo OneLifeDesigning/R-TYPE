@@ -442,7 +442,6 @@ class Game {
         object.die()
       }
     } else if (object.is('player')) {
-      object.lives--
       this._interface.lives = object.lives
       object.die()
     } else if (object.is('bullet')) {
@@ -456,7 +455,6 @@ class Game {
   _resolveCollisionPltoEnemy(object, enemy) {
     if (!enemy.is('armory')) {
       if (object.is('player')) {
-        object.lives--
         this._interface.lives = object.lives
         object.die()
       }
@@ -536,7 +534,6 @@ class Game {
 
   _resolveHits(shot, shooted) {
     if (shooted.is('player')) {
-      shooted.lives--
       this._interface.lives = shooted.lives
       shot.die()
       shooted.die()
