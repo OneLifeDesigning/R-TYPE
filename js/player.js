@@ -140,7 +140,7 @@ class Player {
         this.x = -500
         this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
         this.vx = 7
-      }, 1500)
+      }, 500)
     }
   }
 
