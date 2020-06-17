@@ -129,19 +129,22 @@ class Player {
   }
 
   die() {
-    if (--this.lives <= 0) {
-      this.params.push('die')
-    } else {
-      this.params.push('respawn')
+    if (this.params.indexOf('reload') === -1) {
       this.params.push('reload')
+      this.params.push('respawn')
       this.params = this.params.filter(param => param !== 'killable')
       this.params = this.params.filter(param => param !== 'collisable')
-      setTimeout(() => {
-        this.tickRespawn = 1
-        this.x -= (this._ctx.canvas.width + this._ctx.canvas.width / 4)
-        this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
-        this.vx = 7
-      }, 100)
+      if (--this.lives <= 0) {
+        this.params.push('die')
+      } else {
+        setTimeout(() => {
+          this.tickRespawn = 1
+          this.x -= (this._ctx.canvas.width + this._ctx.canvas.width / 4)
+          this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
+          this.vx = 7
+          this.vy = 0
+        }, 100)
+      }
     }
   }
 
