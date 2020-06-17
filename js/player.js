@@ -133,14 +133,15 @@ class Player {
       this.params.push('die')
     } else {
       this.params.push('respawn')
+      this.params.push('reload')
       this.params = this.params.filter(param => param !== 'killable')
       this.params = this.params.filter(param => param !== 'collisable')
       setTimeout(() => {
         this.tickRespawn = 1
-        this.x = -500
+        this.x -= (this._ctx.canvas.width + this._ctx.canvas.width / 4)
         this.y = (this._ctx.canvas.height / 2) - (this.h / 2)
         this.vx = 7
-      }, 500)
+      }, 100)
     }
   }
 

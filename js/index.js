@@ -15,8 +15,8 @@ const ctx = canvas.getContext("2d")
 
 const saverBtn = document.getElementById("saverBtn")
 const bestPlayer = document.getElementById("bestPlayer")
-let theBest = JSON.parse(localStorage.getItem('score')) ? JSON.parse(localStorage.getItem('score')) : JSON.parse(JSON.stringify({
-  name: 'A',
+let theBest = JSON.parse(localStorage.getItem('scores')) ? JSON.parse(localStorage.getItem('scores')) : JSON.parse(JSON.stringify({
+  name: 'AAA',
   score: 0
 }))
 
@@ -191,13 +191,14 @@ saverBtn.addEventListener('click', () => {
       score: score,
       level: level
     }
-    localStorage.setItem('score', JSON.stringify(playerScore));
+
+    localStorage.setItem('scores', JSON.stringify(playerScore));
 
     setTimeout(() => {
       saverBtn.classList.remove('disabled')
       saverBtn.innerText = 'SAVE'
       theBest = JSON.parse(localStorage.getItem('score'))
-      bestPlayer.innerHTML = `${theBest.name} - ${theBest.score} - LEVEL: ${theBest.level}`
+      bestPlayer.innerHTML = `NAME: ${theBest.name} SCORE: ${theBest.score} DIFICULTY: ${theBest.level}`
     }, 500);
   } else {
     saverBtn.classList.add('d-none')
@@ -219,9 +220,10 @@ window.onload = () => {
   btnClose.classList.add('d-none')
   btnRestar.classList.add('d-none')
   btnUnMute.classList.add('d-none')
+  console.log(theBest);
 
   if (theBest) {
-    bestPlayer.innerHTML = `${theBest.name} - ${theBest.score} - LEVEL: ${theBest.level}`
+    bestPlayer.innerHTML = `NAME: ${theBest.name} SCORE: ${theBest.score} DIFICULTY: ${theBest.level}`
     interface.children[3].querySelector('span').innerText = theBest.score
   }
 }
