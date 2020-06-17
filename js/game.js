@@ -273,49 +273,49 @@ class Game {
 
   // ENEMIES 
   _addEnemies() {
-    // if (!this._bullet && this._timeSupply++ >= 1000 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
-    //   this._enemiesAll.push(
-    //     new EnemySupply(
-    //       this._ctx,
-    //       this.maxHeight - (this.maxHeight / 3),
-    //       IMG_ENEMY_SUPPLY
-    //     )
-    //   )
-    //   this._timeSupply = 0
-    // }
+    if (!this._bullet && this._timeSupply++ >= 1000 && !this._enemiesAll.some(enemy => enemy.is('supply'))) {
+      this._enemiesAll.push(
+        new EnemySupply(
+          this._ctx,
+          this.maxHeight - (this.maxHeight / 3),
+          IMG_ENEMY_SUPPLY
+        )
+      )
+      this._timeSupply = 0
+    }
 
-    // if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 4 * DIFICULTY) {
-    //   for (let i = 0; i < 2 * DIFICULTY; i++) {
-    //     this._enemiesAll.push(
-    //       new EnemyButterfly(
-    //         this._ctx,
-    //         this._randomNumber(
-    //           this._ctx.canvas.width / 2
-    //         ),
-    //         this._randomNumber(
-    //           this.maxHeight - (this.maxHeight / 3)
-    //         ),
-    //         IMG_ENEMY_BUTTERFLY
-    //       )
-    //     )
-    //   }
-    //   this._timeButterfy = 0
-    // }
-    // if (this._timeKamikaze++ >= 200 && this._enemiesAll.length <= 4 * DIFICULTY) {
-    //   for (let i = 0; i < DIFICULTY; i++) {
-    //     this._enemiesAll.push(
-    //       new EnemyKamikaze(
-    //         this._ctx,
-    //         this._randomNumber(
-    //           this._ctx.canvas.width
-    //         ),
-    //         this._ctx.canvas.height - 120,
-    //         IMG_ENEMY_KAMIKAZE
-    //       )
-    //     )
-    //   }
-    //   this._timeKamikaze = 0
-    // }
+    if (this._timeButterfy++ >= 200 && this._enemiesAll.length <= 4 * DIFICULTY) {
+      for (let i = 0; i < 2 * DIFICULTY; i++) {
+        this._enemiesAll.push(
+          new EnemyButterfly(
+            this._ctx,
+            this._randomNumber(
+              this._ctx.canvas.width / 2
+            ),
+            this._randomNumber(
+              this.maxHeight - (this.maxHeight / 3)
+            ),
+            IMG_ENEMY_BUTTERFLY
+          )
+        )
+      }
+      this._timeButterfy = 0
+    }
+    if (this._timeKamikaze++ >= 200 && this._enemiesAll.length <= 4 * DIFICULTY) {
+      for (let i = 0; i < DIFICULTY; i++) {
+        this._enemiesAll.push(
+          new EnemyKamikaze(
+            this._ctx,
+            this._randomNumber(
+              this._ctx.canvas.width
+            ),
+            this._ctx.canvas.height - 120,
+            IMG_ENEMY_KAMIKAZE
+          )
+        )
+      }
+      this._timeKamikaze = 0
+    }
 
     if (this._timeCyborg++ >= 200 && (this._enemiesAll.length <= 6 * DIFICULTY)) {
       for (let i = 0; i < 2 * DIFICULTY; i++) {
