@@ -129,8 +129,6 @@ class Player {
   }
 
   die() {
-    console.log(this.lives);
-
     if (--this.lives <= 0) {
       this.params.push('die')
     } else {
@@ -145,7 +143,6 @@ class Player {
         this.vx = 7
       }, 100)
     }
-    console.log(this.lives);
   }
 
   _animate(typeAnimation) {
