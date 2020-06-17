@@ -45,12 +45,14 @@
         <canvas id="canvas"></canvas>
         <div id="credits">
           <div class="row align-items-end">
-            <div class="col-12 col-md-6">
+            <div class="col-12">
               <div class="card text-white bg-dark mb-3 d-none" id="gameOver">
                 <div class="card-body">
                   <h1 class="card-title mb-0">GAME OVER</h1>
                 </div>
               </div>
+            </div>
+            <div class="col-12 col-md-6">
               <div id="formScore" class="card text-white bg-dark mb-3 d-none">
                 <div class="card-body">
                   <h5 class="card-title">YOUR SCORE</h5>
@@ -79,6 +81,28 @@
                   </form>
                 </div>
               </div>
+              <div class="accordion" id="accordionOne">
+                <div class="card text-white bg-dark mb-3">
+                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionOne">
+                    <img src="./img/interface/keyboard.png" class="img-fluid card-img-top" alt="Keyboard">
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">HOW TO PLAY</h5>
+                    <div class="row">
+                      <div class="col-12 col-md-8">
+                        <p class="card-text">
+                          Is easy, push key alt to shot, space bar to fix and unfix bullet, and move with arrows keys
+                        </p>
+                      </div>
+                      <div class="col-12 col-md-4">
+                        <a href="#0" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">SEE IMAGE</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
               <div class="card text-white bg-dark mb-3">
                 <div class="card-body">
                   <h5 class="card-title">BEST PLAYER</h5>
@@ -88,22 +112,6 @@
                         <span id="bestPlayer"></span></h4>
                     </li>
                   </ol>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="accordion" id="accordionExample">
-                <div class="card text-white bg-dark mb-3">
-                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <img src="./img/interface/keyboard.png" class="img-fluid card-img-top" alt="Keyboard">
-                  </div>
-                  <div class="card-body">
-                    <h5 class="card-title">HOW TO PLAY</h5>
-                    <p class="card-text">
-                      Is easy, push key alt to shot, space bar to fix and unfix bullet, and move with arrows keys
-                    </p>
-                    <a href="#0" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">SEE IMAGE</a>
-                  </div>
                 </div>
               </div>
               <div class="accordion" id="accordionDue">

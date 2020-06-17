@@ -10,6 +10,7 @@ class Game {
     this._timeSupply = 0
     this._timeTerrain = 0
     this._tickShot = 0
+    this._timerBeam = 0
 
     this.music = new Audio('./sounds/theme.m4a')
     this.music.volume = 0.2
@@ -37,7 +38,7 @@ class Game {
 
     this.tickLives = 1
 
-    this._interface = new Interface(this.damage)
+    this._interface = new Interface(this.damage, theBest.score)
     this._interface.lives = this._player.lives
 
     this.maxHeight = this._ctx.canvas.height - 60
@@ -57,17 +58,17 @@ class Game {
       this._clear()
       this._draw()
       this._move()
-      this._interface.update()
+      this._interface.update(this._player.lives)
       if (this._player.is('die')) {
         this.gameOver()
       } else {
-        if (this.tickLives === 1 && this._interface.score >= 5000 * this.tickLives) {
+        if (this.tickLives >= 1 && this._interface.score >= 5000 * this.tickLives) {
           this.tickLives = ++this.tickLives * this.tickLives
-          this._interface.lives += 1
           this._player.lives += 1
           if (this.musicPlay) {
             this.liveSound = new Audio('./sounds/armory.wav')
-            this.musicGameOver.volume = 0.4
+            this.liveSound.play()
+            this.musicGameOver.volume = 0.7
           }
         }
       }
@@ -75,6 +76,10 @@ class Game {
   }
 
   restart() {
+    if (this.musicPlay) {
+      this.music.pause()
+      this.music.currentTime = 0
+    }
     this._timeLine = clearInterval(this._timeLine)
     this._bullet = null
     this._bg = new Bg(this._ctx, LEVEL_1_IMG_BG_1)
@@ -110,8 +115,6 @@ class Game {
     if (this.musicPlay) {
       this.music.pause()
       this.music.currentTime = 0
-    }
-    if (this.musicPlay) {
       this.musicGameOver.play()
     }
     this.musicPlay = false
@@ -125,7 +128,9 @@ class Game {
     btnUnMute.classList.add('d-none')
     btnRestar.classList.remove('d-none')
 
-    formScore.classList.remove('d-none')
+    if (this._interface.maxScore <= this._interface.score) {
+      formScore.classList.remove('d-none')
+    }
     gameOver.classList.remove('d-none')
     canvas.classList.add('d-none')
     credits.classList.remove('d-none')
@@ -435,14 +440,13 @@ class Game {
 
   // RESOLVE COLLISIONS
   _resolveCollisionsObjectWithTerrain(object, terrainTop) {
-    if (object.is('walker')) {
+    if (object.is('walker') || object.is('kamikaze')) {
       if (!terrainTop) {
         object.walk()
       } else {
         object.die()
       }
     } else if (object.is('player')) {
-      this._interface.lives = object.lives
       object.die()
     } else if (object.is('bullet')) {
       object.toFixed()
@@ -455,7 +459,6 @@ class Game {
   _resolveCollisionPltoEnemy(object, enemy) {
     if (!enemy.is('armory')) {
       if (object.is('player')) {
-        this._interface.lives = object.lives
         object.die()
       }
       if (enemy.is('supply')) {
@@ -534,7 +537,6 @@ class Game {
 
   _resolveHits(shot, shooted) {
     if (shooted.is('player')) {
-      this._interface.lives = shooted.lives
       shot.die()
       shooted.die()
       if (shooted.points) {
@@ -592,7 +594,9 @@ class Game {
             this._playerShots.push(this._bullet.shot())
           }
           this._playerShots.push(this._weapon.shot())
-          this.timer = setInterval(() => {
+          clearInterval(this._timerBeam)
+          this._weapon.beamLoadHide()
+          this._timerBeam = setInterval(() => {
             if (this._bullet) {
               this._playerShots.push(this._bullet.shot())
             }
@@ -604,13 +608,13 @@ class Game {
           }, 150)
         }
         if (e.keyCode === KEY_UP) {
-          this._player.vy = -GLOBAL_SPEED_Y * 3
+          this._player.vy = -GLOBAL_SPEED_Y * 2
         } else if (e.keyCode === KEY_DOWN) {
-          this._player.vy = +GLOBAL_SPEED_Y * 3
+          this._player.vy = +GLOBAL_SPEED_Y * 2
         } else if (e.keyCode === KEY_RIGHT && !this._player.is('respawn')) {
-          this._player.vx = +GLOBAL_SPEED_X * 3
+          this._player.vx = +GLOBAL_SPEED_X * 2
         } else if (e.keyCode === KEY_LEFT && !this._player.is('respawn')) {
-          this._player.vx = -GLOBAL_SPEED_X * 3
+          this._player.vx = -GLOBAL_SPEED_X * 2
         }
       }
     })
@@ -618,14 +622,16 @@ class Game {
     document.addEventListener('keyup', e => {
       if (game._timeLine !== 0) {
         if (e.keyCode === KEY_ALT) {
-          clearInterval(this.timer)
-          this._weapon.beamLoadHide()
           if (this.damage >= 10) {
             this._playerShots.push(this._weapon.beam(this.damage))
           }
+          clearInterval(this._timerBeam)
+          this._timerBeam = 0
+
           this.damage = 0
           this._interface.beam = this.damage
-          this.timer = clearInterval()
+          this._weapon.beamLoadHide()
+
         }
         if (e.keyCode === KEY_UP || e.keyCode === KEY_DOWN) {
           this._player.vy = 0

@@ -15,10 +15,12 @@ const ctx = canvas.getContext("2d")
 
 const saverBtn = document.getElementById("saverBtn")
 const bestPlayer = document.getElementById("bestPlayer")
-let theBest = JSON.parse(localStorage.getItem('scores')) ? JSON.parse(localStorage.getItem('scores')) : JSON.parse(JSON.stringify({
-  name: 'AAA',
-  score: 0
-}))
+
+let theBest = JSON.parse(localStorage.getItem('scores')) ?
+  JSON.parse(localStorage.getItem('scores')) : JSON.parse(JSON.stringify({
+    name: 'AAA',
+    score: 0
+  }))
 
 const btnMute = document.getElementById('interface-mute')
 const btnUnMute = document.getElementById('interface-unmute')
@@ -154,6 +156,7 @@ btnClose.addEventListener("click", () => {
   }
   oldWindow.classList.toggle('d-none')
   credits.classList.toggle('d-none')
+  btnRestar.classList.add('d-none')
   btnCredits.classList.toggle('d-none')
   btnClose.classList.toggle('d-none')
 })
@@ -166,7 +169,7 @@ btnRestar.addEventListener("click", () => {
   } else {
     btnUnMute.classList.remove('d-none')
   }
-  btnClose.classList.toggle('d-none')
+  btnClose.classList.add('d-none')
   gameOver.classList.toggle('d-none')
   formScore.classList.toggle('d-none')
   credits.classList.toggle('d-none')
@@ -194,11 +197,12 @@ saverBtn.addEventListener('click', () => {
 
     localStorage.setItem('scores', JSON.stringify(playerScore));
 
+    bestPlayer.innerHTML = `NAME: ${playerScore.name} SCORE: ${playerScore.score} DIFICULTY: ${playerScore.level}`
+
+    theBest = JSON.parse(localStorage.getItem('scores'))
     setTimeout(() => {
-      saverBtn.classList.remove('disabled')
       saverBtn.innerText = 'SAVE'
-      theBest = JSON.parse(localStorage.getItem('score'))
-      bestPlayer.innerHTML = `NAME: ${theBest.name} SCORE: ${theBest.score} DIFICULTY: ${theBest.level}`
+      saverBtn.classList.add('d-none')
     }, 500);
   } else {
     saverBtn.classList.add('d-none')
@@ -216,11 +220,11 @@ window.onload = () => {
   intro.classList.add('d-none')
   dificulty.classList.add('d-none')
   video.classList.add('d-none')
-  btnPause.classList.add('d-none')
+  btnPlay.classList.add('d-none')
+  btnPause.classList.remove('d-none')
   btnClose.classList.add('d-none')
   btnRestar.classList.add('d-none')
   btnUnMute.classList.add('d-none')
-  console.log(theBest);
 
   if (theBest) {
     bestPlayer.innerHTML = `NAME: ${theBest.name} SCORE: ${theBest.score} DIFICULTY: ${theBest.level}`

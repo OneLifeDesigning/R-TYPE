@@ -20,19 +20,17 @@ class Interface {
     }
   }
 
-  update() {
-    if (this.oldLives !== this.lives) {
+  update(lives) {
+    if (this.oldLives !== lives) {
+      this.lives = lives
       this.appendLives()
-      this.oldLives = this.lives
+      this.oldLives = lives
     }
     this.interfaceDOM.children[1].querySelector('span').innerHTML = `<div class="progress"><div class="progress-bar${this.beam === 100 ? ' full' : ''}" role="progressbar" style="width: ${this.beam}%" aria-valuenow="${this.beam}" aria-valuemin="0" aria-valuemax="100"> ${this.beam}%</div></div>`
     this.interfaceDOM.children[2].querySelector('span').innerText = this.score
-
-    if (this.maxScore >= this.score) {
-      this.interfaceDOM.children[3].querySelector('span').innerText = this.maxScore
-    } else {
-      this.interfaceDOM.children[3].querySelector('span').innerText = this.score
+    if (this.maxScore <= this.score) {
+      this.maxScore = this.score
     }
-
+    this.interfaceDOM.children[3].querySelector('span').innerText = this.maxScore
   }
 }

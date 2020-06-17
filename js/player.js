@@ -129,7 +129,9 @@ class Player {
   }
 
   die() {
-    if (this.lives-- <= 0) {
+    console.log(this.lives);
+
+    if (--this.lives <= 0) {
       this.params.push('die')
     } else {
       this.params.push('respawn')
@@ -143,6 +145,7 @@ class Player {
         this.vx = 7
       }, 100)
     }
+    console.log(this.lives);
   }
 
   _animate(typeAnimation) {
