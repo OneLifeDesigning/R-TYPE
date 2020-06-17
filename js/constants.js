@@ -8,10 +8,8 @@ const KEY_P = 80
 
 const MOD_SPEED_SIZE = 1080 / (document.getElementById("canvas").parentElement.clientWidth)
 
-console.log(MOD_SPEED_SIZE);
-const GLOBAL_SPEED_X = MOD_SPEED_SIZE >= 2 ? MOD_SPEED_SIZE / 4 : 1.2
-const GLOBAL_SPEED_Y = MOD_SPEED_SIZE >= 2 ? MOD_SPEED_SIZE / 4 : 1.2
-
+const GLOBAL_SPEED_X = 1.05
+const GLOBAL_SPEED_Y = 1.05
 
 const LEVEL_1_IMG_BG_1 = new Image()
 LEVEL_1_IMG_BG_1.src = './img/backgrounds/bg1.png'
