@@ -215,9 +215,9 @@ window.onload = () => {
     loader.classList.add('d-none')
   }, 1000);
   credits.classList.add('d-none')
-  // canvas.classList.add('d-none')
-  game.start()
-  intro.classList.add('d-none')
+  canvas.classList.add('d-none')
+  // game.start()
+  // intro.classList.add('d-none')
   dificulty.classList.add('d-none')
   video.classList.add('d-none')
   btnPlay.classList.add('d-none')

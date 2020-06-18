@@ -441,22 +441,16 @@ class Game {
   // RESOLVE COLLISIONS
   _resolveCollisionsObjectWithTerrain(object, terrainTop) {
     if (object.is('walker')) {
-      console.log('0');
       if (!terrainTop) {
-        console.log('01');
         object.walk()
       } else {
-        console.log('02');
         object.die()
       }
     } else if (object.is('player')) {
-      console.log('1');
       object.die()
     } else if (object.is('bullet')) {
-      console.log('2');
       object.toFixed()
     } else if (!object.is('player')) {
-      console.log('3');
       object.die()
     }
   }
