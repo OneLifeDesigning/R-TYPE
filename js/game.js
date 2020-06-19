@@ -228,7 +228,7 @@ class Game {
   _removeIfNotVisible() {
     this._enemiesAll = this._enemiesAll.filter(enemy => {
       if (!enemy.is('die')) {
-        if (!enemy.isVisible() && enemy.is('butterfly')) {
+        if (!enemy.isVisible()) {
           enemy.die()
         }
         return enemy
@@ -608,13 +608,13 @@ class Game {
           }, 150)
         }
         if (e.keyCode === KEY_UP) {
-          this._player.vy = -GLOBAL_SPEED_Y * 2
+          this._player.vy = -GLOBAL_SPEED_Y * 2.5
         } else if (e.keyCode === KEY_DOWN) {
-          this._player.vy = +GLOBAL_SPEED_Y * 2
+          this._player.vy = +GLOBAL_SPEED_Y * 2.5
         } else if (e.keyCode === KEY_RIGHT && !this._player.is('respawn')) {
-          this._player.vx = +GLOBAL_SPEED_X * 2
+          this._player.vx = +GLOBAL_SPEED_X * 2.5
         } else if (e.keyCode === KEY_LEFT && !this._player.is('respawn')) {
-          this._player.vx = -GLOBAL_SPEED_X * 2
+          this._player.vx = -GLOBAL_SPEED_X * 2.5
         }
       }
     })

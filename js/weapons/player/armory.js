@@ -9,7 +9,7 @@ class Armory {
 
     this.img = img
 
-    this.vx = GLOBAL_SPEED_X * -1
+    this.vx = GLOBAL_SPEED_X * -2
     this.vy = 0
 
     this.params = ['collisable', 'armory']
