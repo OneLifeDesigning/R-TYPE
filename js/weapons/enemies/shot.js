@@ -10,8 +10,8 @@ class EnemiesShot {
     this.playerCenter = this.getCenter(this.shooter)
     this.enemyCenter = this.getCenter(this.player)
 
-    this.x = Number(this.shooter.x)
-    this.y = Number(this.shooter.y)
+    this.x = this.shooter.x
+    this.y = this.shooter.y
 
     this.w = this._ctx.canvas.width / 43
     this.h = (this.w / 4) * 3

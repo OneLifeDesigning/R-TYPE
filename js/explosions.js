@@ -15,8 +15,8 @@ class Explosions {
     this.w = (object.w * 0.9)
     this.h = (this.w / 4) * 3
 
-    this.vx = (object.vx / 10)
-    this.vy = (object.vy / 10)
+    this.vx = (object.vx / 5)
+    this.vy = (object.vy / 5)
 
     this.timeAnimation = 10
 
@@ -79,6 +79,7 @@ class Explosions {
   move() {
     this.y += this.vy
     this.x += this.vx
+
     if (this.tickAimation++ >= this.timeAnimation) {
       this._animate()
       if (this.audio && game.musicPlay) {
