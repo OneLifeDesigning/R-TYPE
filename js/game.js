@@ -374,7 +374,7 @@ class Game {
     if (this._bullet) {
       this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, this._bullet)
       this._checkCollisionsObjectWithTerrainArr(this._terrainTop, this._bullet)
-      if (this._checkCollisionsObjToObject(this._bullet, this._player)) {
+      if (this._checkCollisions(this._bullet, this._player)) {
         this._bullet.toFixed()
       }
     }
@@ -390,22 +390,22 @@ class Game {
       if (!enemy.is('walker')) {
         this._checkCollisionsObjectWithTerrainArr(this._terrainTop, enemy)
         this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, enemy)
-        if (this._player.is('collisable') && this._checkCollisionsObjToObject(this._player, enemy)) {
-          this._resolveCollisionPltoEnemy(this._player, enemy)
+        if (this._player.is('collisable') && this._checkCollisions(this._player, enemy)) {
+          this._resolveCollisionPlayerToEnemy(this._player, enemy)
         }
         if (this._bullet) {
-          if (this._checkCollisionsObjToObject(this._bullet, enemy)) {
-            this._resolveCollisionPltoEnemy(this._bullet, enemy)
+          if (this._checkCollisions(this._bullet, enemy)) {
+            this._resolveCollisionPlayerToEnemy(this._bullet, enemy)
           }
         }
       } else {
-        if (enemy.is('supply') && this._checkCollisionsObjToObject(this._player, enemy)) {
-          this._resolveCollisionPltoEnemy(this._player, enemy)
+        if (enemy.is('supply') && this._checkCollisions(this._player, enemy)) {
+          this._resolveCollisionPlayerToEnemy(this._player, enemy)
         }
-        if (enemy.is('kamikaze') && this._checkCollisionsObjToObject(this._player, enemy)) {
-          this._resolveCollisionPltoEnemy(this._player, enemy)
+        if (enemy.is('kamikaze') && this._checkCollisions(this._player, enemy)) {
+          this._resolveCollisionPlayerToEnemy(this._player, enemy)
         }
-        if (enemy.is('gunner') && this._checkCollisionsObjToObject(this._player, enemy)) {
+        if (enemy.is('gunner') && this._checkCollisions(this._player, enemy)) {
           this._player.die()
         }
         this._checkCollisionsWalkerWithTerrain(enemy)
@@ -414,7 +414,7 @@ class Game {
   }
 
   // CHECK COLLISIONS 
-  _checkCollisionsObjToObject(objectOne, objectTwo, fineTuning) {
+  _checkCollisions(objectOne, objectTwo, fineTuning) {
     const colisionX = objectOne.x + objectOne.w - (fineTuning ? fineTuning : 10) >= objectTwo.x && objectOne.x <= objectTwo.x + (objectTwo.w - (fineTuning ? fineTuning : 10))
     const colisionY = objectOne.y + objectOne.h - (fineTuning ? fineTuning : 10) >= objectTwo.y && objectOne.y <= objectTwo.y + (objectTwo.h - (fineTuning ? fineTuning : 15))
     if (colisionX && colisionY) {
@@ -424,17 +424,19 @@ class Game {
 
   _checkCollisionsObjectWithTerrainArr(terrain, object) {
     terrain.forEach(terrainEl => {
-      if (this._checkCollisionsObjToObject(object, terrainEl)) {
+      if (this._checkCollisions(object, terrainEl)) {
         this._resolveCollisionsObjectWithTerrain(object, terrainEl.isTop)
       }
     })
   }
   _checkCollisionsWalkerWithTerrain(object) {
-    if (this._terrainBottom.some(terrainEl => this._checkCollisionsObjToObject(object, terrainEl)) ||
-      this._terrainTop.some(terrainEl => this._checkCollisionsObjToObject(object, terrainEl))) {
+    if (this._terrainBottom.some(terrainEl => this._checkCollisions(object, terrainEl))) {
       object.doTerreain()
     } else {
       object.undoTerrain()
+    }
+    if (this._terrainTop.some(terrainEl => this._checkCollisions(object, terrainEl))) {
+      object.die()
     }
   }
 
@@ -455,8 +457,7 @@ class Game {
     }
   }
 
-
-  _resolveCollisionPltoEnemy(object, enemy) {
+  _resolveCollisionPlayerToEnemy(object, enemy) {
     if (!enemy.is('armory')) {
       if (object.is('player')) {
         object.die()
@@ -516,7 +517,7 @@ class Game {
   _checkShots() {
     this._playerShots.forEach(shotFromPlayer => {
       this._enemiesAll.forEach(enemy => {
-        if (enemy.is('killable') && !enemy.is('armory') && this._checkCollisionsObjToObject(shotFromPlayer, enemy, 10)) {
+        if (enemy.is('killable') && !enemy.is('armory') && this._checkCollisions(shotFromPlayer, enemy, 10)) {
           this._resolveHits(shotFromPlayer, enemy)
         }
       })
@@ -524,10 +525,10 @@ class Game {
       this._checkCollisionsObjectWithTerrainArr(this._terrainBottom, shotFromPlayer)
     })
     this._enemiesShots.forEach(shotFromEnemy => {
-      if (this._player.is('killable') && this._checkCollisionsObjToObject(this._player, shotFromEnemy, 10)) {
+      if (this._player.is('killable') && this._checkCollisions(this._player, shotFromEnemy, 10)) {
         this._resolveHits(shotFromEnemy, this._player)
       }
-      if (this._bullet && this._checkCollisionsObjToObject(this._bullet, shotFromEnemy)) {
+      if (this._bullet && this._checkCollisions(this._bullet, shotFromEnemy)) {
         this._resolveHits(shotFromEnemy, this._bullet)
       }
       this._checkCollisionsObjectWithTerrainArr(this._terrainTop, shotFromEnemy)

@@ -69,7 +69,7 @@ class EnemiesShot {
   }
 
   isVisible() {
-    return this.x + this.w >= 0 && this.x + this.w <= this._ctx.canvas.width
+    return this.x >= 0 && this.x <= this._ctx.canvas.width && this.y >= 0 && this.y <= this._ctx.canvas.height
   }
 
   _animate() {
@@ -104,10 +104,6 @@ class EnemiesShot {
       this.params.push('die')
     }
     this.params = this.params.filter(param => param !== 'collisable')
-  }
-
-  isVisible() {
-    return this.x <= 0
   }
 
   is(value) {

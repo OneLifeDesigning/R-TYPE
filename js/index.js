@@ -63,7 +63,6 @@ const hideIsShow = (parent) => {
 
 selectors.forEach(select => {
   select.addEventListener("click", () => {
-
     video.play()
     dificulty.classList.toggle('d-none')
     video.classList.toggle('d-none')
