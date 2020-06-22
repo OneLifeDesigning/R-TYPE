@@ -25,7 +25,9 @@ class Game {
     this._player = new Player(this._ctx, IMG_PLAYER, IMG_PLAYER_FIRE_MOTOR)
     this._weapon = new Weapon(this._ctx, this._player, IMG_SHOT_BEAM_LOAD)
 
-    this._bullet = null
+    // this._bullet = null
+    this._bullet = new Bullet(this._ctx, this._player, IMG_WEAPON_BULLET)
+
 
     this._terrainBottom = []
     this._terrainTop = []
@@ -402,8 +404,13 @@ class Game {
         if (enemy.is('supply') && this._checkCollisions(this._player, enemy)) {
           this._resolveCollisionPlayerToEnemy(this._player, enemy)
         }
-        if (enemy.is('kamikaze') && this._checkCollisions(this._player, enemy)) {
-          this._resolveCollisionPlayerToEnemy(this._player, enemy)
+        if (enemy.is('kamikaze')) {
+          if (this._checkCollisions(this._player, enemy)) {
+            this._resolveCollisionPlayerToEnemy(this._player, enemy)
+          }
+          if (this._checkCollisions(this._bullet, enemy)) {
+            this._resolveCollisionPlayerToEnemy(this._bullet, enemy)
+          }
         }
         if (enemy.is('gunner') && this._checkCollisions(this._player, enemy)) {
           this._player.die()
@@ -441,14 +448,8 @@ class Game {
   }
 
   // RESOLVE COLLISIONS
-  _resolveCollisionsObjectWithTerrain(object, terrainTop) {
-    if (object.is('walker')) {
-      if (!terrainTop) {
-        object.walk()
-      } else {
-        object.die()
-      }
-    } else if (object.is('player')) {
+  _resolveCollisionsObjectWithTerrain(object) {
+    if (object.is('player')) {
       object.die()
     } else if (object.is('bullet')) {
       object.toFixed()
@@ -467,7 +468,6 @@ class Game {
       }
       if (object.damage >= enemy.healt) {
         enemy.die()
-
         if (object.is('bullet')) {
           this._interface.score += enemy.points * 5
           if (object.healt <= 1) {

@@ -16,11 +16,12 @@ class Bullet {
 
     this.tickAnimation = 0
     this.tickStart = 0
+    this.tickOpacity = 0
 
     this.params = ['collisable', 'bullet', 'killable']
 
     this.damage = 100
-    this.healt = 1000 / DIFICULTY
+    this.healt = 600
 
     this.fixed = false
 
@@ -33,17 +34,51 @@ class Bullet {
   }
 
   draw() {
-    this._ctx.drawImage(
-      this.img,
-      this.img.frameIndex * this.img.width / this.img.frames,
-      0,
-      this.img.width / this.img.frames,
-      this.img.height,
-      this.x,
-      this.y,
-      this.w,
-      this.h
-    )
+    if (this.healt <= 150) {
+      if (this.healt <= 150 && this.healt >= 76) {
+        if (this.tickOpacity++ <= 50) {
+          this._ctx.globalAlpha = 0.5
+        } else {
+          this._ctx.globalAlpha = 1
+        }
+        if (this.tickOpacity >= 100) {
+          this.tickOpacity = 0
+        }
+      } else if (this.healt <= 75) {
+        if (this.tickOpacity++ <= 20) {
+          this._ctx.globalAlpha = 0.5
+        } else {
+          this._ctx.globalAlpha = 1
+        }
+        if (this.tickOpacity >= 40) {
+          this.tickOpacity = 0
+        }
+      }
+      this._ctx.drawImage(
+        this.img,
+        this.img.frameIndex * this.img.width / this.img.frames,
+        0,
+        this.img.width / this.img.frames,
+        this.img.height,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+      )
+      this._ctx.globalAlpha = 1
+    } else {
+      this._ctx.drawImage(
+        this.img,
+        this.img.frameIndex * this.img.width / this.img.frames,
+        0,
+        this.img.width / this.img.frames,
+        this.img.height,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+      )
+    }
   }
 
   move(x, y) {
@@ -76,7 +111,6 @@ class Bullet {
     if (this.params.indexOf('die') === -1) {
       this.params.push('die')
     }
-    this.healt = 100
   }
 
 
