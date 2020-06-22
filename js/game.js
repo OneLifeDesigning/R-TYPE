@@ -25,8 +25,7 @@ class Game {
     this._player = new Player(this._ctx, IMG_PLAYER, IMG_PLAYER_FIRE_MOTOR)
     this._weapon = new Weapon(this._ctx, this._player, IMG_SHOT_BEAM_LOAD)
 
-    // this._bullet = null
-    this._bullet = new Bullet(this._ctx, this._player, IMG_WEAPON_BULLET)
+    this._bullet = null
 
 
     this._terrainBottom = []
