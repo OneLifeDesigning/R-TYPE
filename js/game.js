@@ -407,7 +407,7 @@ class Game {
           if (this._checkCollisions(this._player, enemy)) {
             this._resolveCollisionPlayerToEnemy(this._player, enemy)
           }
-          if (this._checkCollisions(this._bullet, enemy)) {
+          if (this._bullet && this._checkCollisions(this._bullet, enemy)) {
             this._resolveCollisionPlayerToEnemy(this._bullet, enemy)
           }
         }
