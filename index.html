@@ -45,9 +45,19 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
+    <div class="fixed-top text-right mt-1 mr-2">
+      <a href="#0" id="GameCamp" class="btn btn-success btn-xs">
+        <img
+          src="https://res.cloudinary.com/dobsg5z2w/image/upload/v1604510048/logo-50x67_tipjqt.png"
+          alt="Game Camp"
+          style="max-height: 40px"
+        />
+      </a>
+    </div>
+
     <main class="machine">
       <section class="arcade">
-        <section id="screen" class="container">
+        <section id="screen" class="container-fluid">
           <article id="intro" class="row align-items-center">
             <div class="col-12">
               <h1
@@ -377,5 +387,20 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+
+      $(document).ready(function () {
+        $("#GameCamp").click(function () {
+          $(this).attr(
+            "href",
+            "https://gamecamp.herokuapp.com/games/complete/" +
+              urlParams.get("token") +
+              "/6000"
+          );
+        });
+      });
+    </script>
   </body>
 </html>
